@@ -7,13 +7,16 @@ public class PlayerAttack : MonoBehaviour
     public float shurikenSpeed = 10f;
     public int shurikenMax = 5;
     public float aimRadius = 5f;
+    public float attackDelay = 0.5f;
+    private float nextAttackTime;
 
     private Queue<GameObject> shurikenQueue = new Queue<GameObject>();
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= nextAttackTime)
         {
+            nextAttackTime = Time.time + attackDelay;
             FireShuriken();
         }
     }
@@ -75,6 +78,7 @@ public class PlayerAttack : MonoBehaviour
 
         return nearestEnemy;
     }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
