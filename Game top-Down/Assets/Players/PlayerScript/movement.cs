@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,33 +6,48 @@ using UnityEngine.InputSystem;
 public class movement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
+
     private Rigidbody2D rb;
-    private Vector2 MoveInput;
+    private Vector2 moveInput;
     private Animator animator;
+    private PlayerAttack playerAttack;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        playerAttack = GetComponent<PlayerAttack>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        rb.velocity = MoveInput * speed;
+        if (playerAttack != null && playerAttack.IsAttacking())
+        {
+            rb.velocity = Vector2.zero;
+            animator.SetBool("IsWalking", false);
+        }
+        else
+        {
+            rb.velocity = moveInput * speed;
+
+            if (moveInput != Vector2.zero)
+                animator.SetBool("IsWalking", true);
+            else
+                animator.SetBool("IsWalking", false);
+        }
     }
 
     public void Move(InputAction.CallbackContext context)
     {
-        animator.SetBool("IsWalking", true);
+        moveInput = context.ReadValue<Vector2>();
 
         if (context.canceled)
         {
-            animator.SetBool("IsWalking", false);
-            animator.SetFloat("LastInputX", MoveInput.x);
-            animator.SetFloat("LastInputY", MoveInput.y);
+            animator.SetFloat("LastInputX", moveInput.x);
+            animator.SetFloat("LastInputY", moveInput.y);
         }
-        MoveInput = context.ReadValue<Vector2>();
-        animator.SetFloat("InputX", MoveInput.x);
-        animator.SetFloat("InputY", MoveInput.y);
+
+        animator.SetFloat("InputX", moveInput.x);
+        animator.SetFloat("InputY", moveInput.y);
     }
 }

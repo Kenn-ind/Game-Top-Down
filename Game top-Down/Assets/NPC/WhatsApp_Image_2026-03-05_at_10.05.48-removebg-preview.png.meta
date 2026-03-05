@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5bb6a5aea40e35b408d37343fc212419
+guid: 83e105148277a6b43ae33f1aac5e8c53
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Attack_0
+      name: WhatsApp_Image_2026-03-05_at_10.05.48-removebg-preview_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 16
-        height: 16
+        x: 44
+        y: 269
+        width: 162
+        height: 207
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6cc9e8a5eb6a1ef4d9ce48230e3d7f65
-      internalID: 427408873
+      spriteID: 50e77d1c1a4262d4fa8a3f236e9c0063
+      internalID: 263728741
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attack_1
+      name: WhatsApp_Image_2026-03-05_at_10.05.48-removebg-preview_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 16
+        x: 294
+        y: 269
+        width: 162
+        height: 207
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5989392e1d0b155438654c2218e1f802
-      internalID: -598415514
+      spriteID: 9c022877ee133a94cb56d4acb2a8919b
+      internalID: 386549996
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Attack_2
+      name: WhatsApp_Image_2026-03-05_at_10.05.48-removebg-preview_2
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
+        x: 44
+        y: 19
+        width: 162
+        height: 207
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,29 +179,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: acb038496965476418d44088effc3354
-      internalID: -1014735361
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Attack_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7ff7792ea0385784d9ec960e687e05d8
-      internalID: -927125674
+      spriteID: 14d30c5d7f4895b47a583ae597e1c58a
+      internalID: -1637065560
       vertices: []
       indices: 
       edges: []
@@ -217,10 +196,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Attack_0: 427408873
-      Attack_1: -598415514
-      Attack_2: -1014735361
-      Attack_3: -927125674
+      WhatsApp_Image_2026-03-05_at_10.05.48-removebg-preview_0: 263728741
+      WhatsApp_Image_2026-03-05_at_10.05.48-removebg-preview_1: 386549996
+      WhatsApp_Image_2026-03-05_at_10.05.48-removebg-preview_2: -1637065560
+      WhatsApp_Image_2026-03-05_at_10.05.48-removebg-preview_3: -76264527
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
