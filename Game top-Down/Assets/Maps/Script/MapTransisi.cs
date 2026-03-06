@@ -1,4 +1,5 @@
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapTransisi : MonoBehaviour
@@ -7,8 +8,9 @@ public class MapTransisi : MonoBehaviour
     private CinemachineConfiner Confiner;
 
     [SerializeField] Direction direction;
+    [SerializeField] Transform TeleportTarget;
 
-    enum Direction { Up, Down, Right, Left }
+    enum Direction { Up, Down, Right, Left, Teleport }
 
     private void Awake()
     {
@@ -27,6 +29,13 @@ public class MapTransisi : MonoBehaviour
 
     private void UpdatePlayerPosition(GameObject player)
     {
+        if (direction == Direction.Teleport)
+        {
+            player.transform.position = TeleportTarget.position;
+
+            return;
+        }
+
         Vector3 newPos = player.transform.position;
 
         switch (direction)

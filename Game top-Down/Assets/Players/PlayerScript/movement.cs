@@ -9,6 +9,7 @@ public class movement : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
+    private Vector2 lastDirection = Vector2.down;
     private Animator animator;
     private PlayerAttack playerAttack;
 
@@ -17,6 +18,8 @@ public class movement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerAttack = GetComponent<PlayerAttack>();
+        animator.SetFloat("LastInputX", lastDirection.x);
+        animator.SetFloat("LastInputY", lastDirection.y);
     }
 
     void Update()
@@ -41,10 +44,15 @@ public class movement : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>();
 
-        if (context.canceled)
+        if (context.performed)
         {
-            animator.SetFloat("LastInputX", moveInput.x);
-            animator.SetFloat("LastInputY", moveInput.y);
+            if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
+                lastDirection = new Vector2(Mathf.Sign(moveInput.x), 0);
+            else
+                lastDirection = new Vector2(0, Mathf.Sign(moveInput.y));
+
+            animator.SetFloat("LastInputX", lastDirection.x);
+            animator.SetFloat("LastInputY", lastDirection.y);
         }
 
         animator.SetFloat("InputX", moveInput.x);
