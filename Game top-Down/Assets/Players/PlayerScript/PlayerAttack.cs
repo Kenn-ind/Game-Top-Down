@@ -193,7 +193,7 @@ public class PlayerAttack : MonoBehaviour
             animator.SetTrigger(direction.y > 0 ? "ShuUp" : "ShuDown");
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, meleeRadius);

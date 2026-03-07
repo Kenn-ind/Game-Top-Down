@@ -177,3 +177,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   rotateSpeed: 2000
+  hitParticle: {fileID: 8775635695556611997, guid: c1218d1f1647ae844a23b5daec0175f4, type: 3}
