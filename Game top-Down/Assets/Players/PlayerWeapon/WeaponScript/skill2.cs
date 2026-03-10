@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class skill2 : MonoBehaviour
@@ -40,7 +41,7 @@ public class skill2 : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine(ShurikenBurst(target));
+                    StartCoroutine(ShurikenBurst());
                 }
             }
 
@@ -54,6 +55,8 @@ public class skill2 : MonoBehaviour
 
         Quaternion originalRotation = transform.rotation;
 
+        HashSet<BaseEnemy> hitEnemies = new HashSet<BaseEnemy>();
+
         while (timer < spinDuration)
         {
             timer += Time.deltaTime;
@@ -64,27 +67,31 @@ public class skill2 : MonoBehaviour
 
             foreach (Collider2D hit in hits)
             {
-                DummyEnemy enemy = hit.GetComponent<DummyEnemy>();
+                BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
 
-                if (enemy != null)
+                if (enemy != null && !hitEnemies.Contains(enemy))
                 {
                     enemy.TakeDamage(spinDamage);
+                    hitEnemies.Add(enemy);
                 }
             }
 
             yield return null;
         }
 
-        // kembalikan rotasi player
         transform.rotation = originalRotation;
     }
 
-    IEnumerator ShurikenBurst(GameObject target)
+    IEnumerator ShurikenBurst()
     {
-        Vector2 direction = (target.transform.position - transform.position).normalized;
-
         for (int i = 0; i < shurikenAmount; i++)
         {
+            GameObject target = FindNearestEnemy();
+
+            if (target == null) yield break;
+
+            Vector2 direction = (target.transform.position - transform.position).normalized;
+
             GameObject shuriken = Instantiate(
                 shurikenPrefab,
                 transform.position,
@@ -104,12 +111,12 @@ public class skill2 : MonoBehaviour
 
     GameObject FindNearestEnemy()
     {
-        DummyEnemy[] enemies = FindObjectsOfType<DummyEnemy>();
+        BaseEnemy[] enemies = FindObjectsOfType<BaseEnemy>();
 
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
 
-        foreach (DummyEnemy enemy in enemies)
+        foreach (BaseEnemy enemy in enemies)
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
 

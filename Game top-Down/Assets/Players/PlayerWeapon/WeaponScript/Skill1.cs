@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class skill1 : MonoBehaviour
@@ -49,11 +50,19 @@ public class skill1 : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            if (target == null) yield break;
+            // jika target mati cari musuh baru
+            if (target == null)
+            {
+                target = FindNearestEnemy();
+
+                if (target == null)
+                    yield break;
+            }
+
+            HashSet<BaseEnemy> hitEnemies = new HashSet<BaseEnemy>();
 
             Vector2 direction = (target.transform.position - transform.position).normalized;
-
-            Vector2 dashTarget = (Vector2)target.transform.position + direction * 1.5f;
+            Vector2 dashTarget = (Vector2)target.transform.position + direction * dashDistance;
 
             while (Vector2.Distance(transform.position, dashTarget) > 0.05f)
             {
@@ -63,7 +72,6 @@ public class skill1 : MonoBehaviour
                     dashSpeed * Time.deltaTime
                 );
 
-                // cek musuh yang terkena dash
                 Collider2D[] hits = Physics2D.OverlapCircleAll(
                     transform.position,
                     dashHitRadius
@@ -71,11 +79,17 @@ public class skill1 : MonoBehaviour
 
                 foreach (Collider2D hit in hits)
                 {
-                    DummyEnemy enemy = hit.GetComponent<DummyEnemy>();
+                    BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
 
-                    if (enemy != null)
+                    if (enemy != null && !hitEnemies.Contains(enemy))
                     {
                         enemy.TakeDamage(dashDamage);
+                        hitEnemies.Add(enemy);
+
+                        if (enemy.gameObject == target && enemy == null)
+                        {
+                            target = FindNearestEnemy();
+                        }
                     }
                 }
 
@@ -83,6 +97,11 @@ public class skill1 : MonoBehaviour
             }
 
             yield return new WaitForSeconds(0.1f);
+
+            if (target == null)
+            {
+                target = FindNearestEnemy();
+            }
         }
     }
 
@@ -116,12 +135,12 @@ public class skill1 : MonoBehaviour
 
     GameObject FindNearestEnemy()
     {
-        DummyEnemy[] enemies = FindObjectsOfType<DummyEnemy>();
+        BaseEnemy[] enemies = FindObjectsOfType<BaseEnemy>();
 
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
 
-        foreach (DummyEnemy enemy in enemies)
+        foreach (BaseEnemy enemy in enemies)
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
 

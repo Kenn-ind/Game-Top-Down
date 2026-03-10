@@ -131,12 +131,24 @@ public class PlayerAttack : MonoBehaviour
 
     GameObject FindNearestEnemyInRadius(float radius)
     {
-        DummyEnemy[] enemies = FindObjectsOfType<DummyEnemy>();
+        DummyEnemy[] dummyEnemies = FindObjectsOfType<DummyEnemy>();
+        Enemy[] enemies = FindObjectsOfType<Enemy>();
 
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
 
-        foreach (DummyEnemy enemy in enemies)
+        foreach (DummyEnemy enemy in dummyEnemies)
+        {
+            float distance = Vector2.Distance(transform.position, enemy.transform.position);
+
+            if (distance < shortestDistance && distance <= radius)
+            {
+                shortestDistance = distance;
+                nearestEnemy = enemy.gameObject;
+            }
+        }
+
+        foreach (Enemy enemy in enemies)
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
 

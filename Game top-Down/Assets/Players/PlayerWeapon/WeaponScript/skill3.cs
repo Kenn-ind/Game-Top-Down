@@ -27,7 +27,6 @@ public class skill3 : MonoBehaviour
 
     IEnumerator ActivateRing()
     {
-        // spawn shuriken
         for (int i = 0; i < shurikenCount; i++)
         {
             float angle = i * Mathf.PI * 2 / shurikenCount;
@@ -69,7 +68,6 @@ public class skill3 : MonoBehaviour
             yield return null;
         }
 
-        // destroy shuriken
         foreach (GameObject s in shurikens)
         {
             if (s != null)

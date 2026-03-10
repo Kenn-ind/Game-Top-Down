@@ -10,20 +10,29 @@ public class movement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Vector2 lastDirection = Vector2.down;
+
     private Animator animator;
     private PlayerAttack playerAttack;
+    private PlayerHealth playerHealth;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerAttack = GetComponent<PlayerAttack>();
+        playerHealth = GetComponent<PlayerHealth>();
+
         animator.SetFloat("LastInputX", lastDirection.x);
         animator.SetFloat("LastInputY", lastDirection.y);
     }
 
     void Update()
     {
+        if (playerHealth != null && playerHealth.isKnockback)
+        {
+            return;
+        }
+
         if (playerAttack != null && playerAttack.IsAttacking())
         {
             rb.velocity = Vector2.zero;

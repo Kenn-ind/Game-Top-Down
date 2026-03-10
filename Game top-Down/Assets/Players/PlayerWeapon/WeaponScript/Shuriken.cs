@@ -14,7 +14,7 @@ public class Shuriken : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        DummyEnemy enemy = collision.GetComponent<DummyEnemy>();
+        BaseEnemy enemy = collision.GetComponent<BaseEnemy>();
 
         if (enemy != null)
         {

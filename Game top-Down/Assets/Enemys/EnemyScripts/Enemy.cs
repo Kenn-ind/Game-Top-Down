@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class DummyEnemy : BaseEnemy
+public class Enemy : BaseEnemy
 {
     public float flashTime = 0.1f;
 
@@ -20,7 +20,7 @@ public class DummyEnemy : BaseEnemy
     {
         StartCoroutine(FlashRed());
 
-        Debug.Log("Dummy kena hit");
+        Debug.Log("Enemy kena hit");
 
         base.TakeDamage(damage);
     }
