@@ -18,7 +18,7 @@ public class SwordHitbox : MonoBehaviour
         {
             Vector2 direction = (collision.transform.position - player.position).normalized;
 
-            enemy.TakeDamage(damage, direction, true); // TRUE = ada knockback
+            enemy.TakeDamage(damage, direction, true);
         }
     }
 }
