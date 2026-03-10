@@ -71,7 +71,7 @@ public class skill2 : MonoBehaviour
 
                 if (enemy != null && !hitEnemies.Contains(enemy))
                 {
-                    enemy.TakeDamage(spinDamage);
+                    enemy.TakeDamage(1, Vector2.zero, false);
                     hitEnemies.Add(enemy);
                 }
             }

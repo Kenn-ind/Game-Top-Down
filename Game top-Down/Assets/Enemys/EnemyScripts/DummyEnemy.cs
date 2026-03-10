@@ -16,13 +16,11 @@ public class DummyEnemy : BaseEnemy
         originalColor = spriteRenderer.color;
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, Vector2 knockbackDir, bool applyKnockback = false)
     {
         StartCoroutine(FlashRed());
 
-        Debug.Log("Dummy kena hit");
-
-        base.TakeDamage(damage);
+        Debug.Log("Dummy kena hit");    
     }
 
     IEnumerator FlashRed()

@@ -83,7 +83,7 @@ public class skill1 : MonoBehaviour
 
                     if (enemy != null && !hitEnemies.Contains(enemy))
                     {
-                        enemy.TakeDamage(dashDamage);
+                        enemy.TakeDamage(1, Vector2.zero, false);
                         hitEnemies.Add(enemy);
 
                         if (enemy.gameObject == target && enemy == null)

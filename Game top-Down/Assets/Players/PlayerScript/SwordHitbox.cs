@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class SwordHitbox : MonoBehaviour
 {
-    public int damage = 2;
+    public int damage = 1;
+    private Transform player;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void Start()
     {
-        DummyEnemy enemy = other.GetComponent<DummyEnemy>();
+        player = transform.root;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        BaseEnemy enemy = collision.GetComponent<BaseEnemy>();
 
         if (enemy != null)
         {
-            enemy.TakeDamage(damage);
+            Vector2 direction = (collision.transform.position - player.position).normalized;
+
+            enemy.TakeDamage(damage, direction, true); // TRUE = ada knockback
         }
     }
 }

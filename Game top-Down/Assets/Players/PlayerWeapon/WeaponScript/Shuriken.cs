@@ -18,7 +18,7 @@ public class Shuriken : MonoBehaviour
 
         if (enemy != null)
         {
-            enemy.TakeDamage(damage);
+            enemy.TakeDamage(1, Vector2.zero, false);
 
             if (hitParticle != null)
             {
