@@ -34,7 +34,20 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
 
-        Slot dropSlot = eventData.pointerEnter?.GetComponent<Slot>();
+        Slot dropSlot = null;
+
+        // Cek langsung dari pointerEnter
+        if (eventData.pointerEnter != null)
+        {
+            // Coba dapat Slot dari object yang di-hover
+            dropSlot = eventData.pointerEnter.GetComponent<Slot>();
+
+            // Jika tidak ketemu, coba dari parent-nya
+            // (misalnya drop ke Image di dalam Slot)
+            if (dropSlot == null)
+                dropSlot = eventData.pointerEnter.GetComponentInParent<Slot>();
+        }
+
         Slot originalSlot = originalParent?.GetComponent<Slot>();
 
         if (dropSlot != null)

@@ -7560,6 +7560,7 @@ MonoBehaviour:
   slotCount: 56
   itemPrefabs:
   - {fileID: 9216480461104092925, guid: 04ea1a4426402e246ba25e62ac47517e, type: 3}
+  - {fileID: 1180239542870632364, guid: a79b6effd40886d43932917fc4373023, type: 3}
 --- !u!4 &1491335259
 Transform:
   m_ObjectHideFlags: 0
