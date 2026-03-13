@@ -1,71 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class NPC : MonoBehaviour, IInteractable
 {
     public NPCDialogue dialogueData;
-    public GameObject dialoguePanel;
-    public TMP_Text dialogueText, nameText;
-    public Image portraitImage;
-
+    private DialogueController dialogueUI;
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
 
+    private void Start()
+    {
+        dialogueUI = DialogueController.Instance;
+        if (dialogueUI == null)
+            Debug.LogError("DialogueController.Instance tidak ditemukan! Pastikan ada di scene.");
+    }
+
     public bool CanInteract()
     {
-        return !isDialogueActive;
+        return true;
     }
 
     public void Interact()
     {
         if (dialogueData == null) return;
-        //if (dialogueData == null || (PauseController.IsGamePaused && !isDialogueActive))
-        //    return;
+        if (dialogueUI == null) return;
 
         if (isDialogueActive)
-        {
             NextLine();
-        }
         else
-        {
             StartDialogue();
-        }
     }
 
     void StartDialogue()
     {
-        Debug.Log("StartDialogue dipanggil!");
-
-        // Test 1: Cek dialoguePanel dulu
-        if (dialoguePanel == null)
-        {
-            Debug.LogError("dialoguePanel NULL!");
-            return;
-        }
-
-        // Test 2: Cek nameText
-        if (nameText == null)
-        {
-            Debug.LogError("nameText NULL!");
-            return;
-        }
-
-        // Test 3: Cek portraitImage
-        if (portraitImage == null)
-        {
-            Debug.LogError("portraitImage NULL!");
-            return;
-        }
+        if (dialogueUI.dialoguePanel == null) { Debug.LogError("dialoguePanel NULL!"); return; }
+        if (dialogueUI.nameText == null) { Debug.LogError("nameText NULL!"); return; }
+        if (dialogueUI.portraitImage == null) { Debug.LogError("portraitImage NULL!"); return; }
 
         isDialogueActive = true;
         dialogueIndex = 0;
-        nameText.SetText(dialogueData.npcName);
-        portraitImage.sprite = dialogueData.npcPortrait;
-        dialoguePanel.SetActive(true);
-        StartCoroutine(TypeLine());
+        dialogueUI.SetNPCInfo(dialogueData.npcName, dialogueData.npcPortrait);
+        dialogueUI.ShowDialogueUI(true);
+        DisplayCurrentLine();
     }
 
     void NextLine()
@@ -73,44 +49,89 @@ public class NPC : MonoBehaviour, IInteractable
         if (isTyping)
         {
             StopAllCoroutines();
+            dialogueUI.SetDialogueText(dialogueData.dialogueLines[dialogueIndex]);
+            isTyping = false;
         }
-        else if (++dialogueIndex < dialogueData.dialogueLines.Length)
-        {
-            StartCoroutine(TypeLine());
-        }
-        else
+
+        dialogueUI.ClearChoices();
+
+        if (dialogueData.endDialogueLines.Length > dialogueIndex && dialogueData.endDialogueLines[dialogueIndex])
         {
             EndDialogue();
+            return;
         }
+
+        foreach (DialogueChoice dialogueChoice in dialogueData.choices)
+        {
+            Debug.Log($"Cek choice: dialogueChoice.dialogueIndex={dialogueChoice.dialogueIndex}, dialogueIndex={dialogueIndex}");
+            if (dialogueChoice.dialogueIndex == dialogueIndex)
+            {
+                Debug.Log("Choice ditemukan! Memanggil DisplayChoices...");
+                DisplayChoices(dialogueChoice);
+                return;
+            }
+        }
+
+        if (++dialogueIndex < dialogueData.dialogueLines.Length)
+            DisplayCurrentLine();
+        else
+            EndDialogue();
     }
 
     IEnumerator TypeLine()
     {
         isTyping = true;
-        dialogueText.SetText("");
+        string fullLine = dialogueData.dialogueLines[dialogueIndex];
+        string current = "";
 
-        foreach (char letter in dialogueData.dialogueLines[dialogueIndex])
+        foreach (char letter in fullLine)
         {
-            dialogueText.text += letter;
+            current += letter;
+            dialogueUI.SetDialogueText(current);
             yield return new WaitForSeconds(dialogueData.typingSpeed);
         }
 
         isTyping = false;
 
-        if (dialogueData.autoProgressLines.Length > dialogueIndex && dialogueData.autoProgressLines[dialogueIndex])
+        if (dialogueData.autoProgressLines != null &&
+            dialogueIndex < dialogueData.autoProgressLines.Length &&
+            dialogueData.autoProgressLines[dialogueIndex])
         {
             yield return new WaitForSeconds(dialogueData.autoProgressDelay);
             NextLine();
         }
     }
 
+    void DisplayChoices(DialogueChoice choice)
+    {
+        Debug.Log($"DisplayChoices dipanggil, jumlah pilihan: {choice.choices.Length}");
+        for (int i = 0; i < choice.choices.Length; i++)
+        {
+            Debug.Log($"Membuat button: {choice.choices[i]}");
+            int nextIndex = choice.nextDialogueIndexes[i];
+            dialogueUI.CreateChoiceButton(choice.choices[i], () => ChooseOption(nextIndex));
+        }
+    }
+
+    void DisplayCurrentLine()
+    {
+        StopAllCoroutines();
+        StartCoroutine(TypeLine());
+    }
+
+    void ChooseOption(int nextIndex)
+    {
+        dialogueIndex = nextIndex;
+        dialogueUI.ClearChoices();
+        DisplayCurrentLine();
+    }
+
     public void EndDialogue()
     {
         StopAllCoroutines();
         isDialogueActive = false;
-        dialogueText.SetText("");
-        dialoguePanel.SetActive(false);
+        dialogueUI.SetDialogueText("");
+        dialogueUI.ShowDialogueUI(false);
         PauseController.SetPause(false);
-
     }
 }

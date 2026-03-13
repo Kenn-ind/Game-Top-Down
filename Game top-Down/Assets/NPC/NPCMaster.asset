@@ -15,8 +15,25 @@ MonoBehaviour:
   npcName: Shifu
   npcPortrait: {fileID: 21300000, guid: 621db5e3ae67a35499a93406681b25d3, type: 3}
   dialogueLines:
-  - hahahaha
+  - oi
   - awkoawkoowkakwo
-  autoProgressLines: 0100
+  - hey kid
+  - what are you doing, man?
+  - hell nah, i'm your shifu
+  - hell nah, i'm your shifu
+  - hell nah, i'm your shifu
+  autoProgressLines: 01010101010101
+  endDialogueLines: 00000000010101
   autoProgressDelay: 1.5
   typingSpeed: 0.05
+  choices:
+  - dialogueIndex: 2
+    choices:
+    - hmm?
+    - what's up man!
+    nextDialogueIndexes: 0300000004000000
+  - dialogueIndex: 3
+    choices:
+    - nothing
+    - hahaahh
+    nextDialogueIndexes: 0500000006000000
