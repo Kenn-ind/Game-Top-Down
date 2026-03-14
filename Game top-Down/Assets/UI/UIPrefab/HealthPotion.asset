@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c5de4da69294d478aa44ce8e950c37, type: 3}
+  m_Name: HealthPotion
+  m_EditorClassIdentifier: 
+  itemName: HealthPotion
+  icon: {fileID: 1096191036, guid: f473e8329f95e234ea4259c39ba56f57, type: 3}
+  maxStack: 5
