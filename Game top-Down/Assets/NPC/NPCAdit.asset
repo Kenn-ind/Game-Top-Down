@@ -16,12 +16,8 @@ MonoBehaviour:
   npcPortrait: {fileID: 21300000, guid: 21644681a132d8540b5a5523f373f60e, type: 3}
   dialogueLines:
   - 67!
-  - 67!
-  - 67!
-  autoProgressLines: 000000
+  autoProgressLines: 01
+  endDialogueLines: 01
   autoProgressDelay: 1.5
   typingSpeed: 0.05
-  choices:
-  - dialogueIndex: 0
-    choices: []
-    nextDialogueIndexes: 
+  choices: []
