@@ -1,5 +1,11 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using TreeEditor;
+using Unity.VisualScripting.Antlr3.Runtime;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -45,7 +51,6 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (dropSlot != null && draggedItemUI != null)
         {
             ItemUI targetItemUI = dropSlot.GetItemUI();
-
             bool sameItem = targetItemUI != null
                             && targetItemUI.itemData == draggedItemUI.itemData;
 
@@ -56,7 +61,6 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
                 targetItemUI.stackCount += transfer;
                 targetItemUI.UpdateUI();
-
                 draggedItemUI.stackCount -= transfer;
 
                 if (draggedItemUI.stackCount <= 0)

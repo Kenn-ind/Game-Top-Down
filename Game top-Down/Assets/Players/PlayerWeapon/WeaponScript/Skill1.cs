@@ -5,6 +5,7 @@ using UnityEngine;
 public class skill1 : MonoBehaviour
 {
     public GameObject shurikenPrefab;
+    public KeyCode KeyBindSkill1;
 
     public float closeRange = 2f;
     public float detectRadius = 8f;
@@ -17,6 +18,7 @@ public class skill1 : MonoBehaviour
     public float dashSpeed = 15f;
     public int dashDamage = 1;
     public float dashHitRadius = 0.5f;
+    public float dashCount = 1;
 
     public float cooldown = 3f;
 
@@ -24,7 +26,7 @@ public class skill1 : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && Time.time >= nextSkillTime)
+        if (Input.GetKeyDown(KeyBindSkill1) && Time.time >= nextSkillTime)
         {
             GameObject target = FindNearestEnemy();
 
@@ -48,15 +50,18 @@ public class skill1 : MonoBehaviour
 
     IEnumerator DashAttack(GameObject target)
     {
-        for (int i = 0; i < 2; i++)
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        Collider2D col = GetComponent<Collider2D>();
+
+        if (col != null) col.enabled = false;
+        if (rb != null) rb.isKinematic = true;
+
+        for (int i = 0; i < dashCount; i++)
         {
-            // jika target mati cari musuh baru
             if (target == null)
             {
                 target = FindNearestEnemy();
-
-                if (target == null)
-                    yield break;
+                if (target == null) break;
             }
 
             HashSet<BaseEnemy> hitEnemies = new HashSet<BaseEnemy>();
@@ -80,16 +85,10 @@ public class skill1 : MonoBehaviour
                 foreach (Collider2D hit in hits)
                 {
                     BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
-
                     if (enemy != null && !hitEnemies.Contains(enemy))
                     {
                         enemy.TakeDamage(1, Vector2.zero, false);
                         hitEnemies.Add(enemy);
-
-                        if (enemy.gameObject == target && enemy == null)
-                        {
-                            target = FindNearestEnemy();
-                        }
                     }
                 }
 
@@ -99,10 +98,11 @@ public class skill1 : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
 
             if (target == null)
-            {
                 target = FindNearestEnemy();
-            }
         }
+
+        if (col != null) col.enabled = true;
+        if (rb != null) rb.isKinematic = false;
     }
 
     void ShurikenBurst()

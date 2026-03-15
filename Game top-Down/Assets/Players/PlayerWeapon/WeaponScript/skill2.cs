@@ -5,6 +5,7 @@ using UnityEngine;
 public class skill2 : MonoBehaviour
 {
     public GameObject shurikenPrefab;
+    public KeyCode KeyBindSkill2;
 
     public float closeRange = 2f;
     public float detectRadius = 8f;
@@ -27,7 +28,7 @@ public class skill2 : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha2) && Time.time >= nextSkillTime)
+        if (Input.GetKeyDown(KeyBindSkill2) && Time.time >= nextSkillTime)
         {
             GameObject target = FindNearestEnemy();
 

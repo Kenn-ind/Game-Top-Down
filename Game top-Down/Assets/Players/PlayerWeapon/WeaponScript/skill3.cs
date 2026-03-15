@@ -5,6 +5,7 @@ using UnityEngine;
 public class skill3 : MonoBehaviour
 {
     public GameObject shurikenPrefab;
+    public KeyCode KeyBindSkill3;
 
     public int shurikenCount = 6;
     public float orbitRadius = 1.5f;
@@ -18,7 +19,7 @@ public class skill3 : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha3) && Time.time >= nextSkillTime)
+        if (Input.GetKeyDown(KeyBindSkill3) && Time.time >= nextSkillTime)
         {
             StartCoroutine(ActivateRing());
             nextSkillTime = Time.time + cooldown;
