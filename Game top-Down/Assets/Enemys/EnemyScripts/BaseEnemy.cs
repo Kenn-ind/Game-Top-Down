@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BaseEnemy : MonoBehaviour
 {
+    AudioManage AudioManager;
     public int maxHealth = 5;
     protected int currentHealth;
 
@@ -15,6 +16,7 @@ public class BaseEnemy : MonoBehaviour
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
+        AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
     }
 
     public virtual void TakeDamage(int damage, Vector2 knockbackDir, bool applyKnockback = false)
@@ -23,6 +25,7 @@ public class BaseEnemy : MonoBehaviour
 
         if (applyKnockback)
         {
+            AudioManager.PlaySFX(AudioManager.enemyHurt);
             StartCoroutine(Knockback(knockbackDir));
         }
 

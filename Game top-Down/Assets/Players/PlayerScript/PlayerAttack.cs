@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    AudioManage AudioManager;
     public GameObject shurikenPrefab;
     public float shurikenSpeed = 10f;
     public int shurikenMax = 5;
@@ -30,6 +31,7 @@ public class PlayerAttack : MonoBehaviour
 
     void Start()
     {
+        AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<movement>();
 
@@ -69,7 +71,7 @@ public class PlayerAttack : MonoBehaviour
     void MeleeAttack(GameObject target)
     {
         isAttacking = true;
-
+        AudioManager.PlaySFX(AudioManager.sword);
         Vector2 direction = (target.transform.position - transform.position).normalized;
 
         TriggerAttackMeleeAnimation(direction);
@@ -95,7 +97,7 @@ public class PlayerAttack : MonoBehaviour
     void RangeAttack(GameObject target)
     {
         isAttacking = true;
-
+        AudioManager.PlaySFX(AudioManager.shuriken);
         Vector2 direction = (target.transform.position - transform.position).normalized;
 
         TriggerAttackRangeAnimation(direction);
