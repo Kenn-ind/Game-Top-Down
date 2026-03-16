@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,13 +21,27 @@ public class skill1 : MonoBehaviour
     public float dashCount = 1;
 
     public float cooldown = 3f;
+    public int staminaCost = 3; // ← TAMBAH INI
 
     private float nextSkillTime;
+    private PlayerStamina _stamina; // ← TAMBAH INI
+
+    void Start()
+    {
+        _stamina = GetComponent<PlayerStamina>(); // ← TAMBAH INI
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyBindSkill1) && Time.time >= nextSkillTime)
         {
+            // ← TAMBAH CEK STAMINA
+            if (!_stamina.UseStamina(staminaCost))
+            {
+                Debug.Log("Stamina tidak cukup!");
+                return;
+            }
+
             GameObject target = FindNearestEnemy();
 
             if (target != null)
@@ -35,18 +49,16 @@ public class skill1 : MonoBehaviour
                 float distance = Vector2.Distance(transform.position, target.transform.position);
 
                 if (distance <= closeRange)
-                {
                     StartCoroutine(DashAttack(target));
-                }
                 else
-                {
                     ShurikenBurst();
-                }
             }
 
             nextSkillTime = Time.time + cooldown;
         }
     }
+
+    // --- sisanya tidak berubah ---
 
     IEnumerator DashAttack(GameObject target)
     {
@@ -77,10 +89,7 @@ public class skill1 : MonoBehaviour
                     dashSpeed * Time.deltaTime
                 );
 
-                Collider2D[] hits = Physics2D.OverlapCircleAll(
-                    transform.position,
-                    dashHitRadius
-                );
+                Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, dashHitRadius);
 
                 foreach (Collider2D hit in hits)
                 {
@@ -112,23 +121,14 @@ public class skill1 : MonoBehaviour
         for (int i = 0; i < shurikenAmount; i++)
         {
             float angle = i * angleStep;
-
             Vector2 direction = new Vector2(
                 Mathf.Cos(angle * Mathf.Deg2Rad),
                 Mathf.Sin(angle * Mathf.Deg2Rad)
             );
 
-            GameObject shuriken = Instantiate(
-                shurikenPrefab,
-                transform.position,
-                Quaternion.identity
-            );
-
+            GameObject shuriken = Instantiate(shurikenPrefab, transform.position, Quaternion.identity);
             Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
-
-            if (rb != null)
-                rb.velocity = direction * shurikenSpeed;
-
+            if (rb != null) rb.velocity = direction * shurikenSpeed;
             Destroy(shuriken, shurikenLifetime);
         }
     }
@@ -136,14 +136,12 @@ public class skill1 : MonoBehaviour
     GameObject FindNearestEnemy()
     {
         BaseEnemy[] enemies = FindObjectsOfType<BaseEnemy>();
-
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
 
         foreach (BaseEnemy enemy in enemies)
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
-
             if (distance < shortestDistance && distance <= detectRadius)
             {
                 shortestDistance = distance;
