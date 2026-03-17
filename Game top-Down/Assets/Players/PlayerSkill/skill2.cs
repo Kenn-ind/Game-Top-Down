@@ -9,7 +9,7 @@ public class skill2 : MonoBehaviour
     public float closeRange = 2f;
     public float detectRadius = 8f;
     public float cooldown = 3f;
-    public int staminaCost = 3; // ← TAMBAH INI
+    public int staminaCost = 3; 
 
     public float spinDuration = 0.5f;
     public float spinSpeed = 720f;

@@ -21,21 +21,20 @@ public class skill1 : MonoBehaviour
     public float dashCount = 1;
 
     public float cooldown = 3f;
-    public int staminaCost = 3; // ← TAMBAH INI
+    public int staminaCost = 3;
 
     private float nextSkillTime;
-    private PlayerStamina _stamina; // ← TAMBAH INI
+    private PlayerStamina _stamina;
 
     void Start()
     {
-        _stamina = GetComponent<PlayerStamina>(); // ← TAMBAH INI
+        _stamina = GetComponent<PlayerStamina>();
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyBindSkill1) && Time.time >= nextSkillTime)
         {
-            // ← TAMBAH CEK STAMINA
             if (!_stamina.UseStamina(staminaCost))
             {
                 Debug.Log("Stamina tidak cukup!");
@@ -57,8 +56,6 @@ public class skill1 : MonoBehaviour
             nextSkillTime = Time.time + cooldown;
         }
     }
-
-    // --- sisanya tidak berubah ---
 
     IEnumerator DashAttack(GameObject target)
     {

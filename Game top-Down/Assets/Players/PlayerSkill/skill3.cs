@@ -11,15 +11,15 @@ public class skill3 : MonoBehaviour
     public float rotateSpeed = 200f;
     public float duration = 5f;
     public float cooldown = 8f;
-    public int staminaCost = 5; // ← TAMBAH INI (skill3 lebih mahal karena duration panjang)
+    public int staminaCost = 5;
 
     private float nextSkillTime;
     private List<GameObject> shurikens = new List<GameObject>();
-    private PlayerStamina _stamina; // ← TAMBAH INI
+    private PlayerStamina _stamina;
 
     void Start()
     {
-        _stamina = GetComponent<PlayerStamina>(); // ← TAMBAH INI
+        _stamina = GetComponent<PlayerStamina>();
     }
 
     void Update()
@@ -37,9 +37,6 @@ public class skill3 : MonoBehaviour
             nextSkillTime = Time.time + cooldown;
         }
     }
-
-    // --- sisanya tidak berubah ---
-
     IEnumerator ActivateRing()
     {
         for (int i = 0; i < shurikenCount; i++)

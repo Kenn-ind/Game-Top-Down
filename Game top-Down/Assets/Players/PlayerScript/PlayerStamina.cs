@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -6,7 +6,10 @@ public class PlayerStamina : MonoBehaviour
 {
     public int maxStamina = 10;
     public float regenPerSecond = 2f;
+    public float regenDelay = 1f;
+
     private float currentStamina;
+    private float regenTimer = 0f;
 
     public Sprite[] staminaFrames;
     public Image staminaImage;
@@ -15,13 +18,21 @@ public class PlayerStamina : MonoBehaviour
 
     void Start()
     {
-        currentStamina = maxStamina;
+        currentStamina = maxStamina;   // ← mulai full
         _currentFrame = 0;
         staminaImage.sprite = staminaFrames[0];
     }
 
     void Update()
     {
+        // Hitung mundur delay dulu sebelum regen
+        if (regenTimer > 0f)
+        {
+            regenTimer -= Time.deltaTime;
+            return;                    // ← belum boleh regen
+        }
+
+        // Baru regen setelah delay habis
         if (currentStamina < maxStamina)
         {
             currentStamina = Mathf.Min(currentStamina + regenPerSecond * Time.deltaTime, maxStamina);
@@ -35,6 +46,7 @@ public class PlayerStamina : MonoBehaviour
 
         currentStamina -= amount;
         currentStamina = Mathf.Max(currentStamina, 0f);
+        regenTimer = regenDelay;       // ← reset delay setiap pakai skill
         UpdateBar();
         return true;
     }

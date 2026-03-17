@@ -4331,7 +4331,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000008583069, y: 0.088965416, z: -10}
+  m_LocalPosition: {x: -0.0000076293945, y: 0.08892393, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5043,9 +5043,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 195870914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -215, y: 220.48}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 320, y: -69.520004}
   m_SizeDelta: {x: 430, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &600858171
@@ -21832,9 +21832,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 195870914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -215, y: 265.48242}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 320, y: -24.517578}
   m_SizeDelta: {x: 430, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1571910299
@@ -22239,7 +22239,6 @@ Transform:
   - {fileID: 14686001}
   - {fileID: 340889116}
   - {fileID: 193226933}
-  - {fileID: 1933726418}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1648574035
@@ -69647,7 +69646,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxStamina: 10
-  regenPerSecond: 2
+  regenPerSecond: 1
+  regenDelay: 1
   staminaFrames:
   - {fileID: 6563106684350427192, guid: 8afe7d7b52391574782b652c2cba94df, type: 3}
   - {fileID: 9025926581712719611, guid: 8afe7d7b52391574782b652c2cba94df, type: 3}
@@ -69801,21 +69801,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: add5a1ca6c416094eb066ab75d61441a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSource: {fileID: 690818534}
-  SFXSource: {fileID: 548442566}
-  backsoundMenu: {fileID: 8300000, guid: ab5a21b2115a1394bb0045d91d76e338, type: 3}
-  backsoundGame: {fileID: 8300000, guid: 506ef703fd0b7624e81237a61d4e6abb, type: 3}
-  backsoundVillage: {fileID: 8300000, guid: 01d638db073e987438f4525884fe6325, type: 3}
-  backsoundDungeon: {fileID: 8300000, guid: e18f659acd605064b81776a2086514e3, type: 3}
+  musicSource: {fileID: 0}
+  SFXSource: {fileID: 0}
+  backsoundMenu: {fileID: 0}
+  backsoundGame: {fileID: 0}
+  backsoundVillage: {fileID: 0}
+  backsoundDungeon: {fileID: 0}
   S1Shu: {fileID: 0}
   S2Shu: {fileID: 0}
-  S1Sword: {fileID: 8300000, guid: 7c069a4b7c1b3b54c8e7f9812eb6a253, type: 3}
-  S2Sword: {fileID: 8300000, guid: 7c6057534a6b71d41a03bd97b99b4125, type: 3}
+  S1Sword: {fileID: 0}
+  S2Sword: {fileID: 0}
   S3: {fileID: 0}
-  sword: {fileID: 8300000, guid: 64839a787e840eb4788df6c313fa6b4d, type: 3}
-  shuriken: {fileID: 8300000, guid: fec4af13e088e054784db4912f72dd32, type: 3}
+  sword: {fileID: 0}
+  shuriken: {fileID: 0}
   interact: {fileID: 0}
-  enemyHurt: {fileID: 8300000, guid: 129c11107bd325f40be5179c9ca26178, type: 3}
+  enemyHurt: {fileID: 0}
 --- !u!4 &1802358682
 Transform:
   m_ObjectHideFlags: 0
@@ -70559,11 +70559,11 @@ Transform:
   m_GameObject: {fileID: 1933726413}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8639772, y: 13.760152, z: 0.03614179}
+  m_LocalPosition: {x: -0.00999999, y: 12.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1630225958}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1947193701
 GameObject:
@@ -71001,6 +71001,7 @@ SceneRoots:
   - {fileID: 218497891}
   - {fileID: 737060311}
   - {fileID: 1630225958}
+  - {fileID: 1933726418}
   - {fileID: 308107029}
   - {fileID: 1848478181}
   - {fileID: 1168887159}

@@ -21,14 +21,12 @@ public class AudioManage : MonoBehaviour
     public AudioClip interact;
     public AudioClip enemyHurt;
 
-    // Start is called before the first frame update
     private void Start()
     {
         musicSource.clip = backsoundGame;
         musicSource.Play();
     }
 
-    // Update is called once per frame
     public void PlaySFX(AudioClip clip)
     {
         SFXSource.PlayOneShot(clip);
