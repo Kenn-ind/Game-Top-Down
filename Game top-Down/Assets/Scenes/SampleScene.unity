@@ -6820,7 +6820,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.6
+  m_Volume: 0.402
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -69801,21 +69801,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: add5a1ca6c416094eb066ab75d61441a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSource: {fileID: 0}
-  SFXSource: {fileID: 0}
+  musicSource: {fileID: 690818534}
+  SFXSource: {fileID: 548442566}
   backsoundMenu: {fileID: 0}
-  backsoundGame: {fileID: 0}
+  backsoundGame: {fileID: 8300000, guid: 01d638db073e987438f4525884fe6325, type: 3}
   backsoundVillage: {fileID: 0}
   backsoundDungeon: {fileID: 0}
-  S1Shu: {fileID: 0}
+  S1Shu: {fileID: 8300000, guid: 7ed1e2318a0a8564ca7e44408107f619, type: 3}
   S2Shu: {fileID: 0}
-  S1Sword: {fileID: 0}
-  S2Sword: {fileID: 0}
+  S1Sword: {fileID: 8300000, guid: 64839a787e840eb4788df6c313fa6b4d, type: 3}
+  S2Sword: {fileID: 8300000, guid: 59e1f4d823ceca542a830e4831e1b8c0, type: 3}
   S3: {fileID: 0}
-  sword: {fileID: 0}
-  shuriken: {fileID: 0}
+  sword: {fileID: 8300000, guid: 2b4027838bc561547be6c53a1008c005, type: 3}
+  shuriken: {fileID: 8300000, guid: fec4af13e088e054784db4912f72dd32, type: 3}
   interact: {fileID: 0}
-  enemyHurt: {fileID: 0}
+  enemyHurt: {fileID: 8300000, guid: 8d4209cd92d9ec440b2956007d693f28, type: 3}
 --- !u!4 &1802358682
 Transform:
   m_ObjectHideFlags: 0

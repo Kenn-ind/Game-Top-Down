@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class skill1 : MonoBehaviour
 {
+    AudioManage AudioManager;
     public GameObject shurikenPrefab;
     public KeyCode KeyBindSkill1;
 
@@ -29,6 +30,7 @@ public class skill1 : MonoBehaviour
     void Start()
     {
         _stamina = GetComponent<PlayerStamina>();
+        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
     }
 
     void Update()
@@ -50,7 +52,8 @@ public class skill1 : MonoBehaviour
                 if (distance <= closeRange)
                     StartCoroutine(DashAttack(target));
                 else
-                    ShurikenBurst();
+                    AudioManager.PlaySFX(AudioManager.S1Shu);
+                ShurikenBurst();
             }
 
             nextSkillTime = Time.time + cooldown;
@@ -93,6 +96,7 @@ public class skill1 : MonoBehaviour
                     BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
                     if (enemy != null && !hitEnemies.Contains(enemy))
                     {
+                        AudioManager.PlaySFX(AudioManager.S1Sword);
                         enemy.TakeDamage(1, Vector2.zero, false);
                         hitEnemies.Add(enemy);
                     }

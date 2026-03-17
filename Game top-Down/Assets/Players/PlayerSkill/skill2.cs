@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class skill2 : MonoBehaviour
 {
+    AudioManage AudioManager;
     public GameObject shurikenPrefab;
     public KeyCode KeyBindSkill2;
     public float closeRange = 2f;
@@ -27,6 +28,7 @@ public class skill2 : MonoBehaviour
     void Start()
     {
         _stamina = GetComponent<PlayerStamina>(); // ← TAMBAH INI
+        AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
     }
 
     void Update()
@@ -73,6 +75,7 @@ public class skill2 : MonoBehaviour
                 BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
                 if (enemy != null && !hitEnemies.Contains(enemy))
                 {
+                    AudioManager.PlaySFX(AudioManager.S2Sword);
                     enemy.TakeDamage(1, Vector2.zero, false);
                     hitEnemies.Add(enemy);
                 }
@@ -89,7 +92,7 @@ public class skill2 : MonoBehaviour
         {
             GameObject target = FindNearestEnemy();
             if (target == null) yield break;
-
+            AudioManager.PlaySFX(AudioManager.S2Shu);
             Vector2 direction = (target.transform.position - transform.position).normalized;
             GameObject shuriken = Instantiate(shurikenPrefab, transform.position, Quaternion.identity);
             Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
