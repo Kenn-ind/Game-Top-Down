@@ -50,10 +50,14 @@ public class skill1 : MonoBehaviour
                 float distance = Vector2.Distance(transform.position, target.transform.position);
 
                 if (distance <= closeRange)
+                {
                     StartCoroutine(DashAttack(target));
+                }
                 else
+                {
                     AudioManager.PlaySFX(AudioManager.S1Shu);
-                ShurikenBurst();
+                    ShurikenBurst();
+                }
             }
 
             nextSkillTime = Time.time + cooldown;

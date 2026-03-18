@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BaseEnemy : MonoBehaviour
 {
-    AudioManage AudioManager;
+    protected AudioManage AudioManager;
     public int maxHealth = 5;
     protected int currentHealth;
 
@@ -16,7 +16,16 @@ public class BaseEnemy : MonoBehaviour
     {
         currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
-        AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
+
+        GameObject audioObj = GameObject.FindGameObjectWithTag("Audio");
+        if (audioObj == null)
+            Debug.LogError("Tidak ada GameObject dengan tag 'Audio' di scene!");
+        else
+        {
+            AudioManager = audioObj.GetComponent<AudioManage>();
+            if (AudioManager == null)
+                Debug.LogError("AudioManage component tidak ditemukan!");
+        }
     }
 
     public virtual void TakeDamage(int damage, Vector2 knockbackDir, bool applyKnockback = false)

@@ -1,28 +1,26 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class DummyEnemy : BaseEnemy
 {
-    AudioManage AudioManager;
     public float flashTime = 0.1f;
-
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
     protected override void Start()
     {
         base.Start();
-
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
-        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
     }
 
     public override void TakeDamage(int damage, Vector2 knockbackDir, bool applyKnockback = false)
     {
+        //base.TakeDamage(damage, knockbackDir, applyKnockback);
+        if (!applyKnockback)
+            AudioManager.PlaySFX(AudioManager.enemyHurt);
         StartCoroutine(FlashRed());
-        AudioManager.PlaySFX(AudioManager.enemyHurt);
-        Debug.Log("Dummy kena hit");    
+        Debug.Log("Dummy kena hit");
     }
 
     IEnumerator FlashRed()
