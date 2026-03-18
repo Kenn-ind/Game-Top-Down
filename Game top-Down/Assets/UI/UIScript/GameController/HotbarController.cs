@@ -32,7 +32,6 @@ public class HotbarController : MonoBehaviour
 
     void Update()
     {
-        // Tekan 1-4 untuk select slot
         for (int i = 0; i < slotCount; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
@@ -43,16 +42,19 @@ public class HotbarController : MonoBehaviour
         }
     }
 
+    public void SetHotbarVisible(bool visible)
+    {
+        hotbarPanel.SetActive(visible);
+    }
+
     void UpdateHighlight()
     {
         for (int i = 0; i < slots.Length; i++)
             slots[i].SetHighlight(i == selectedIndex);
     }
 
-    // Dipanggil saat drag item dari inventory ke hotbar
     public bool AddItem(ItemData data, int count)
     {
-        // Coba stack dulu
         foreach (HotbarSlot slot in slots)
         {
             if (slot.currentItem == null) continue;
@@ -69,7 +71,6 @@ public class HotbarController : MonoBehaviour
             }
         }
 
-        // Slot kosong
         foreach (HotbarSlot slot in slots)
         {
             if (slot.currentItem == null)

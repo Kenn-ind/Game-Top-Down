@@ -22,6 +22,7 @@ public class DialogueController : MonoBehaviour
     public void ShowDialogueUI(bool show)
     {
         dialoguePanel.SetActive(show);
+        HotbarController.Instance.SetHotbarVisible(!show);
     }
 
     public void SetNPCInfo(string npcName, Sprite portrait)
