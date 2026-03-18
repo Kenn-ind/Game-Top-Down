@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +11,7 @@ public class AudioManage : MonoBehaviour
     public AudioClip backsoundGame;
     public AudioClip backsoundVillage;
     public AudioClip backsoundDungeon;
+
     public AudioClip S1Shu;
     public AudioClip S2Shu;
     public AudioClip S1Sword;
@@ -21,14 +22,73 @@ public class AudioManage : MonoBehaviour
     public AudioClip interact;
     public AudioClip enemyHurt;
 
-    private void Start()
+    [Header("Fade Settings")]
+    [SerializeField] float fadeDuration = 1.5f;
+
+    private Coroutine fadeCoroutine;
+
+    // ── Singleton biar bisa dipanggil dari mana saja ──────────────
+    public static AudioManage Instance { get; private set; }
+
+    private void Awake()
     {
-        musicSource.clip = backsoundGame;
-        musicSource.Play();
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        PlayMusic(backsoundGame);
+    }
+
+    // ─── SFX ──────────────────────────────────────────────────────
     public void PlaySFX(AudioClip clip)
     {
         SFXSource.PlayOneShot(clip);
     }
+
+    // ─── Ganti musik dengan crossfade ─────────────────────────────
+    public void PlayMusic(AudioClip clip)
+    {
+        if (clip == null || musicSource.clip == clip) return;
+
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+        fadeCoroutine = StartCoroutine(FadeToMusic(clip));
+    }
+
+    private IEnumerator FadeToMusic(AudioClip newClip)
+    {
+        // Fade out
+        float startVol = musicSource.volume;
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(startVol, 0f, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        // Swap clip
+        musicSource.Stop();
+        musicSource.clip = newClip;
+        musicSource.Play();
+
+        // Fade in
+        elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(0f, startVol, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        musicSource.volume = startVol;
+    }
+
+    // ─── Shortcut per zona ────────────────────────────────────────
+    public void EnterDungeon() => PlayMusic(backsoundDungeon);
+    public void EnterVillage() => PlayMusic(backsoundVillage);
+    public void EnterOverworld() => PlayMusic(backsoundGame);
+    public void EnterMenu() => PlayMusic(backsoundMenu);
 }
