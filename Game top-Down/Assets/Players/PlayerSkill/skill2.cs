@@ -23,11 +23,11 @@ public class skill2 : MonoBehaviour
     public float fireDelay = 0.1f;
 
     float nextSkillTime;
-    private PlayerStamina _stamina; // ← TAMBAH INI
+    private PlayerStamina _stamina;
 
     void Start()
     {
-        _stamina = GetComponent<PlayerStamina>(); // ← TAMBAH INI
+        _stamina = GetComponent<PlayerStamina>();
         AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
     }
 
@@ -35,8 +35,7 @@ public class skill2 : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyBindSkill2) && Time.time >= nextSkillTime)
         {
-            // ← TAMBAH CEK STAMINA
-            if (!_stamina.UseStamina(staminaCost))
+            if (!_stamina.HasEnough(staminaCost))
             {
                 Debug.Log("Stamina tidak cukup!");
                 return;
@@ -56,10 +55,10 @@ public class skill2 : MonoBehaviour
         }
     }
 
-    // --- sisanya tidak berubah ---
-
     IEnumerator SpinSlash()
     {
+        _stamina.UseStamina(staminaCost);
+
         float timer = 0;
         Quaternion originalRotation = transform.rotation;
         HashSet<BaseEnemy> hitEnemies = new HashSet<BaseEnemy>();
@@ -88,10 +87,13 @@ public class skill2 : MonoBehaviour
 
     IEnumerator ShurikenBurst()
     {
+        _stamina.UseStamina(staminaCost);
+
         for (int i = 0; i < shurikenAmount; i++)
         {
             GameObject target = FindNearestEnemy();
             if (target == null) yield break;
+
             AudioManager.PlaySFX(AudioManager.S2Shu);
             Vector2 direction = (target.transform.position - transform.position).normalized;
             GameObject shuriken = Instantiate(shurikenPrefab, transform.position, Quaternion.identity);

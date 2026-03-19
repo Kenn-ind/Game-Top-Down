@@ -6,16 +6,31 @@ public class skill3 : MonoBehaviour
 {
     public GameObject shurikenPrefab;
     public KeyCode KeyBindSkill3;
+
     public int shurikenCount = 6;
     public float orbitRadius = 1.5f;
     public float rotateSpeed = 200f;
-    public float duration = 5f;
+    public float ringDuration = 5f;
+
+    public float holdThreshold = 0.4f; 
+    public float berserkerDuration = 5f;
+    public float damageMultiplier = 2f;
+    public float attackSpeedMultiplier = 2f;
+    public float lifestealPercent = 0.2f;
+
     public float cooldown = 8f;
     public int staminaCost = 5;
 
     private float nextSkillTime;
+    private float holdTimer = 0f;
+    private bool isHolding = false;
+    private bool berserkerActive = false;
     private List<GameObject> shurikens = new List<GameObject>();
     private PlayerStamina _stamina;
+
+    public bool IsBerserkerActive => berserkerActive;
+    public float DamageMultiplier => berserkerActive ? damageMultiplier : 1f;
+    public float AttackSpeedMultiplier => berserkerActive ? attackSpeedMultiplier : 1f;
 
     void Start()
     {
@@ -24,19 +39,49 @@ public class skill3 : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyBindSkill3) && Time.time >= nextSkillTime)
+        HandleInput();
+    }
+
+    void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyBindSkill3))
         {
-            // ← TAMBAH CEK STAMINA
-            if (!_stamina.UseStamina(staminaCost))
+            holdTimer = 0f;
+            isHolding = true;
+        }
+
+        if (isHolding && Input.GetKey(KeyBindSkill3))
+        {
+            holdTimer += Time.deltaTime;
+        }
+
+        if (Input.GetKeyUp(KeyBindSkill3) && isHolding)
+        {
+            isHolding = false;
+
+            if (Time.time < nextSkillTime) return;
+            if (!_stamina.HasEnough(staminaCost))
             {
                 Debug.Log("Stamina tidak cukup!");
                 return;
             }
 
-            StartCoroutine(ActivateRing());
+            if (holdTimer < holdThreshold)
+                TriggerRing();
+            else
+                TriggerBerserker();
+
             nextSkillTime = Time.time + cooldown;
         }
     }
+
+
+    void TriggerRing()
+    {
+        _stamina.UseStamina(staminaCost);
+        StartCoroutine(ActivateRing());
+    }
+
     IEnumerator ActivateRing()
     {
         for (int i = 0; i < shurikenCount; i++)
@@ -48,7 +93,7 @@ public class skill3 : MonoBehaviour
         }
 
         float timer = 0;
-        while (timer < duration)
+        while (timer < ringDuration)
         {
             timer += Time.deltaTime;
             for (int i = 0; i < shurikens.Count; i++)
@@ -63,7 +108,36 @@ public class skill3 : MonoBehaviour
 
         foreach (GameObject s in shurikens)
             if (s != null) Destroy(s);
-
         shurikens.Clear();
+    }
+
+
+    void TriggerBerserker()
+    {
+        if (berserkerActive) return;
+        _stamina.UseStamina(staminaCost);
+        StartCoroutine(BerserkerMode());
+    }
+
+    IEnumerator BerserkerMode()
+    {
+        berserkerActive = true;
+        Debug.Log("Berserker aktif!");
+
+         GetComponent<SpriteRenderer>().color = Color.red;
+
+        yield return new WaitForSeconds(berserkerDuration);
+
+        berserkerActive = false;
+        Debug.Log("Berserker selesai.");
+
+         GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    public void OnDamageDealt(int damageDealt, PlayerHealth playerHealth)
+    {
+        if (!berserkerActive) return;
+        int heal = Mathf.RoundToInt(damageDealt * lifestealPercent);
+        if (heal > 0) playerHealth.Heal(heal);
     }
 }

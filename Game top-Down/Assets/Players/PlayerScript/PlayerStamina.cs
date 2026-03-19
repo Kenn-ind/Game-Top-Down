@@ -18,21 +18,19 @@ public class PlayerStamina : MonoBehaviour
 
     void Start()
     {
-        currentStamina = maxStamina;   // ← mulai full
+        currentStamina = maxStamina; 
         _currentFrame = 0;
         staminaImage.sprite = staminaFrames[0];
     }
 
     void Update()
     {
-        // Hitung mundur delay dulu sebelum regen
         if (regenTimer > 0f)
         {
             regenTimer -= Time.deltaTime;
-            return;                    // ← belum boleh regen
+            return;            
         }
 
-        // Baru regen setelah delay habis
         if (currentStamina < maxStamina)
         {
             currentStamina = Mathf.Min(currentStamina + regenPerSecond * Time.deltaTime, maxStamina);
@@ -46,7 +44,7 @@ public class PlayerStamina : MonoBehaviour
 
         currentStamina -= amount;
         currentStamina = Mathf.Max(currentStamina, 0f);
-        regenTimer = regenDelay;       // ← reset delay setiap pakai skill
+        regenTimer = regenDelay;
         UpdateBar();
         return true;
     }

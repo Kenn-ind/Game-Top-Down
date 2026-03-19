@@ -37,7 +37,7 @@ public class skill1 : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyBindSkill1) && Time.time >= nextSkillTime)
         {
-            if (!_stamina.UseStamina(staminaCost))
+            if (!_stamina.HasEnough(staminaCost))
             {
                 Debug.Log("Stamina tidak cukup!");
                 return;
@@ -55,6 +55,7 @@ public class skill1 : MonoBehaviour
                 }
                 else
                 {
+                    _stamina.UseStamina(staminaCost);
                     AudioManager.PlaySFX(AudioManager.S1Shu);
                     ShurikenBurst();
                 }
@@ -71,6 +72,8 @@ public class skill1 : MonoBehaviour
 
         if (col != null) col.enabled = false;
         if (rb != null) rb.isKinematic = true;
+
+        _stamina.UseStamina(staminaCost);
 
         for (int i = 0; i < dashCount; i++)
         {

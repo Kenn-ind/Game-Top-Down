@@ -19,6 +19,9 @@ public class PlayerAttack : MonoBehaviour
     private float nextAttackTime;
     private Animator animator;
     private movement playerMovement;
+    private skill3 _skill3;
+    private PlayerHealth _playerHealth;
+
 
     private Queue<GameObject> shurikenQueue = new Queue<GameObject>();
 
@@ -34,21 +37,29 @@ public class PlayerAttack : MonoBehaviour
         AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<movement>();
+        _skill3 = GetComponent<skill3>();
+        _playerHealth = GetComponent<PlayerHealth>();
 
         if (swordHitbox != null)
             swordHitbox.SetActive(false);
     }
-
+    float GetAttackDelay()
+    {
+        if (_skill3 != null && _skill3.IsBerserkerActive)
+            return attackDelay / _skill3.AttackSpeedMultiplier;
+        return attackDelay;
+    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) &&
             Time.time >= nextAttackTime &&
             !isAttacking)
         {
-            nextAttackTime = Time.time + attackDelay;
+            nextAttackTime = Time.time + GetAttackDelay();
             HandleAttack();
         }
     }
+
 
     void HandleAttack()
     {
@@ -63,9 +74,13 @@ public class PlayerAttack : MonoBehaviour
         GameObject rangeTarget = FindNearestEnemyInRadius(rangeRadius);
 
         if (rangeTarget != null)
-        {
             RangeAttack(rangeTarget);
-        }
+    }
+    int GetFinalDamage(int baseDamage)
+    {
+        if (_skill3 != null && _skill3.IsBerserkerActive)
+            return Mathf.RoundToInt(baseDamage * _skill3.DamageMultiplier);
+        return baseDamage;
     }
 
     void MeleeAttack(GameObject target)
@@ -85,12 +100,26 @@ public class PlayerAttack : MonoBehaviour
         if (swordHitbox != null)
         {
             swordHitbox.SetActive(true);
+
+            Collider2D[] hits = Physics2D.OverlapCircleAll(
+                swordHitbox.transform.position, 0.5f
+            );
+            foreach (Collider2D hit in hits)
+            {
+                BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
+                if (enemy != null)
+                {
+                    int damage = GetFinalDamage(1);
+                    enemy.TakeDamage(damage, Vector2.zero, false);
+                    _skill3?.OnDamageDealt(damage, _playerHealth);
+                }
+            }
+
             yield return new WaitForSeconds(0.2f);
             swordHitbox.SetActive(false);
         }
 
-        yield return new WaitForSeconds(meleeDuration);
-
+        yield return new WaitForSeconds(GetAttackDelay());
         isAttacking = false;
     }
 
@@ -102,32 +131,25 @@ public class PlayerAttack : MonoBehaviour
 
         TriggerAttackRangeAnimation(direction);
 
-        GameObject shuriken = Instantiate(
-            shurikenPrefab,
-            transform.position,
-            Quaternion.identity
-        );
-
+        GameObject shuriken = Instantiate(shurikenPrefab, transform.position, Quaternion.identity);
         Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
+        if (rb != null) rb.velocity = direction * shurikenSpeed;
 
-        if (rb != null)
-            rb.velocity = direction * shurikenSpeed;
+        Shuriken sd = shuriken.GetComponent<Shuriken>();
+        if (sd != null) sd.damage = GetFinalDamage(sd.damage);
 
         shurikenQueue.Enqueue(shuriken);
-
         if (shurikenQueue.Count > shurikenMax)
         {
             GameObject oldest = shurikenQueue.Dequeue();
-            if (oldest != null)
-                Destroy(oldest);
+            if (oldest != null) Destroy(oldest);
         }
 
         StartCoroutine(RangeRoutine());
     }
     IEnumerator RangeRoutine()
     {
-        yield return new WaitForSeconds(0.45f);
-
+        yield return new WaitForSeconds(GetAttackDelay());
         isAttacking = false;
     }
 

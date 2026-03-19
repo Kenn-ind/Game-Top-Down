@@ -4,14 +4,12 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("Health Settings")]
     public int maxHealth = 10;
     public float knockbackTime = 0.2f;
     private int currentHealth;
     private Rigidbody2D rb;
     public bool isKnockback;
 
-    [Header("Health Bar")]
     public Sprite[] healthFrames;
     public Image healthImage;
     private int _currentFrame = 0;
