@@ -24,10 +24,10 @@ public class AudioManage : MonoBehaviour
 
     [Header("Fade Settings")]
     [SerializeField] float fadeDuration = 1.5f;
+    [SerializeField] float targetVolume = 1f;
 
     private Coroutine fadeCoroutine;
 
-    // ── Singleton biar bisa dipanggil dari mana saja ──────────────
     public static AudioManage Instance { get; private set; }
 
     private void Awake()
@@ -39,14 +39,17 @@ public class AudioManage : MonoBehaviour
 
     private void Start()
     {
+        musicSource.volume = targetVolume;
         PlayMusic(backsoundGame);
     }
 
+    // ─── SFX ──────────────────────────────────────────────────────
     public void PlaySFX(AudioClip clip)
     {
         SFXSource.PlayOneShot(clip);
     }
 
+    // ─── Ganti musik dengan crossfade ─────────────────────────────
     public void PlayMusic(AudioClip clip)
     {
         if (clip == null || musicSource.clip == clip) return;
@@ -57,29 +60,30 @@ public class AudioManage : MonoBehaviour
 
     private IEnumerator FadeToMusic(AudioClip newClip)
     {
-        float startVol = musicSource.volume;
+        // Fade out — turun dari targetVolume ke 0
         float elapsed = 0f;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(startVol, 0f, elapsed / fadeDuration);
+            musicSource.volume = Mathf.Lerp(targetVolume, 0f, elapsed / fadeDuration);
             yield return null;
         }
+        musicSource.volume = 0f;
 
+        // Swap clip
         musicSource.Stop();
         musicSource.clip = newClip;
         musicSource.Play();
 
-
+        // Fade in — naik dari 0 ke targetVolume
         elapsed = 0f;
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(0f, startVol, elapsed / fadeDuration);
+            musicSource.volume = Mathf.Lerp(0f, targetVolume, elapsed / fadeDuration);
             yield return null;
         }
-
-        musicSource.volume = startVol;
+        musicSource.volume = targetVolume;
     }
 
     // ─── Shortcut per zona ────────────────────────────────────────
