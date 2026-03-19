@@ -4,6 +4,9 @@ using UnityEngine;
 public class NPC : MonoBehaviour, IInteractable
 {
     public NPCDialogue dialogueData;
+
+    public QuestGiver questGiver;
+
     private DialogueController dialogueUI;
     private int dialogueIndex;
     private bool isTyping, isDialogueActive;
@@ -15,15 +18,13 @@ public class NPC : MonoBehaviour, IInteractable
             Debug.LogError("DialogueController.Instance tidak ditemukan! Pastikan ada di scene.");
     }
 
-    public bool CanInteract()
-    {
-        return true;
-    }
+    public bool CanInteract() => true;
 
     public void Interact()
     {
         if (dialogueData == null) return;
         if (dialogueUI == null) return;
+
 
         if (isDialogueActive)
             NextLine();
@@ -33,14 +34,17 @@ public class NPC : MonoBehaviour, IInteractable
 
     void StartDialogue()
     {
-        if (dialogueUI.dialoguePanel == null) { Debug.LogError("dialoguePanel NULL!"); return; }
-        if (dialogueUI.nameText == null) { Debug.LogError("nameText NULL!"); return; }
-        if (dialogueUI.portraitImage == null) { Debug.LogError("portraitImage NULL!"); return; }
-
         isDialogueActive = true;
-        dialogueIndex = 0;
         dialogueUI.SetNPCInfo(dialogueData.npcName, dialogueData.npcPortrait);
         dialogueUI.ShowDialogueUI(true);
+
+        if (questGiver != null && questGiver.IsCompleted())
+            dialogueIndex = questGiver.turnInDialogueIndex;
+        else if (questGiver != null && questGiver.IsActive())
+            dialogueIndex = questGiver.ongoingDialogueIndex;
+        else
+            dialogueIndex = 0;
+
         DisplayCurrentLine();
     }
 
@@ -55,7 +59,8 @@ public class NPC : MonoBehaviour, IInteractable
 
         dialogueUI.ClearChoices();
 
-        if (dialogueData.endDialogueLines.Length > dialogueIndex && dialogueData.endDialogueLines[dialogueIndex])
+        if (dialogueData.endDialogueLines.Length > dialogueIndex &&
+            dialogueData.endDialogueLines[dialogueIndex])
         {
             EndDialogue();
             return;
@@ -63,10 +68,8 @@ public class NPC : MonoBehaviour, IInteractable
 
         foreach (DialogueChoice dialogueChoice in dialogueData.choices)
         {
-            Debug.Log($"Cek choice: dialogueChoice.dialogueIndex={dialogueChoice.dialogueIndex}, dialogueIndex={dialogueIndex}");
             if (dialogueChoice.dialogueIndex == dialogueIndex)
             {
-                Debug.Log("Choice ditemukan! Memanggil DisplayChoices...");
                 DisplayChoices(dialogueChoice);
                 return;
             }
@@ -77,6 +80,7 @@ public class NPC : MonoBehaviour, IInteractable
         else
             EndDialogue();
     }
+
 
     IEnumerator TypeLine()
     {
@@ -104,12 +108,50 @@ public class NPC : MonoBehaviour, IInteractable
 
     void DisplayChoices(DialogueChoice choice)
     {
-        Debug.Log($"DisplayChoices dipanggil, jumlah pilihan: {choice.choices.Length}");
+        bool anyButtonShown = false;
+
         for (int i = 0; i < choice.choices.Length; i++)
         {
-            Debug.Log($"Membuat button: {choice.choices[i]}");
             int nextIndex = choice.nextDialogueIndexes[i];
-            dialogueUI.CreateChoiceButton(choice.choices[i], () => ChooseOption(nextIndex));
+            string choiceText = choice.choices[i];
+
+            if (questGiver != null && choiceText.StartsWith("[QUEST]"))
+            {
+                if (questGiver.IsActive() || questGiver.IsTurnedIn()) continue;
+
+                string displayText = choiceText.Replace("[QUEST]", "").Trim();
+                dialogueUI.CreateChoiceButton(displayText, () =>
+                {
+                    questGiver.TryAccept();
+                    ChooseOption(nextIndex);
+                });
+                anyButtonShown = true;
+            }
+            else if (questGiver != null && choiceText.StartsWith("[TURNIN]"))
+            {
+                if (!questGiver.IsCompleted()) continue;
+
+                string displayText = choiceText.Replace("[TURNIN]", "").Trim();
+                dialogueUI.CreateChoiceButton(displayText, () =>
+                {
+                    questGiver.TryTurnIn();
+                    ChooseOption(nextIndex);
+                });
+                anyButtonShown = true;
+            }
+            else
+            {
+                dialogueUI.CreateChoiceButton(choiceText, () => ChooseOption(nextIndex));
+                anyButtonShown = true;
+            }
+        }
+
+        if (!anyButtonShown)
+        {
+            if (++dialogueIndex < dialogueData.dialogueLines.Length)
+                DisplayCurrentLine();
+            else
+                EndDialogue();
         }
     }
 

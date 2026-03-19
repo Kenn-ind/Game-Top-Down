@@ -42,13 +42,11 @@ public class AudioManage : MonoBehaviour
         PlayMusic(backsoundGame);
     }
 
-    // ─── SFX ──────────────────────────────────────────────────────
     public void PlaySFX(AudioClip clip)
     {
         SFXSource.PlayOneShot(clip);
     }
 
-    // ─── Ganti musik dengan crossfade ─────────────────────────────
     public void PlayMusic(AudioClip clip)
     {
         if (clip == null || musicSource.clip == clip) return;
@@ -59,7 +57,6 @@ public class AudioManage : MonoBehaviour
 
     private IEnumerator FadeToMusic(AudioClip newClip)
     {
-        // Fade out
         float startVol = musicSource.volume;
         float elapsed = 0f;
         while (elapsed < fadeDuration)
@@ -69,12 +66,11 @@ public class AudioManage : MonoBehaviour
             yield return null;
         }
 
-        // Swap clip
         musicSource.Stop();
         musicSource.clip = newClip;
         musicSource.Play();
 
-        // Fade in
+
         elapsed = 0f;
         while (elapsed < fadeDuration)
         {

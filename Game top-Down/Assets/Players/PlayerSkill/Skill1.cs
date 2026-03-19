@@ -44,7 +44,6 @@ public class skill1 : MonoBehaviour
             }
 
             GameObject target = FindNearestEnemy();
-
             if (target != null)
             {
                 float distance = Vector2.Distance(transform.position, target.transform.position);

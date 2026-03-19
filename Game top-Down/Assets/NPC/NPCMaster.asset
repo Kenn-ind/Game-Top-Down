@@ -18,12 +18,15 @@ MonoBehaviour:
   - oi
   - awkoawkoowkakwo
   - hey kid
-  - what are you doing, kid?
+  - I have a mission for you!
   - hell nah, i'm your shifu
-  - ohh... oke... don't forget to training yo
-  - hahahahha
-  autoProgressLines: 01010101010101
-  endDialogueLines: 00000000010101
+  - please, collect the health potion
+  - okay, maybe next time
+  - get back to the work
+  - Do you get the health potion?
+  - Thankyou
+  autoProgressLines: 0101010101010101
+  endDialogueLines: 0000000001010101
   autoProgressDelay: 1.5
   typingSpeed: 0.05
   choices:
@@ -34,6 +37,10 @@ MonoBehaviour:
     nextDialogueIndexes: 0300000004000000
   - dialogueIndex: 3
     choices:
-    - nothing
-    - hahaahh
+    - '[QUEST]What mission??'
+    - no thanks, i'm tired
     nextDialogueIndexes: 0500000006000000
+  - dialogueIndex: 8
+    choices:
+    - '[TURNIN]Yess'
+    nextDialogueIndexes: 09000000

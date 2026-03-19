@@ -15,3 +15,4 @@ MonoBehaviour:
   itemName: HealthPotion
   icon: {fileID: 1096191036, guid: f473e8329f95e234ea4259c39ba56f57, type: 3}
   maxStack: 5
+  itemID: Health_Potion

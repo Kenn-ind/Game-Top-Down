@@ -6,6 +6,7 @@ public class BaseEnemy : MonoBehaviour
     protected AudioManage AudioManager;
     public int maxHealth = 5;
     protected int currentHealth;
+    public string enemyID = "";
 
     public float knockbackForce = 10f;
     public float knockbackTime = 0.15f;
@@ -58,5 +59,6 @@ public class BaseEnemy : MonoBehaviour
     protected virtual void Die()
     {
         Destroy(gameObject);
+        QuestManager.Instance?.ReportKill(enemyID);
     }
 }

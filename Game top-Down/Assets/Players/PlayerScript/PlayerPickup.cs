@@ -21,6 +21,7 @@ public class PlayerPickup : MonoBehaviour
                 if (picked)
                 {
                     Destroy(hit.gameObject);
+                    QuestManager.Instance?.ReportCollect(worldItem.itemData.itemID);
                 }
             }
         }
