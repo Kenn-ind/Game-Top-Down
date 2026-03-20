@@ -1,14 +1,15 @@
+using System.Collections;
 using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapTransisi : MonoBehaviour
 {
     [SerializeField] PolygonCollider2D MapBoundry;
-    private CinemachineConfiner Confiner;
-
     [SerializeField] Direction direction;
     [SerializeField] Transform TeleportTarget;
+
+    private CinemachineConfiner Confiner;
+    private bool isTransitioning = false;
 
     enum Direction { Up, Down, Right, Left, Teleport }
 
@@ -19,12 +20,38 @@ public class MapTransisi : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !isTransitioning)
         {
-            Confiner.m_BoundingShape2D = MapBoundry;
-
-            UpdatePlayerPosition(collision.gameObject);
+            if (direction == Direction.Teleport)
+                StartCoroutine(DoTransitionWithFade(collision.gameObject));
+            else
+                DoTransitionDirect(collision.gameObject);
         }
+    }
+
+    private IEnumerator DoTransitionWithFade(GameObject player)
+    {
+        isTransitioning = true;
+
+        if (ScreenFader.Instance != null)
+            yield return StartCoroutine(ScreenFader.Instance.FadeOut());
+
+        UpdatePlayerPosition(player);
+        Confiner.m_BoundingShape2D = MapBoundry;
+        Confiner.InvalidatePathCache();
+
+        yield return null;
+
+        if (ScreenFader.Instance != null)
+            yield return StartCoroutine(ScreenFader.Instance.FadeIn());
+
+        isTransitioning = false;
+    }
+
+    private void DoTransitionDirect(GameObject player)
+    {
+        Confiner.m_BoundingShape2D = MapBoundry;
+        UpdatePlayerPosition(player);
     }
 
     private void UpdatePlayerPosition(GameObject player)
@@ -32,31 +59,17 @@ public class MapTransisi : MonoBehaviour
         if (direction == Direction.Teleport)
         {
             player.transform.position = TeleportTarget.position;
-
             return;
         }
 
         Vector3 newPos = player.transform.position;
-
         switch (direction)
         {
-            case Direction.Up:
-                newPos.y += 2;
-                break;
-
-            case Direction.Down:
-                newPos.y -= 2;
-                break;
-
-            case Direction.Right:
-                newPos.x += 2;
-                break;
-
-            case Direction.Left:
-                newPos.x -= 2;
-                break;
+            case Direction.Up: newPos.y += 2; break;
+            case Direction.Down: newPos.y -= 2; break;
+            case Direction.Right: newPos.x += 2; break;
+            case Direction.Left: newPos.x -= 2; break;
         }
-
         player.transform.position = newPos;
     }
 }
