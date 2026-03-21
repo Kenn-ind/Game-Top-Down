@@ -422,9 +422,9 @@ GameObject:
   - component: {fileID: 36991608}
   - component: {fileID: 36991611}
   - component: {fileID: 36991610}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skeleton 2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -521,6 +521,11 @@ MonoBehaviour:
   patrolWaitMin: 1
   patrolWaitMax: 3
   patrolPointReachDistance: 0.3
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  obstacleDetectDistance: 0.8
+  avoidStrength: 2
 --- !u!114 &36991609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5140,9 +5145,9 @@ GameObject:
   - component: {fileID: 573245167}
   - component: {fileID: 573245170}
   - component: {fileID: 573245169}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skeleton 3
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5239,6 +5244,11 @@ MonoBehaviour:
   patrolWaitMin: 1
   patrolWaitMax: 3
   patrolPointReachDistance: 0.3
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  obstacleDetectDistance: 0.8
+  avoidStrength: 2
 --- !u!114 &573245168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7622,9 +7632,9 @@ GameObject:
   - component: {fileID: 692795447}
   - component: {fileID: 692795450}
   - component: {fileID: 692795449}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NyetRed 2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7721,6 +7731,11 @@ MonoBehaviour:
   patrolWaitMin: 1
   patrolWaitMax: 3
   patrolPointReachDistance: 0.3
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  obstacleDetectDistance: 0.8
+  avoidStrength: 2
 --- !u!114 &692795448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9104,9 +9119,9 @@ GameObject:
   - component: {fileID: 1048827798}
   - component: {fileID: 1048827801}
   - component: {fileID: 1048827800}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NyetRed
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9203,6 +9218,11 @@ MonoBehaviour:
   patrolWaitMin: 1
   patrolWaitMax: 3
   patrolPointReachDistance: 0.3
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  obstacleDetectDistance: 0.8
+  avoidStrength: 2
 --- !u!114 &1048827799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11278,9 +11298,9 @@ GameObject:
   - component: {fileID: 1381043725}
   - component: {fileID: 1381043728}
   - component: {fileID: 1381043727}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skeleton 4
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11377,6 +11397,11 @@ MonoBehaviour:
   patrolWaitMin: 1
   patrolWaitMax: 3
   patrolPointReachDistance: 0.3
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  obstacleDetectDistance: 0.8
+  avoidStrength: 2
 --- !u!114 &1381043726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75196,6 +75221,11 @@ MonoBehaviour:
   patrolWaitMin: 1
   patrolWaitMax: 3
   patrolPointReachDistance: 0.3
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  obstacleDetectDistance: 0.8
+  avoidStrength: 2
 --- !u!1 &1851294557
 GameObject:
   m_ObjectHideFlags: 0
@@ -75210,9 +75240,9 @@ GameObject:
   - component: {fileID: 1851294560}
   - component: {fileID: 1851294563}
   - component: {fileID: 1851294562}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Skeleton
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75309,6 +75339,11 @@ MonoBehaviour:
   patrolWaitMin: 1
   patrolWaitMax: 3
   patrolPointReachDistance: 0.3
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  obstacleDetectDistance: 0.8
+  avoidStrength: 2
 --- !u!114 &1851294561
 MonoBehaviour:
   m_ObjectHideFlags: 0

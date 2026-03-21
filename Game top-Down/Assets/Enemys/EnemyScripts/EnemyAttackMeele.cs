@@ -20,6 +20,10 @@ public class EnemyAttackMelee : MonoBehaviour
     public float patrolWaitMax = 3f;
     public float patrolPointReachDistance = 0.3f;
 
+    public LayerMask obstacleLayer;
+    public float obstacleDetectDistance = 0.8f;
+    public float avoidStrength = 2f;
+
     private enum State { Patrol, Chase, Attack }
     private State currentState = State.Patrol;
 
@@ -146,6 +150,36 @@ public class EnemyAttackMelee : MonoBehaviour
     void MoveToward(Vector2 target, float speed)
     {
         Vector2 direction = ((Vector3)target - transform.position).normalized;
+
+        RaycastHit2D hit = Physics2D.CircleCast(
+            transform.position,
+            0.3f,
+            direction,
+            obstacleDetectDistance,
+            obstacleLayer
+        );
+
+        if (hit.collider != null)
+        {
+            if (currentState == State.Patrol)
+            {
+                PickNewPatrolTarget();
+                return;
+            }
+            else
+            {
+                Vector2 avoidDir = Vector2.Perpendicular(direction).normalized;
+
+                RaycastHit2D hitLeft = Physics2D.CircleCast(transform.position, 0.3f, avoidDir, obstacleDetectDistance, obstacleLayer);
+                RaycastHit2D hitRight = Physics2D.CircleCast(transform.position, 0.3f, -avoidDir, obstacleDetectDistance, obstacleLayer);
+
+                if (hitLeft.collider == null)
+                    direction = (direction + avoidDir * avoidStrength).normalized;
+                else if (hitRight.collider == null)
+                    direction = (direction + (-avoidDir) * avoidStrength).normalized;
+            }
+        }
+
         transform.position += (Vector3)(direction * speed * Time.deltaTime);
     }
 
