@@ -7,6 +7,9 @@ public class MapTransisi : MonoBehaviour
     [SerializeField] PolygonCollider2D MapBoundry;
     [SerializeField] Direction direction;
     [SerializeField] Transform TeleportTarget;
+    [SerializeField] private float fadeOutDuration = 0.2f;
+    [SerializeField] private float blackScreenDuration = 0.5f;
+    [SerializeField] private float fadeInDuration = 0.5f;   
 
     private CinemachineConfiner Confiner;
     private bool isTransitioning = false;
@@ -28,22 +31,21 @@ public class MapTransisi : MonoBehaviour
                 DoTransitionDirect(collision.gameObject);
         }
     }
-
     private IEnumerator DoTransitionWithFade(GameObject player)
     {
         isTransitioning = true;
 
         if (ScreenFader.Instance != null)
-            yield return StartCoroutine(ScreenFader.Instance.FadeOut());
+            yield return StartCoroutine(ScreenFader.Instance.FadeOut(fadeOutDuration));
 
         UpdatePlayerPosition(player);
         Confiner.m_BoundingShape2D = MapBoundry;
         Confiner.InvalidatePathCache();
 
-        yield return null;
+        yield return new WaitForSeconds(blackScreenDuration);
 
         if (ScreenFader.Instance != null)
-            yield return StartCoroutine(ScreenFader.Instance.FadeIn());
+            yield return StartCoroutine(ScreenFader.Instance.FadeIn(fadeInDuration));
 
         isTransitioning = false;
     }

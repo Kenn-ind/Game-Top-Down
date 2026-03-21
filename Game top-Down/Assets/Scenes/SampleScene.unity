@@ -861,6 +861,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 1005911483}
   direction: 0
   TeleportTarget: {fileID: 0}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &66446169
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1188,6 +1191,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 340889115}
   direction: 4
   TeleportTarget: {fileID: 943161002}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &193226935
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1823,7 +1829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &260413478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1878,8 +1884,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchoredPosition: {x: -0.00054359, y: 0.00062561035}
+  m_SizeDelta: {x: 1920, y: 1017}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &308107024
 GameObject:
@@ -4547,6 +4553,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 63281109}
   direction: 1
   TeleportTarget: {fileID: 0}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &433234578
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5764,7 +5773,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeImage: {fileID: 260413478}
-  fadeDuration: 0.5
+  fadeDuration: 1
 --- !u!114 &617016838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7972,6 +7981,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 1537352584}
   direction: 4
   TeleportTarget: {fileID: 111004172}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &760431594
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8214,6 +8226,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 1005911483}
   direction: 4
   TeleportTarget: {fileID: 923736855}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &824860412
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8391,6 +8406,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 14686002}
   direction: 4
   TeleportTarget: {fileID: 11208871}
+  fadeOutDuration: 0.02
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &856128130
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9024,6 +9042,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 63281109}
   direction: 0
   TeleportTarget: {fileID: 0}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &1008050724
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10594,7 +10615,7 @@ Tilemap:
       - {fileID: 1193385833, guid: 65763c61cbae8f047b776da7f83cbbd4, type: 3}
       - {fileID: 1799338703, guid: 65763c61cbae8f047b776da7f83cbbd4, type: 3}
       - {fileID: -1884615340, guid: 65763c61cbae8f047b776da7f83cbbd4, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -11524,6 +11545,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 1005911483}
   direction: 1
   TeleportTarget: {fileID: 0}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &1416696285
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11735,6 +11759,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 206439529}
   direction: 0
   TeleportTarget: {fileID: 0}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &1452458024
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12099,6 +12126,9 @@ MonoBehaviour:
   MapBoundry: {fileID: 14686002}
   direction: 1
   TeleportTarget: {fileID: 0}
+  fadeOutDuration: 0.2
+  blackScreenDuration: 0.5
+  fadeInDuration: 0.5
 --- !u!61 &1509888504
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -75650,7 +75680,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 534.75, y: 0}
+  m_AnchoredPosition: {x: 960, y: -0.000054786}
   m_SizeDelta: {x: 333.81598, y: 181.086}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1923394467
@@ -76324,6 +76354,7 @@ SceneRoots:
   - {fileID: 826818804}
   - {fileID: 1750446661}
   - {fileID: 865095108}
+  - {fileID: 617016841}
   - {fileID: 195870914}
   - {fileID: 1582916241}
   - {fileID: 218497891}
@@ -76351,4 +76382,3 @@ SceneRoots:
   - {fileID: 1454700114}
   - {fileID: 141233555}
   - {fileID: 2035767296}
-  - {fileID: 617016841}
