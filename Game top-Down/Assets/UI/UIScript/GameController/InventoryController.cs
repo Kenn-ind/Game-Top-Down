@@ -13,18 +13,15 @@ public class InventoryController : MonoBehaviour
     void Start()
     {
         slots = new Slot[slotCount];
-
         for (int i = 0; i < slotCount; i++)
         {
             GameObject slotObj = Instantiate(slotPrefab, inventoryPanel.transform);
             slots[i] = slotObj.GetComponent<Slot>();
-
             if (slots[i] == null)
             {
                 Debug.LogError("Slot prefab tidak punya komponen Slot.cs!");
                 continue;
             }
-
             if (i < itemDataList.Length && itemDataList[i] != null)
             {
                 SpawnItem(slots[i], itemDataList[i], 1);
@@ -36,12 +33,10 @@ public class InventoryController : MonoBehaviour
     {
         GameObject item = Instantiate(itemPrefab, slot.transform);
         item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-
         ItemUI itemUI = item.GetComponent<ItemUI>();
         itemUI.itemData = data;
         itemUI.stackCount = count;
         itemUI.UpdateUI();
-
         slot.currentItem = item;
     }
 
@@ -50,7 +45,6 @@ public class InventoryController : MonoBehaviour
         foreach (Slot slot in slots)
         {
             if (slot.currentItem == null) continue;
-
             ItemUI itemUI = slot.currentItem.GetComponent<ItemUI>();
             if (itemUI != null && itemUI.itemData == data)
             {
@@ -61,7 +55,6 @@ public class InventoryController : MonoBehaviour
                     itemUI.stackCount += add;
                     itemUI.UpdateUI();
                     count -= add;
-
                     if (count <= 0) return true;
                 }
             }
@@ -79,4 +72,51 @@ public class InventoryController : MonoBehaviour
         Debug.Log("Inventory penuh!");
         return false;
     }
+
+    public bool RemoveItemByID(string itemID, int amount)
+    {
+        int remaining = amount;
+
+        foreach (Slot slot in slots)
+        {
+            if (slot.currentItem == null) continue;
+
+            ItemUI itemUI = slot.currentItem.GetComponent<ItemUI>();
+            if (itemUI == null || itemUI.itemData.itemID != itemID) continue;
+
+            if (itemUI.stackCount >= remaining)
+            {
+                itemUI.stackCount -= remaining;
+                remaining = 0;
+
+                if (itemUI.stackCount <= 0)
+                {
+                    Destroy(slot.currentItem);
+                    slot.currentItem = null;
+                }
+                else
+                {
+                    itemUI.UpdateUI();
+                }
+
+                break;
+            }
+            else
+            {
+                remaining -= itemUI.stackCount;
+                Destroy(slot.currentItem);
+                slot.currentItem = null;
+            }
+        }
+
+        if (remaining > 0)
+        {
+            Debug.Log($"Item {itemID} tidak cukup di inventory!");
+            return false;
+        }
+
+        return true;
+    }
+
+    public Slot[] GetSlots() => slots;
 }

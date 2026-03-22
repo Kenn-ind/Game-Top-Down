@@ -7,12 +7,14 @@ public class QuestGiver : MonoBehaviour
     public int ongoingDialogueIndex = 5;
     public int turnInDialogueIndex = 5;
 
-
     private Transform player;
+    private InventoryController inventory;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        inventory = FindObjectOfType<InventoryController>();
+        Debug.Log($"Inventory found at Start: {inventory != null}");
     }
 
     public bool HasQuest()
@@ -31,7 +33,22 @@ public class QuestGiver : MonoBehaviour
     public void TryTurnIn()
     {
         if (!QuestManager.Instance.IsCompleted(quest)) return;
-        QuestManager.Instance.TryTurnIn(quest, player);
+
+        Debug.Log($"Inventory found: {inventory != null}");
+        Debug.Log($"targetID: {quest.targetID}, requiredAmount: {quest.requiredAmount}");
+
+        if (inventory != null)
+        {
+            foreach (Slot slot in inventory.GetSlots())
+            {
+                if (slot.currentItem == null) continue;
+                ItemUI itemUI = slot.currentItem.GetComponent<ItemUI>();
+                if (itemUI != null)
+                    Debug.Log($"Slot berisi: {itemUI.itemData.itemID} x{itemUI.stackCount}");
+            }
+        }
+
+        QuestManager.Instance.TryTurnIn(quest, player, inventory);
     }
 
     public bool IsCompleted() => QuestManager.Instance.IsCompleted(quest);

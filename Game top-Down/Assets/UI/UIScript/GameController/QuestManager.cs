@@ -76,10 +76,20 @@ public class QuestManager : MonoBehaviour
         QuestUI.Instance?.ShowCompleteNotif(quest.questName);
     }
 
-    public bool TryTurnIn(QuestData quest, Transform playerTransform)
+    public bool TryTurnIn(QuestData quest, Transform playerTransform, InventoryController inventory)
     {
         if (!completedQuests.Contains(quest)) return false;
         if (turnedInQuests.Contains(quest)) return false;
+
+        if (quest.questType == QuestType.Collect && inventory != null)
+        {
+            bool removed = inventory.RemoveItemByID(quest.targetID, quest.requiredAmount);
+            if (!removed)
+            {
+                Debug.Log("Item tidak cukup di inventory!");
+                return false;
+            }
+        }
 
         if (quest.rewardItemPrefab != null)
         {
