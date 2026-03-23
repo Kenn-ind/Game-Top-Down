@@ -14,6 +14,7 @@ public class PlayerHealth : MonoBehaviour
     public Image healthImage;
     private int _currentFrame = 0;
     private Coroutine _hpAnim;
+    private PlayerStats _stats;
 
     void Start()
     {
@@ -21,13 +22,16 @@ public class PlayerHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         _currentFrame = 0;
         healthImage.sprite = healthFrames[0];
+        _stats = GetComponent<PlayerStats>();
     }
 
     public void TakeDamage(int damage, Vector2 knockback)
     {
-        currentHealth -= damage;
+        int finalDamage = _stats != null ? _stats.CalculateDamage(damage) : damage;
+
+        currentHealth -= finalDamage;
         currentHealth = Mathf.Max(currentHealth, 0);
-        Debug.Log("Player kena damage");
+        Debug.Log($"Damage masuk: {damage} → setelah armor: {finalDamage}");
         UpdateHealthBar();
         StartCoroutine(ApplyKnockback(knockback));
         if (currentHealth <= 0)

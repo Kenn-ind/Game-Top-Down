@@ -7,10 +7,7 @@ public class TabController : MonoBehaviour
 {
     public Image[] tabImages;
     public GameObject[] pages;
-    void Start()
-    {
-        ActivateTab(0);
-    }
+    public StatDisplayUI statDisplay;
 
     public void ActivateTab(int tabNo)
     {
@@ -21,5 +18,8 @@ public class TabController : MonoBehaviour
         }
         pages[tabNo].SetActive(true);
         tabImages[tabNo].color = Color.white;
+
+        if (statDisplay != null)
+            statDisplay.RefreshDisplay();
     }
 }

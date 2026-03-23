@@ -5,6 +5,7 @@ using UnityEngine;
 public class MenuController : MonoBehaviour
 {
     public GameObject menuCanvas;
+    public StatUpgradeUI statUI;
     void Start()
     {
         menuCanvas.SetActive(false);
@@ -12,6 +13,9 @@ public class MenuController : MonoBehaviour
 
     void Update()
     {
+        if (statUI != null && statUI.gameObject.activeInHierarchy)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             menuCanvas.SetActive(!menuCanvas.activeSelf);

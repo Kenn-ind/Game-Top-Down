@@ -24,11 +24,15 @@ public class skill2 : MonoBehaviour
 
     float nextSkillTime;
     private PlayerStamina _stamina;
+    private PlayerStats _stats;
+
 
     void Start()
     {
         _stamina = GetComponent<PlayerStamina>();
         AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
+        _stats = GetComponent<PlayerStats>();
+
     }
 
     void Update()
@@ -75,7 +79,7 @@ public class skill2 : MonoBehaviour
                 if (enemy != null && !hitEnemies.Contains(enemy))
                 {
                     AudioManager.PlaySFX(AudioManager.S2Sword);
-                    enemy.TakeDamage(1, Vector2.zero, false);
+                    enemy.TakeDamage(_stats.attackDamage, Vector2.zero, false);
                     hitEnemies.Add(enemy);
                 }
             }

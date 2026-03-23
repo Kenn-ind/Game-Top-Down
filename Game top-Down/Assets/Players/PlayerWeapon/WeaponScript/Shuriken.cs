@@ -1,11 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Shuriken : MonoBehaviour
 {
-    public int damage = 1;
     public float rotateSpeed = 720f;
 
     public GameObject hitParticle;
+    public PlayerStats stats; // 🔥 ambil dari player
 
     void Update()
     {
@@ -16,9 +16,9 @@ public class Shuriken : MonoBehaviour
     {
         BaseEnemy enemy = collision.GetComponent<BaseEnemy>();
 
-        if (enemy != null)
+        if (enemy != null && stats != null)
         {
-            enemy.TakeDamage(damage, Vector2.zero, false);
+            enemy.TakeDamage(stats.attackDamage, Vector2.zero, false);
 
             if (hitParticle != null)
             {

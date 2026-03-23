@@ -28,6 +28,7 @@ public class skill3 : MonoBehaviour
     private List<GameObject> shurikens = new List<GameObject>();
     private PlayerStamina _stamina;
 
+
     public bool IsBerserkerActive => berserkerActive;
     public float DamageMultiplier => berserkerActive ? damageMultiplier : 1f;
     public float AttackSpeedMultiplier => berserkerActive ? attackSpeedMultiplier : 1f;
@@ -35,6 +36,7 @@ public class skill3 : MonoBehaviour
     void Start()
     {
         _stamina = GetComponent<PlayerStamina>();
+
     }
 
     void Update()

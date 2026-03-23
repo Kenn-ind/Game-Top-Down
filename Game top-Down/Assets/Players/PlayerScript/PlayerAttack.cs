@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +21,7 @@ public class PlayerAttack : MonoBehaviour
     private movement playerMovement;
     private skill3 _skill3;
     private PlayerHealth _playerHealth;
-
+    private PlayerStats _stats; // 🔥 tambah ini
 
     private Queue<GameObject> shurikenQueue = new Queue<GameObject>();
 
@@ -34,21 +34,24 @@ public class PlayerAttack : MonoBehaviour
 
     void Start()
     {
-        AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
+        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<movement>();
         _skill3 = GetComponent<skill3>();
         _playerHealth = GetComponent<PlayerHealth>();
+        _stats = GetComponent<PlayerStats>(); // 🔥 ambil stats
 
         if (swordHitbox != null)
             swordHitbox.SetActive(false);
     }
+
     float GetAttackDelay()
     {
         if (_skill3 != null && _skill3.IsBerserkerActive)
             return attackDelay / _skill3.AttackSpeedMultiplier;
         return attackDelay;
     }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) &&
@@ -59,7 +62,6 @@ public class PlayerAttack : MonoBehaviour
             HandleAttack();
         }
     }
-
 
     void HandleAttack()
     {
@@ -76,6 +78,7 @@ public class PlayerAttack : MonoBehaviour
         if (rangeTarget != null)
             RangeAttack(rangeTarget);
     }
+
     int GetFinalDamage(int baseDamage)
     {
         if (_skill3 != null && _skill3.IsBerserkerActive)
@@ -87,6 +90,7 @@ public class PlayerAttack : MonoBehaviour
     {
         isAttacking = true;
         AudioManager.PlaySFX(AudioManager.sword);
+
         Vector2 direction = (target.transform.position - transform.position).normalized;
 
         TriggerAttackMeleeAnimation(direction);
@@ -104,12 +108,13 @@ public class PlayerAttack : MonoBehaviour
             Collider2D[] hits = Physics2D.OverlapCircleAll(
                 swordHitbox.transform.position, 0.5f
             );
+
             foreach (Collider2D hit in hits)
             {
                 BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
-                if (enemy != null)
+                if (enemy != null && _stats != null)
                 {
-                    int damage = GetFinalDamage(1);
+                    int damage = GetFinalDamage(_stats.attackDamage); // 🔥 pakai stats
                     enemy.TakeDamage(damage, Vector2.zero, false);
                     _skill3?.OnDamageDealt(damage, _playerHealth);
                 }
@@ -127,16 +132,21 @@ public class PlayerAttack : MonoBehaviour
     {
         isAttacking = true;
         AudioManager.PlaySFX(AudioManager.shuriken);
+
         Vector2 direction = (target.transform.position - transform.position).normalized;
 
         TriggerAttackRangeAnimation(direction);
 
         GameObject shuriken = Instantiate(shurikenPrefab, transform.position, Quaternion.identity);
+
         Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
         if (rb != null) rb.velocity = direction * shurikenSpeed;
 
         Shuriken sd = shuriken.GetComponent<Shuriken>();
-        if (sd != null) sd.damage = GetFinalDamage(sd.damage);
+        if (sd != null)
+        {
+            sd.stats = _stats; // 🔥 kirim PlayerStats
+        }
 
         shurikenQueue.Enqueue(shuriken);
         if (shurikenQueue.Count > shurikenMax)
@@ -147,6 +157,7 @@ public class PlayerAttack : MonoBehaviour
 
         StartCoroutine(RangeRoutine());
     }
+
     IEnumerator RangeRoutine()
     {
         yield return new WaitForSeconds(GetAttackDelay());
@@ -179,13 +190,9 @@ public class PlayerAttack : MonoBehaviour
         Vector2 attackDir;
 
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-        {
             attackDir = direction.x > 0 ? Vector2.right : Vector2.left;
-        }
         else
-        {
             attackDir = direction.y > 0 ? Vector2.up : Vector2.down;
-        }
 
         swordHitbox.transform.position = (Vector2)transform.position + attackDir * offset;
     }
