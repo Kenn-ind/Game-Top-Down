@@ -21,15 +21,13 @@ public class StatUpgradeUI : MonoBehaviour
 
     public StatDisplayUI statDisplay;
 
-    void Start()
+    public void Init()
     {
         if (hpButton != null) hpButton.onClick.AddListener(OnUpgradeHP);
         if (staminaButton != null) staminaButton.onClick.AddListener(OnUpgradeStamina);
         if (armorButton != null) armorButton.onClick.AddListener(OnUpgradeArmor);
         if (attackButton != null) attackButton.onClick.AddListener(OnUpgradeAttack);
         if (closeButton != null) closeButton.onClick.AddListener(OnClose);
-        gameObject.SetActive(false);
-
     }
 
     public void ShowPopup()
@@ -42,10 +40,7 @@ public class StatUpgradeUI : MonoBehaviour
 
     void OnUpgradeHP()
     {
-        if (stats != null && stats.UpgradeHP())
-        {
-            RefreshUI();
-        }
+        if (stats != null && stats.UpgradeHP())RefreshUI();
     }
 
     void OnUpgradeStamina()

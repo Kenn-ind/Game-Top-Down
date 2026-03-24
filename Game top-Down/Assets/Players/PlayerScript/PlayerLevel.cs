@@ -18,8 +18,8 @@ public class PlayerLevel : MonoBehaviour
         _stats = GetComponent<PlayerStats>();
         _xpRequired = CalculateXPRequired(_stats.level);
 
-        if (statUpgradeUI == null)
-            statUpgradeUI = FindObjectOfType<StatUpgradeUI>();
+        if (statUpgradeUI != null)
+            statUpgradeUI.Init();
 
         Debug.Log($"Level {_stats.level} | XP dibutuhkan: {_xpRequired}");
     }

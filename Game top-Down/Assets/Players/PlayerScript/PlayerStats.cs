@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -75,6 +75,8 @@ public class PlayerStats : MonoBehaviour
     public int CalculateDamage(int rawDamage)
     {
         float reduction = 1f - (armor / 100f);
-        return Mathf.Max(1, Mathf.RoundToInt(rawDamage * reduction));
+        int finalDamage = Mathf.Max(1, Mathf.RoundToInt(rawDamage * reduction));
+        Debug.Log($"Armor: {armor}% | Raw: {rawDamage} | Final: {finalDamage}"); // ← TAMBAH INI
+        return finalDamage;
     }
 }

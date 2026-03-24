@@ -58,6 +58,10 @@ public class BaseEnemy : MonoBehaviour
 
     protected virtual void Die()
     {
+        PlayerUlt playerUlt = FindObjectOfType<PlayerUlt>();
+        if (playerUlt != null)
+            playerUlt.OnEnemyKilled();
+
         Destroy(gameObject);
         QuestManager.Instance?.ReportKill(enemyID);
     }

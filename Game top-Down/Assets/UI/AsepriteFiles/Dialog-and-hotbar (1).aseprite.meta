@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c329a5e09633d314dad0e2ebfa4c62ff
+guid: 1c11e48aca75c7d478042dc89ec04f74
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -98,7 +98,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639094589765282114
+  platformSettingsDirtyTick: 639099674202641898
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -122,18 +122,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Dialog-and-hotbar
+  - name: Dialog-and-hotbar (1)
     originalName: 
-    pivot: {x: 0.5, y: -0.11428572}
+    pivot: {x: 0.5, y: -0.18181819}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 104
-      height: 105
-    spriteID: 9e1c00cffde64a345a775dfbdc51f47f
+      width: 92
+      height: 99
+    spriteID: 5787d57bec692e143ba579336ae9b39e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -143,18 +143,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: Dialog-and-hotbar_0
+  - name: Dialog-and-hotbar (1)_0
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 18
-      y: 83
+      x: 12
+      y: 77
       width: 77
       height: 26
-    spriteID: 69bdd83f5db313540be6c765c7beeffb
+    spriteID: 4f2f33a7021f04648ba8c331f9041bba
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -163,7 +163,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
-  - name: Dialog-and-hotbar_1
+  - name: Dialog-and-hotbar (1)_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -172,9 +172,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 104
-      height: 56
-    spriteID: 4b626ac73381c3a4198c36aee2ed0886
+      width: 92
+      height: 44
+    spriteID: 8b454bf99b0af2748a50d393e8c97562
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -186,25 +186,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 1786754649
+      value0: 504693925
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Dialog-and-hotbar
+    name: Dialog-and-hotbar (1)
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Dialog-and-hotbar
+    - name: Dialog-and-hotbar (1)
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 12
-        y: 12
-        width: 104
-        height: 105
-      spriteId: 9e1c00cffde64a345a775dfbdc51f47f
+        x: 18
+        y: 18
+        width: 92
+        height: 99
+      spriteId: 5787d57bec692e143ba579336ae9b39e
     linkedCells: []
     parentIndex: -1
   platformSettings:

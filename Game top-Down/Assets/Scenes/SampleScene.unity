@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 600, y: 465}
-  m_SizeDelta: {x: -1200, y: -140}
+  m_AnchoredPosition: {x: 736.66, y: 486}
+  m_SizeDelta: {x: -1473.318, y: -140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &355458
 MonoBehaviour:
@@ -514,7 +514,7 @@ MonoBehaviour:
   detectRange: 6
   attackRange: 1.5
   losePlayerRange: 9
-  damage: 10
+  damage: 1
   attackCooldown: 1.5
   knockbackForce: 8
   patrolRadius: 3
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67e6de8bed48ed5468f056707676c45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
   enemyID: Skeleton
   knockbackForce: 10
   knockbackTime: 0.15
@@ -1533,6 +1533,7 @@ RectTransform:
   - {fileID: 1648574036}
   - {fileID: 1571910298}
   - {fileID: 600858170}
+  - {fileID: 836613762}
   - {fileID: 219098484}
   - {fileID: 1923394466}
   - {fileID: 1582916241}
@@ -5648,15 +5649,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -6348,7 +6349,7 @@ MonoBehaviour:
   detectRange: 6
   attackRange: 1.5
   losePlayerRange: 9
-  damage: 10
+  damage: 1
   attackCooldown: 1.5
   knockbackForce: 8
   patrolRadius: 3
@@ -6372,7 +6373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67e6de8bed48ed5468f056707676c45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
   enemyID: Skeleton
   knockbackForce: 10
   knockbackTime: 0.15
@@ -6770,7 +6771,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -3802702044836310140, guid: c329a5e09633d314dad0e2ebfa4c62ff, type: 3}
+  m_Sprite: {fileID: -9092377422779698176, guid: 1c11e48aca75c7d478042dc89ec04f74, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6822,8 +6823,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 320, y: -69.520004}
-  m_SizeDelta: {x: 430, y: 45}
+  m_AnchoredPosition: {x: 532.4, y: -124.6936}
+  m_SizeDelta: {x: 655, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &600858171
 MonoBehaviour:
@@ -7045,8 +7046,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -10084,6 +10085,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &836613761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 836613762}
+  - component: {fileID: 836613764}
+  - component: {fileID: 836613763}
+  m_Layer: 5
+  m_Name: UltBarImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &836613762
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836613761}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 195870914}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -832.5, y: -159.84875}
+  m_SizeDelta: {x: 255, y: -90.255005}
+  m_Pivot: {x: 0.5, y: 0.97}
+--- !u!114 &836613763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836613761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -5787069309969275971, guid: 8afe7d7b52391574782b652c2cba94df, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 1
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &836613764
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836613761}
+  m_CullTransparentMesh: 1
 --- !u!1 &856128127
 GameObject:
   m_ObjectHideFlags: 0
@@ -12398,7 +12474,7 @@ Tilemap:
       - {fileID: -340287675, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: 1525142490, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: -1211784664, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -28, y: -20, z: 0}
@@ -12446,7 +12522,7 @@ Tilemap:
       - {fileID: -340287675, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: 1525142490, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: -1211784664, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -28, y: -18, z: 0}
@@ -13712,7 +13788,7 @@ MonoBehaviour:
   detectRange: 6
   attackRange: 1.5
   losePlayerRange: 9
-  damage: 10
+  damage: 1
   attackCooldown: 1.5
   knockbackForce: 8
   patrolRadius: 3
@@ -13736,7 +13812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67e6de8bed48ed5468f056707676c45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
   enemyID: Skeleton
   knockbackForce: 10
   knockbackTime: 0.15
@@ -27569,8 +27645,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 320, y: -24.517578}
-  m_SizeDelta: {x: 430, y: 45}
+  m_AnchoredPosition: {x: 532.4, y: -42.90811}
+  m_SizeDelta: {x: 655, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1571910299
 MonoBehaviour:
@@ -28378,7 +28454,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8651159427720710653, guid: c329a5e09633d314dad0e2ebfa4c62ff, type: 3}
+  m_Sprite: {fileID: -1870876009622036885, guid: 1c11e48aca75c7d478042dc89ec04f74, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -76963,6 +77039,7 @@ GameObject:
   - component: {fileID: 1750446674}
   - component: {fileID: 1750446675}
   - component: {fileID: 1750446676}
+  - component: {fileID: 1750446677}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -77476,7 +77553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseXPRequired: 100
   xpMultiplier: 1.5
-  debugAddXP: 50
+  debugAddXP: 1000
   statUpgradeUI: {fileID: 1839944388}
 --- !u!114 &1750446676
 MonoBehaviour:
@@ -77494,13 +77571,40 @@ MonoBehaviour:
   maxStamina: 10
   armor: 0
   attackDamage: 1
-  hpPerPoint: 2
-  staminaPerPoint: 2
-  armorPerPoint: 5
+  hpPerPoint: 1
+  staminaPerPoint: 1
+  armorPerPoint: 2
   attackPerPoint: 1
   level: 1
-  statPointsPerLevel: 3
+  statPointsPerLevel: 2
   availablePoints: 0
+--- !u!114 &1750446677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750446658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f043075420071cf478ee69bc5a5586ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  killsRequired: 1
+  currentKills: 0
+  ultFrames:
+  - {fileID: -6776952100851640989, guid: 8afe7d7b52391574782b652c2cba94df, type: 3}
+  - {fileID: 2659115441745274036, guid: 8afe7d7b52391574782b652c2cba94df, type: 3}
+  - {fileID: -8692093607524528106, guid: 8afe7d7b52391574782b652c2cba94df, type: 3}
+  - {fileID: -3210048749858688488, guid: 8afe7d7b52391574782b652c2cba94df, type: 3}
+  ultBarImage: {fileID: 836613763}
+  ultKey: 114
+  chargeTime: 3
+  aoeRadius: 5
+  slashDamage: 3
+  slashCount: 10
+  slashDelay: 0.3
+  refundPercent: 1
 --- !u!1 &1752585750
 GameObject:
   m_ObjectHideFlags: 0
@@ -78287,7 +78391,7 @@ MonoBehaviour:
   detectRange: 5
   attackRange: 1
   losePlayerRange: 9
-  damage: 1
+  damage: 10
   attackCooldown: 1.5
   knockbackForce: 4
   patrolRadius: 4
@@ -78405,7 +78509,7 @@ MonoBehaviour:
   detectRange: 6
   attackRange: 1.5
   losePlayerRange: 9
-  damage: 10
+  damage: 1
   attackCooldown: 1.5
   knockbackForce: 8
   patrolRadius: 3
@@ -78429,7 +78533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67e6de8bed48ed5468f056707676c45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 10
   enemyID: Skeleton
   knockbackForce: 10
   knockbackTime: 0.15
@@ -79340,8 +79444,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 982.086, y: 158.441}
-  m_SizeDelta: {x: 170.531, y: 70.547}
+  m_AnchoredPosition: {x: 973.7245, y: 147.98895}
+  m_SizeDelta: {x: 245.786, y: 115.143}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2058858049
 MonoBehaviour:
