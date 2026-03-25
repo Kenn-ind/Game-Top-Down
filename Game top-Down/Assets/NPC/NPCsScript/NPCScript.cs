@@ -54,7 +54,6 @@ public class NPCScript : MonoBehaviour
             speed * Time.deltaTime
         );
 
-        // Update animasi selama bergerak
         lastMoveDir = moveDir;
         animator.SetBool("IsMoving", true);
         animator.SetFloat("MoveX", moveDir.x);

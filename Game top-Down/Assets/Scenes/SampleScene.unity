@@ -12474,7 +12474,7 @@ Tilemap:
       - {fileID: -340287675, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: 1525142490, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: -1211784664, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -28, y: -20, z: 0}
@@ -12546,7 +12546,7 @@ Tilemap:
       - {fileID: 1193385833, guid: 65763c61cbae8f047b776da7f83cbbd4, type: 3}
       - {fileID: 1799338703, guid: 65763c61cbae8f047b776da7f83cbbd4, type: 3}
       - {fileID: -1884615340, guid: 65763c61cbae8f047b776da7f83cbbd4, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -28, y: -17, z: 0}
@@ -77156,6 +77156,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3.5
+  dashSpeed: 50
+  dashDuration: 0.15
+  dashCooldown: 1
+  dashStaminaCost: 3
+  slowTimeScale: 0.3
+  slowDuration: 0.2
 --- !u!114 &1750446663
 MonoBehaviour:
   m_ObjectHideFlags: 0

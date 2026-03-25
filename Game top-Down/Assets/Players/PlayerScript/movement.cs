@@ -6,14 +6,26 @@ using UnityEngine.InputSystem;
 public class movement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private Vector2 lastDirection = Vector2.down;
-
     private Animator animator;
     private PlayerAttack playerAttack;
     private PlayerHealth playerHealth;
+    private PlayerStamina _stamina;
+    private PlayerUlt _ult;
+
+    public float dashSpeed = 15f;
+    public float dashDuration = 0.15f;
+    public float dashCooldown = 1f;
+    public int dashStaminaCost = 3;
+
+    public float slowTimeScale = 0.3f;
+    public float slowDuration = 0.2f;
+
+    private bool _isDashing = false;
+    private bool _canDash = true;
+    private float _dashCooldownTimer = 0f;
 
     void Start()
     {
@@ -21,6 +33,8 @@ public class movement : MonoBehaviour
         animator = GetComponent<Animator>();
         playerAttack = GetComponent<PlayerAttack>();
         playerHealth = GetComponent<PlayerHealth>();
+        _stamina = GetComponent<PlayerStamina>();
+        _ult = GetComponent<PlayerUlt>();
 
         animator.SetFloat("LastInputX", lastDirection.x);
         animator.SetFloat("LastInputY", lastDirection.y);
@@ -28,8 +42,27 @@ public class movement : MonoBehaviour
 
     void Update()
     {
-        if (playerHealth != null && playerHealth.isKnockback)
+        if (!_canDash)
         {
+            _dashCooldownTimer -= Time.unscaledDeltaTime;
+            if (_dashCooldownTimer <= 0f)
+                _canDash = true;
+        }
+
+        if (_isDashing) return;
+
+        if (playerHealth != null && playerHealth.isKnockback) return;
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && _canDash)
+        {
+            if (_stamina != null && !_stamina.UseStamina(dashStaminaCost))
+            {
+                Debug.Log("Stamina tidak cukup untuk dash!");
+            }
+            else
+            {
+                StartCoroutine(DoDash());
+            }
             return;
         }
 
@@ -41,18 +74,50 @@ public class movement : MonoBehaviour
         else
         {
             rb.velocity = moveInput * speed;
-
-            if (moveInput != Vector2.zero)
-                animator.SetBool("IsWalking", true);
-            else
-                animator.SetBool("IsWalking", false);
+            animator.SetBool("IsWalking", moveInput != Vector2.zero);
         }
+    }
+
+    IEnumerator DoDash()
+    {
+        _isDashing = true;
+        _canDash = false;
+        _dashCooldownTimer = dashCooldown;
+
+        Vector2 dashDir = moveInput != Vector2.zero ? moveInput.normalized : lastDirection.normalized;
+
+        if (playerHealth != null) playerHealth.isKnockback = true;
+
+        Time.timeScale = slowTimeScale;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+        float timer = 0f;
+        while (timer < dashDuration)
+        {
+            rb.velocity = dashDir * dashSpeed;
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        rb.velocity = Vector2.zero;
+        _isDashing = false;
+
+        float slowTimer = 0f;
+        while (slowTimer < slowDuration)
+        {
+            slowTimer += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
+        if (playerHealth != null) playerHealth.isKnockback = false;
     }
 
     public void Move(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-
         if (context.performed)
         {
             if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
@@ -63,7 +128,6 @@ public class movement : MonoBehaviour
             animator.SetFloat("LastInputX", lastDirection.x);
             animator.SetFloat("LastInputY", lastDirection.y);
         }
-
         animator.SetFloat("InputX", moveInput.x);
         animator.SetFloat("InputY", moveInput.y);
     }
