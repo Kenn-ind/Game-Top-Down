@@ -16,7 +16,6 @@ public class DummyEnemy : BaseEnemy
 
     public override void TakeDamage(int damage, Vector2 knockbackDir, bool applyKnockback = false)
     {
-        //base.TakeDamage(damage, knockbackDir, applyKnockback);
         if (!applyKnockback)
             AudioManager.PlaySFX(AudioManager.enemyHurt);
         StartCoroutine(FlashRed());

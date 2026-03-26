@@ -77611,6 +77611,9 @@ MonoBehaviour:
   slashCount: 10
   slashDelay: 0.3
   refundPercent: 1
+  ultDashSpeed: 15
+  ultDashDuration: 0.1
+  fadeDuration: 0.1
 --- !u!1 &1752585750
 GameObject:
   m_ObjectHideFlags: 0

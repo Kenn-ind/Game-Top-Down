@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -24,13 +24,22 @@ public class PlayerUlt : MonoBehaviour
     private bool _isCharging = false;
     private bool _isCasting = false;
     private float _chargeTimer = 0f;
+    public float ultDashSpeed = 20f;       
+    public float ultDashDuration = 0.15f;
+    public float fadeDuration = 0.2f;
+
     private Rigidbody2D _rb;
     private PlayerHealth _health;
+    private movement _movement;
+    private SpriteRenderer _spriteRenderer;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _health = GetComponent<PlayerHealth>();
+        _health = GetComponent<PlayerHealth>(); 
+        _movement = GetComponent<movement>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+
         UpdateBar();
     }
 
@@ -65,11 +74,9 @@ public class PlayerUlt : MonoBehaviour
     {
         _isCharging = true;
         _chargeTimer = 0f;
-
         _rb.velocity = Vector2.zero;
         _rb.constraints = RigidbodyConstraints2D.FreezeAll;
-
-        Debug.Log("Charging ult...");
+        _movement?.SetMovementLocked(true);
 
         while (_chargeTimer < chargeTime)
         {
@@ -85,54 +92,104 @@ public class PlayerUlt : MonoBehaviour
     public void CancelCharge()
     {
         if (!_isCharging) return;
-
         StopCoroutine(nameof(ChargeUlt));
         _isCharging = false;
-
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        _movement?.SetMovementLocked(false);
+
+        if (_spriteRenderer != null)
+        {
+            Color c = _spriteRenderer.color;
+            _spriteRenderer.color = new Color(c.r, c.g, c.b, 1f);
+        }
 
         int refundKills = Mathf.RoundToInt(killsRequired * refundPercent);
         currentKills = Mathf.Min(refundKills, killsRequired);
         _isReady = currentKills >= killsRequired;
-
         UpdateBar();
-        Debug.Log($"Charge dibatalkan! Kill dikembalikan: {currentKills}");
     }
 
     IEnumerator ExecuteUlt()
     {
         _isCasting = true;
         _isReady = false;
-
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        yield return StartCoroutine(UltDash());
+
+        yield return StartCoroutine(FadeSprite(1f, 0f, fadeDuration));
+
+        Vector2 castPosition = transform.position;
+        _rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
         Debug.Log("JUDGEMENT CUT!");
 
         for (int i = 0; i < slashCount; i++)
         {
-            PerformSlash(i + 1);
+            PerformSlash(castPosition, i + 1);
             yield return new WaitForSeconds(slashDelay);
         }
 
+        yield return StartCoroutine(FadeSprite(0f, 1f, fadeDuration));
+
+        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         currentKills = 0;
         UpdateBar();
         _isCasting = false;
+        _movement?.SetMovementLocked(false);
 
         Debug.Log("Ult selesai.");
     }
 
-    void PerformSlash(int slashNumber)
+    IEnumerator UltDash()
+    {
+        Vector2 dashDir = _movement != null ? GetDashDirection() : Vector2.up;
+
+        _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+        float timer = 0f;
+        while (timer < ultDashDuration)
+        {
+            _rb.velocity = dashDir * ultDashSpeed;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        _rb.velocity = Vector2.zero;
+    }
+
+    IEnumerator FadeSprite(float from, float to, float duration)
+    {
+        if (_spriteRenderer == null) yield break;
+
+        float timer = 0f;
+        Color color = _spriteRenderer.color;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float alpha = Mathf.Lerp(from, to, timer / duration);
+            _spriteRenderer.color = new Color(color.r, color.g, color.b, alpha);
+            yield return null;
+        }
+
+        _spriteRenderer.color = new Color(color.r, color.g, color.b, to);
+    }
+
+    Vector2 GetDashDirection()
+    {
+        return _movement.LastDirection;
+    }
+
+    void PerformSlash(Vector2 position, int slashNumber)
     {
         Debug.Log($"Tebasan {slashNumber}!");
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, aoeRadius);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(position, aoeRadius);
         foreach (Collider2D hit in hits)
         {
             BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
             if (enemy != null)
-            {
                 enemy.TakeDamage(slashDamage, Vector2.zero, false);
-            }
         }
     }
 

@@ -101,6 +101,11 @@ public class skill2 : MonoBehaviour
             AudioManager.PlaySFX(AudioManager.S2Shu);
             Vector2 direction = (target.transform.position - transform.position).normalized;
             GameObject shuriken = Instantiate(shurikenPrefab, transform.position, Quaternion.identity);
+
+            Shuriken shurikenScript = shuriken.GetComponent<Shuriken>();
+            if (shurikenScript != null)
+                shurikenScript.stats = _stats;
+
             Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
             if (rb != null) rb.velocity = direction * shurikenSpeed;
             Destroy(shuriken, shurikenLifetime);

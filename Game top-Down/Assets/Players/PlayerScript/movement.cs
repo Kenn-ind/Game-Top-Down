@@ -27,6 +27,10 @@ public class movement : MonoBehaviour
     private bool _canDash = true;
     private float _dashCooldownTimer = 0f;
 
+    private bool _isLocked = false;
+    public bool IsLocked => _isLocked;
+    public Vector2 LastDirection => lastDirection;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -42,6 +46,8 @@ public class movement : MonoBehaviour
 
     void Update()
     {
+        if (_isLocked) return;
+
         if (!_canDash)
         {
             _dashCooldownTimer -= Time.unscaledDeltaTime;
@@ -118,6 +124,8 @@ public class movement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        if (_isLocked) return;
+
         if (context.performed)
         {
             if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
@@ -130,5 +138,16 @@ public class movement : MonoBehaviour
         }
         animator.SetFloat("InputX", moveInput.x);
         animator.SetFloat("InputY", moveInput.y);
+    }
+    public void SetMovementLocked(bool locked)
+    {
+        _isLocked = locked;
+        if (locked)
+        {
+            rb.velocity = Vector2.zero;
+            animator.SetBool("IsWalking", false);
+            animator.SetFloat("InputX", 0f);
+            animator.SetFloat("InputY", 0f);
+        }
     }
 }

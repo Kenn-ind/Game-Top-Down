@@ -5,7 +5,7 @@ public class Shuriken : MonoBehaviour
     public float rotateSpeed = 720f;
 
     public GameObject hitParticle;
-    public PlayerStats stats; // 🔥 ambil dari player
+    public PlayerStats stats;
 
     void Update()
     {
