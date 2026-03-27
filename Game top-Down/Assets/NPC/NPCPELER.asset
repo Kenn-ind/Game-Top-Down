@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b7d58335418bfc49a8cd0a7be883a14, type: 3}
+  m_Name: NPCPELER
+  m_EditorClassIdentifier: 
+  npcName: PELER
+  npcPortrait: {fileID: 21300000, guid: 76681097c8a12814bbbfcf0c3a893566, type: 3}
+  dialogueLines:
+  - hey
+  - can you help me?
+  - oke, maybe next time
+  - help me to kill the skeleton
+  - nice
+  - oke, maybe next time
+  - any question?
+  - all done?
+  - NAICE ARIGATHANKS
+  autoProgressLines: 01010101010101
+  endDialogueLines: 000000000000010101
+  autoProgressDelay: 1.5
+  typingSpeed: 0.05
+  choices:
+  - dialogueIndex: 1
+    choices:
+    - yes, what you need?
+    - sorry, i'm busy
+    nextDialogueIndexes: 0300000002000000
+  - dialogueIndex: 3
+    choices:
+    - '[QUEST] okey, no problem'
+    - i'm out
+    nextDialogueIndexes: 0400000005000000
+  - dialogueIndex: 7
+    choices:
+    - '[TURNIN] yess all done:v'
+    nextDialogueIndexes: 08000000

@@ -539,7 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  enemyID: Skeleton
+  enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
   flashTime: 0.1
@@ -6374,7 +6374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  enemyID: Skeleton
+  enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
   flashTime: 0.1
@@ -12498,7 +12498,7 @@ Tilemap:
       - {fileID: -340287675, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: 1525142490, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: -1211784664, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -28, y: -19, z: 0}
@@ -13379,8 +13379,11 @@ GameObject:
   - component: {fileID: 1313181134}
   - component: {fileID: 1313181133}
   - component: {fileID: 1313181135}
+  - component: {fileID: 1313181138}
+  - component: {fileID: 1313181137}
+  - component: {fileID: 1313181136}
   m_Layer: 7
-  m_Name: NPC 3 (V4)
+  m_Name: PELER
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13482,7 +13485,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -13498,6 +13501,56 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1313181136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313181132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd639bf82959fbc459e1caa88bdf595f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quest: {fileID: 11400000, guid: c7f59e21e18bc284691f726e3791c6ce, type: 2}
+  npcID: PELER1
+  ongoingDialogueIndex: 6
+  turnInDialogueIndex: 7
+--- !u!114 &1313181137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313181132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aae07fd59aeae245a28f26707e72cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popupPrefab: {fileID: 1071214570684572750, guid: fd0ae88c4babea54d8c534b29aac2056, type: 3}
+  popupOffset: {x: 0, y: 1, z: 0}
+  detectRadius: 2
+  bobSpeed: 2
+  bobHeight: 0.08
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &1313181138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313181132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e48a7ecf50fcb544bac91857c9e10f9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueData: {fileID: 11400000, guid: b8f540d3868c2ca418d75e504bbe2d58, type: 2}
+  questGiver: {fileID: 1313181136}
 --- !u!1 &1346857851
 GameObject:
   m_ObjectHideFlags: 0
@@ -13813,7 +13866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  enemyID: Skeleton
+  enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
   flashTime: 0.1
@@ -77605,11 +77658,11 @@ MonoBehaviour:
   - {fileID: -3210048749858688488, guid: 8afe7d7b52391574782b652c2cba94df, type: 3}
   ultBarImage: {fileID: 836613763}
   ultKey: 114
-  chargeTime: 3
+  chargeTime: 1
   aoeRadius: 5
   slashDamage: 3
   slashCount: 10
-  slashDelay: 0.3
+  slashDelay: 0.1
   refundPercent: 1
   ultDashSpeed: 15
   ultDashDuration: 0.1
@@ -78400,7 +78453,7 @@ MonoBehaviour:
   detectRange: 5
   attackRange: 1
   losePlayerRange: 9
-  damage: 10
+  damage: 2
   attackCooldown: 1.5
   knockbackForce: 4
   patrolRadius: 4
@@ -78543,7 +78596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
-  enemyID: Skeleton
+  enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
   flashTime: 0.1
