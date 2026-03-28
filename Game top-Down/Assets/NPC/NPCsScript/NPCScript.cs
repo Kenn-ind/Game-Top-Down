@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class NPCScript : MonoBehaviour
 {
-    [Header("Waypoint Settings")]
     public Transform[] waypoints;
     public float speed = 2f;
     public float reachDistance = 0.2f;
@@ -13,9 +12,8 @@ public class NPCScript : MonoBehaviour
     private float waitTimer;
     private bool isWaiting = false;
 
-    [Header("References")]
     private Animator animator;
-    private Vector2 lastMoveDir = Vector2.down; // default idle hadap bawah
+    private Vector2 lastMoveDir = Vector2.down;
 
     void Awake()
     {
