@@ -7,4 +7,8 @@ public class ItemData : ScriptableObject
     public Sprite icon;
     public int maxStack = 5;
     public string itemID = "";
+
+    public bool isFree = false;
+    public int price = 0;
+    public int sellPrice = 0;
 }

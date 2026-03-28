@@ -139,6 +139,16 @@ public class NPC : MonoBehaviour, IInteractable
                 });
                 anyButtonShown = true;
             }
+            else if (choiceText.StartsWith("[SHOP]"))
+            {
+                string displayText = choiceText.Replace("[SHOP]", "").Trim();
+                dialogueUI.CreateChoiceButton(displayText, () =>
+                {
+                    EndDialogue();
+                    GetComponent<NPCShop>()?.OpenShop();
+                });
+                anyButtonShown = true;
+            }
             else
             {
                 dialogueUI.CreateChoiceButton(choiceText, () => ChooseOption(nextIndex));

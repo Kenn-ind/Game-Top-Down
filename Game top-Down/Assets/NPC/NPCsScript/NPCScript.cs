@@ -45,7 +45,6 @@ public class NPCScript : MonoBehaviour
 
         Transform target = waypoints[currentWaypoint];
 
-        // Hitung arah gerak sebelum MoveTowards
         Vector2 moveDir = ((Vector2)target.position - (Vector2)transform.position).normalized;
 
         transform.position = Vector2.MoveTowards(
