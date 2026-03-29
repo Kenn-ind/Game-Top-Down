@@ -39,6 +39,13 @@ public class ShopUI : MonoBehaviour
     public void OpenShop(ShopData shop)
     {
         currentShop = shop;
+
+        Debug.Log($"shopPanel: {shopPanel != null}");
+        Debug.Log($"shopNameText: {shopNameText != null}");
+        Debug.Log($"coinText: {coinText != null}");
+        Debug.Log($"buyContainer: {buyContainer != null}");
+        Debug.Log($"shopItemSlotPrefab: {shopItemSlotPrefab != null}");
+
         shopPanel.SetActive(true);
         shopNameText.text = shop.shopName;
         UpdateCoinDisplay(CoinManager.Instance.CurrentCoins);
@@ -72,18 +79,17 @@ public class ShopUI : MonoBehaviour
             GameObject slot = Instantiate(shopItemSlotPrefab, buyContainer);
             spawnedBuySlots.Add(slot);
 
-            slot.transform.Find("Icon").GetComponent<Image>().sprite = shopItem.itemData.icon;
+            foreach (Transform child in slot.transform)
+                Debug.Log($"Child name: '{child.name}'");
 
+            slot.transform.Find("Icon").GetComponent<Image>().sprite = shopItem.itemData.icon;
             slot.transform.Find("ItemName").GetComponent<TMP_Text>().text = shopItem.itemData.itemName;
 
             TMP_Text priceText = slot.transform.Find("Price").GetComponent<TMP_Text>();
-            if (shopItem.itemData.isFree)
-                priceText.text = "Gratis";
-            else
-                priceText.text = $"{shopItem.itemData.price} Coin";
+            priceText.text = shopItem.itemData.isFree ? "Gratis" : $"{shopItem.itemData.price} Coin";
 
-            TMP_Text stockText = slot.transform.Find("Stock").GetComponent<TMP_Text>();
-            stockText.text = shopItem.stock == -1 ? "Stok: ~" : $"Stok: {shopItem.stock}";
+            slot.transform.Find("Stock").GetComponent<TMP_Text>().text =
+                shopItem.stock == -1 ? "~" : $"{shopItem.stock}";
 
             Button buyBtn = slot.transform.Find("BuyButton").GetComponent<Button>();
             ShopItem captured = shopItem;
@@ -106,7 +112,7 @@ public class ShopUI : MonoBehaviour
 
             ItemUI itemUI = slot.currentItem.GetComponent<ItemUI>();
             if (itemUI == null || itemUI.itemData == null) continue;
-            if (itemUI.itemData.sellPrice <= 0) continue; // tidak bisa dijual
+            if (itemUI.itemData.sellPrice <= 0) continue;
 
             GameObject sellSlot = Instantiate(sellItemSlotPrefab, sellContainer);
             spawnedSellSlots.Add(sellSlot);
