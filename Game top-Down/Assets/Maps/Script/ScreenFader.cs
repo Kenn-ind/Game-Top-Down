@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class ScreenFader : MonoBehaviour
 {
     public static ScreenFader Instance { get; private set; }
-
     [SerializeField] private Image fadeImage;
     [SerializeField] private float fadeDuration = 0.5f;
 
@@ -39,8 +38,15 @@ public class ScreenFader : MonoBehaviour
         fadeImage.color = c;
     }
 
+    private movement GetPlayer()
+    {
+        return FindObjectOfType<movement>();
+    }
+
     public IEnumerator FadeOut(float duration = -1f)
     {
+        GetPlayer()?.SetMovementLocked(true);
+
         fadeImage.gameObject.SetActive(true);
         float d = duration > 0 ? duration : fadeDuration;
         yield return Fade(0f, 1f, d);
@@ -53,5 +59,7 @@ public class ScreenFader : MonoBehaviour
         yield return Fade(1f, 0f, d);
         fadeImage.raycastTarget = false;
         fadeImage.gameObject.SetActive(false);
+
+        GetPlayer()?.SetMovementLocked(false);
     }
 }
