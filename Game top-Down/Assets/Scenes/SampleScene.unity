@@ -13673,7 +13673,7 @@ Tilemap:
       - {fileID: -340287675, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: 1525142490, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: -1211784664, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -30, y: -20, z: 0}
@@ -14858,10 +14858,10 @@ RectTransform:
   - {fileID: 202030716}
   m_Father: {fileID: 1582916241}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 13.145203}
-  m_SizeDelta: {x: 0, y: 26.2903}
+  m_SizeDelta: {x: 1920, y: 1042.2903}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1252406508
 MonoBehaviour:
@@ -79929,7 +79929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1cc6c935c3fe044ab8bc20920b52f7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseXPRequired: 100
+  baseXPRequired: 10
   xpMultiplier: 1.5
   debugAddXP: 1000
   statUpgradeUI: {fileID: 1839944388}
