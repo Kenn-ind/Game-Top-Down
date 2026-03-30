@@ -10,12 +10,11 @@ public class skill2 : MonoBehaviour
     public float closeRange = 2f;
     public float detectRadius = 8f;
     public float cooldown = 3f;
-    public int staminaCost = 3; 
+    public int staminaCost = 3;
 
     public float spinDuration = 0.5f;
     public float spinSpeed = 720f;
     public float spinRadius = 1.5f;
-    public int spinDamage = 1;
 
     public int shurikenAmount = 5;
     public float shurikenSpeed = 10f;
@@ -26,13 +25,11 @@ public class skill2 : MonoBehaviour
     private PlayerStamina _stamina;
     private PlayerStats _stats;
 
-
     void Start()
     {
         _stamina = GetComponent<PlayerStamina>();
-        AudioManager=GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
+        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         _stats = GetComponent<PlayerStats>();
-
     }
 
     void Update()
@@ -129,7 +126,6 @@ public class skill2 : MonoBehaviour
                 nearestEnemy = enemy.gameObject;
             }
         }
-
         return nearestEnemy;
     }
 

@@ -21,16 +21,12 @@ public class PlayerAttack : MonoBehaviour
     private movement playerMovement;
     private skill3 _skill3;
     private PlayerHealth _playerHealth;
-    private PlayerStats _stats; // 🔥 tambah ini
+    private PlayerStats _stats;
 
     private Queue<GameObject> shurikenQueue = new Queue<GameObject>();
-
     private bool isAttacking = false;
 
-    public bool IsAttacking()
-    {
-        return isAttacking;
-    }
+    public bool IsAttacking() => isAttacking;
 
     void Start()
     {
@@ -39,7 +35,7 @@ public class PlayerAttack : MonoBehaviour
         playerMovement = GetComponent<movement>();
         _skill3 = GetComponent<skill3>();
         _playerHealth = GetComponent<PlayerHealth>();
-        _stats = GetComponent<PlayerStats>(); // 🔥 ambil stats
+        _stats = GetComponent<PlayerStats>();
 
         if (swordHitbox != null)
             swordHitbox.SetActive(false);
@@ -54,9 +50,7 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) &&
-            Time.time >= nextAttackTime &&
-            !isAttacking)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time >= nextAttackTime && !isAttacking)
         {
             nextAttackTime = Time.time + GetAttackDelay();
             HandleAttack();
@@ -66,7 +60,6 @@ public class PlayerAttack : MonoBehaviour
     void HandleAttack()
     {
         GameObject meleeTarget = FindNearestEnemyInRadius(meleeRadius);
-
         if (meleeTarget != null)
         {
             MeleeAttack(meleeTarget);
@@ -74,7 +67,6 @@ public class PlayerAttack : MonoBehaviour
         }
 
         GameObject rangeTarget = FindNearestEnemyInRadius(rangeRadius);
-
         if (rangeTarget != null)
             RangeAttack(rangeTarget);
     }
@@ -92,7 +84,6 @@ public class PlayerAttack : MonoBehaviour
         AudioManager.PlaySFX(AudioManager.sword);
 
         Vector2 direction = (target.transform.position - transform.position).normalized;
-
         TriggerAttackMeleeAnimation(direction);
         PositionSwordHitbox(direction);
 
@@ -105,16 +96,13 @@ public class PlayerAttack : MonoBehaviour
         {
             swordHitbox.SetActive(true);
 
-            Collider2D[] hits = Physics2D.OverlapCircleAll(
-                swordHitbox.transform.position, 0.5f
-            );
-
+            Collider2D[] hits = Physics2D.OverlapCircleAll(swordHitbox.transform.position, 0.5f);
             foreach (Collider2D hit in hits)
             {
                 BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
                 if (enemy != null && _stats != null)
                 {
-                    int damage = GetFinalDamage(_stats.attackDamage); // 🔥 pakai stats
+                    int damage = GetFinalDamage(_stats.attackDamage);
                     enemy.TakeDamage(damage, Vector2.zero, false);
                     _skill3?.OnDamageDealt(damage, _playerHealth);
                 }
@@ -134,19 +122,16 @@ public class PlayerAttack : MonoBehaviour
         AudioManager.PlaySFX(AudioManager.shuriken);
 
         Vector2 direction = (target.transform.position - transform.position).normalized;
-
         TriggerAttackRangeAnimation(direction);
 
         GameObject shuriken = Instantiate(shurikenPrefab, transform.position, Quaternion.identity);
 
+        Shuriken shurikenScript = shuriken.GetComponent<Shuriken>();
+        if (shurikenScript != null)
+            shurikenScript.stats = _stats;
+
         Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
         if (rb != null) rb.velocity = direction * shurikenSpeed;
-
-        Shuriken sd = shuriken.GetComponent<Shuriken>();
-        if (sd != null)
-        {
-            sd.stats = _stats; // 🔥 kirim PlayerStats
-        }
 
         shurikenQueue.Enqueue(shuriken);
         if (shurikenQueue.Count > shurikenMax)
@@ -166,15 +151,13 @@ public class PlayerAttack : MonoBehaviour
 
     GameObject FindNearestEnemyInRadius(float radius)
     {
-        BaseEnemy[] enemies = GameObject.FindObjectsOfType<BaseEnemy>();
-
+        BaseEnemy[] enemies = FindObjectsOfType<BaseEnemy>();
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
 
         foreach (BaseEnemy enemy in enemies)
         {
             float distance = Vector2.Distance(transform.position, enemy.transform.position);
-
             if (distance < shortestDistance && distance <= radius)
             {
                 shortestDistance = distance;
