@@ -1,13 +1,7 @@
-﻿using TMPro;
-using TreeEditor;
-using Unity.VisualScripting.Antlr3.Runtime;
-using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
-using static UnityEditor.Progress;
 
-public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     Transform originalParent;
     CanvasGroup canvasGroup;
@@ -18,6 +12,37 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (canvasGroup == null)
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
+
+    // ─── Shift + Click ────────────────────────────────────────────────────────
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // Hanya proses shift + klik kiri
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)) return;
+
+        ChestController openChest = ChestController.CurrentOpenChest;
+        if (openChest == null) return; // Chest tidak sedang terbuka, abaikan
+
+        ChestUI chestUI = openChest.chestUI;
+        Slot thisSlot = transform.parent.GetComponent<Slot>();
+        if (thisSlot == null) return;
+
+        bool isChestSlot = thisSlot.CompareTag("ChestSlot");
+
+        if (isChestSlot)
+        {
+            // Item ada di chest → pindah ke inventory
+            chestUI.ShiftClickFromChest(thisSlot);
+        }
+        else
+        {
+            // Item ada di inventory → pindah ke chest
+            chestUI.ShiftClickFromInventory(thisSlot);
+        }
+    }
+
+    // ─── Drag & Drop (tidak berubah dari versi kamu) ──────────────────────────
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -58,7 +83,6 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             {
                 int space = targetItemUI.itemData.maxStack - targetItemUI.stackCount;
                 int transfer = Mathf.Min(space, draggedItemUI.stackCount);
-
                 targetItemUI.stackCount += transfer;
                 targetItemUI.UpdateUI();
                 draggedItemUI.stackCount -= transfer;
@@ -81,7 +105,6 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 swappedItem.transform.SetParent(originalSlot.transform);
                 swappedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
                 originalSlot.currentItem = swappedItem;
-
                 transform.SetParent(dropSlot.transform);
                 dropSlot.currentItem = gameObject;
             }

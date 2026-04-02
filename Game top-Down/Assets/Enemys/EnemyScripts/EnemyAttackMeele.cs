@@ -24,13 +24,8 @@ public class EnemyAttackMelee : MonoBehaviour
     public float obstacleDetectDistance = 0.8f;
     public float avoidStrength = 2f;
 
-    // ─── Animator attack clip duration ───────────────────────────────────────
-    // Set this to match the length (in seconds) of your attack animation clips.
-    // The enemy will be "locked" in the attack state for this duration before
-    // it can move or transition again.
     public float attackAnimDuration = 0.5f;
 
-    // ─── Internal state ───────────────────────────────────────────────────────
     private enum State { Patrol, Chase, Attack }
     private State currentState = State.Patrol;
 
@@ -41,41 +36,19 @@ public class EnemyAttackMelee : MonoBehaviour
 
     private float cooldownTimer;
 
-    // Direction the enemy is currently facing (used for idle & attack anim)
-    private Vector2 lastMoveDir = Vector2.down; // default: face down like IdleDown
+    private Vector2 lastMoveDir = Vector2.down;
 
-    // Timer that "locks" the enemy inside the attack animation
     private float attackAnimTimer;
     private bool isPlayingAttackAnim = false;
 
-    // ─── Animator ─────────────────────────────────────────────────────────────
     private Animator animator;
 
-    // Animator parameter names
-    // Walk / Idle blend tree uses the same params from the screenshot
     private static readonly int ParamMoveX = Animator.StringToHash("MoveX");
     private static readonly int ParamMoveY = Animator.StringToHash("MoveY");
     private static readonly int ParamIsMoving = Animator.StringToHash("IsMoving");
-
-    // Attack params — add these to your Animator Controller:
-    //   bool  IsAttacking   (drive AnyState -> AttackXxx transitions)
-    //   float AttackX       (same range as MoveX:  -1 / 0 / 1)
-    //   float AttackY       (same range as MoveY:  -1 / 0 / 1)
-    //
-    // Recommended Animator setup for attack transitions (from AnyState):
-    //   AnyState -> AttackUp    : IsAttacking = true  AND AttackY > 0.5
-    //   AnyState -> AttackDown  : IsAttacking = true  AND AttackY < -0.5
-    //   AnyState -> AttackRight : IsAttacking = true  AND AttackX > 0.5
-    //   AnyState -> AttackLeft  : IsAttacking = true  AND AttackX < -0.5
-    //   (all with Has Exit Time = false, Exit Time = 0)
-    //
-    // Each attack state should transition back to the blend tree (or Any State)
-    // when IsAttacking = false (Has Exit Time can be true here so the clip finishes).
     private static readonly int ParamIsAttacking = Animator.StringToHash("IsAttacking");
     private static readonly int ParamAttackX = Animator.StringToHash("AttackX");
     private static readonly int ParamAttackY = Animator.StringToHash("AttackY");
-
-    // ─────────────────────────────────────────────────────────────────────────
 
     void Start()
     {
@@ -91,7 +64,6 @@ public class EnemyAttackMelee : MonoBehaviour
 
         float distToPlayer = Vector2.Distance(transform.position, player.position);
 
-        // While attack animation is playing, block all state transitions
         if (isPlayingAttackAnim)
         {
             attackAnimTimer -= Time.deltaTime;
@@ -115,7 +87,6 @@ public class EnemyAttackMelee : MonoBehaviour
         UpdateAnimator();
     }
 
-    // ─── State handlers ───────────────────────────────────────────────────────
 
     void HandlePatrol(float distToPlayer)
     {
@@ -188,9 +159,7 @@ public class EnemyAttackMelee : MonoBehaviour
 
         if (cooldownTimer <= 0f)
         {
-            // Snap facing direction toward player before triggering attack anim
             lastMoveDir = ((Vector2)(player.position - transform.position)).normalized;
-
             TriggerAttackAnim();
             Attack();
             cooldownTimer = attackCooldown;
@@ -207,46 +176,31 @@ public class EnemyAttackMelee : MonoBehaviour
         }
     }
 
-    // ─── Animator helpers ─────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Drives the walk / idle blend tree every frame (except during attack lock).
-    /// </summary>
     void UpdateAnimator()
     {
-        // These are already set inside MoveToward / SetMoving, but we refresh
-        // them here to make sure idle also reflects the last facing direction.
-        animator.SetFloat(ParamMoveX, lastMoveDir.x);
-        animator.SetFloat(ParamMoveY, lastMoveDir.y);
+        Vector2 cardinal = DominantCardinal(lastMoveDir);
+        animator.SetFloat(ParamMoveX, cardinal.x);
+        animator.SetFloat(ParamMoveY, cardinal.y);
     }
 
-    /// <summary>
-    /// Triggers the 4-directional attack animation and locks movement for its duration.
-    /// Sets AttackX / AttackY so the Animator can pick the correct directional clip.
-    /// </summary>
     void TriggerAttackAnim()
     {
-        // Convert continuous direction to cardinal: pick dominant axis
         Vector2 cardinal = DominantCardinal(lastMoveDir);
 
         animator.SetFloat(ParamAttackX, cardinal.x);
         animator.SetFloat(ParamAttackY, cardinal.y);
         animator.SetBool(ParamIsAttacking, true);
 
-        // Lock state for the duration of the attack clip
         isPlayingAttackAnim = true;
         attackAnimTimer = attackAnimDuration;
     }
 
-    /// <summary>
-    /// Flips IsMoving and records the direction for blend-tree / attack snapping.
-    /// </summary>
     void SetMoving(bool moving)
     {
         animator.SetBool(ParamIsMoving, moving);
     }
 
-    // ─── Movement ─────────────────────────────────────────────────────────────
 
     void MoveToward(Vector2 target, float speed)
     {
@@ -275,32 +229,26 @@ public class EnemyAttackMelee : MonoBehaviour
             }
         }
 
-        // Record facing direction for blend tree & attack snap
         lastMoveDir = direction;
 
-        // Drive animator
+        Vector2 cardinal = DominantCardinal(direction);
+
         animator.SetBool(ParamIsMoving, true);
-        animator.SetFloat(ParamMoveX, direction.x);
-        animator.SetFloat(ParamMoveY, direction.y);
+        animator.SetFloat(ParamMoveX, cardinal.x);
+        animator.SetFloat(ParamMoveY, cardinal.y);
 
         transform.position += (Vector3)(direction * speed * Time.deltaTime);
     }
 
-    // ─── Utility ─────────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Maps a normalized direction to the nearest cardinal (Up/Down/Left/Right).
-    /// Returns a vector with one axis = ±1 and the other = 0.
-    /// </summary>
     Vector2 DominantCardinal(Vector2 dir)
     {
         if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y))
-            return new Vector2(Mathf.Sign(dir.x), 0f);   // Left or Right
+            return new Vector2(Mathf.Sign(dir.x), 0f);
         else
-            return new Vector2(0f, Mathf.Sign(dir.y));   // Down or Up
+            return new Vector2(0f, Mathf.Sign(dir.y));
     }
 
-    // ─── Gizmos ───────────────────────────────────────────────────────────────
 
     void OnDrawGizmosSelected()
     {

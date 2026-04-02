@@ -8,6 +8,7 @@ TagManager:
   - NPC
   - Item
   - Audio
+  - ChestSlot
   layers:
   - Default
   - TransparentFX
