@@ -61,10 +61,6 @@ public class ChestUI : MonoBehaviour
         slot.currentItem = item;
     }
 
-    /// <summary>
-    /// Dipanggil ItemDragHandler saat shift+click item di chest
-    /// → pindahkan item dari chest ke inventory player
-    /// </summary>
     public void ShiftClickFromChest(Slot chestSlot)
     {
         if (chestSlot.currentItem == null) return;
@@ -74,7 +70,6 @@ public class ChestUI : MonoBehaviour
         bool success = playerInventory.AddItem(itemUI.itemData, itemUI.stackCount);
         if (success)
         {
-            // Update runtime list di ChestController
             var runtimeItems = currentChest.GetRuntimeItems();
             for (int i = 0; i < runtimeItems.Count; i++)
             {
@@ -97,6 +92,7 @@ public class ChestUI : MonoBehaviour
             Debug.Log("Inventory penuh!");
         }
     }
+
     public void ShiftClickFromInventory(Slot inventorySlot)
     {
         if (inventorySlot.currentItem == null) return;
