@@ -190,7 +190,8 @@ public class EnemyAttackMelee : MonoBehaviour
 
         animator.SetFloat(ParamAttackX, cardinal.x);
         animator.SetFloat(ParamAttackY, cardinal.y);
-        animator.SetBool(ParamIsAttacking, true);
+        animator.SetBool(ParamIsMoving, false);      // ← matikan walk dulu
+        animator.SetBool(ParamIsAttacking, true);       // ← baru nyalakan attack
 
         isPlayingAttackAnim = true;
         attackAnimTimer = attackAnimDuration;
