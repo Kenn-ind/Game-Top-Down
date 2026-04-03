@@ -527,7 +527,7 @@ MonoBehaviour:
     m_Bits: 2048
   obstacleDetectDistance: 0.8
   avoidStrength: 2
-  attackAnimDuration: 0.5
+  attackAnimDuration: 0.3
 --- !u!114 &36991609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7500,7 +7500,7 @@ MonoBehaviour:
     m_Bits: 2048
   obstacleDetectDistance: 0.8
   avoidStrength: 2
-  attackAnimDuration: 0.5
+  attackAnimDuration: 0.3
 --- !u!114 &573245168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10211,6 +10211,7 @@ GameObject:
   - component: {fileID: 692795447}
   - component: {fileID: 692795450}
   - component: {fileID: 692795449}
+  - component: {fileID: 692795451}
   m_Layer: 6
   m_Name: NyetRed 2
   m_TagString: Enemy
@@ -10315,7 +10316,7 @@ MonoBehaviour:
     m_Bits: 2048
   obstacleDetectDistance: 0.8
   avoidStrength: 2
-  attackAnimDuration: 0.5
+  attackAnimDuration: 0.3
 --- !u!114 &692795448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10405,6 +10406,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &692795451
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692795444}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 76ac38355b324b34ca9551200f583ff7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &737060309
 GameObject:
   m_ObjectHideFlags: 0
@@ -12787,6 +12809,7 @@ GameObject:
   - component: {fileID: 1048827798}
   - component: {fileID: 1048827801}
   - component: {fileID: 1048827800}
+  - component: {fileID: 1048827802}
   m_Layer: 6
   m_Name: NyetRed
   m_TagString: Enemy
@@ -12891,7 +12914,7 @@ MonoBehaviour:
     m_Bits: 2048
   obstacleDetectDistance: 0.8
   avoidStrength: 2
-  attackAnimDuration: 0.5
+  attackAnimDuration: 0.3
 --- !u!114 &1048827799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12981,6 +13004,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &1048827802
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048827795}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 76ac38355b324b34ca9551200f583ff7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1051480262
 GameObject:
   m_ObjectHideFlags: 0
@@ -14268,7 +14312,7 @@ Tilemap:
       - {fileID: -340287675, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: 1525142490, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: -1211784664, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -28, y: -18, z: 0}
@@ -16453,7 +16497,7 @@ MonoBehaviour:
     m_Bits: 2048
   obstacleDetectDistance: 0.8
   avoidStrength: 2
-  attackAnimDuration: 0.5
+  attackAnimDuration: 0.3
 --- !u!114 &1381043726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80962,7 +81006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d91222d8c574aa46a9e05ed798fa754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 1000
   knockbackTime: 0.2
   isKnockback: 0
   healthFrames:
@@ -82241,7 +82285,7 @@ Transform:
   m_GameObject: {fileID: 1851294557}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.59, y: -34.09, z: 0}
+  m_LocalPosition: {x: 12.6, y: -40.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
