@@ -3,11 +3,15 @@ using UnityEngine;
 
 public class ChestUI : MonoBehaviour
 {
-    [Header("References")]
     public GameObject panel;
+
+    public TabController tabController;
+    public GameObject inventoryPages;
+    public GameObject chestSlotContainer;
+
     public GameObject slotPrefab;
     public GameObject itemPrefab;
-    public Transform slotContainer;
+
     public int slotCount = 20;
 
     private Slot[] slots;
@@ -24,13 +28,16 @@ public class ChestUI : MonoBehaviour
     {
         currentChest = chest;
 
-        foreach (Transform child in slotContainer)
+        chestSlotContainer.SetActive(true);
+        inventoryPages.SetActive(true);
+
+        foreach (Transform child in chestSlotContainer.transform)
             Destroy(child.gameObject);
 
         slots = new Slot[slotCount];
         for (int i = 0; i < slotCount; i++)
         {
-            GameObject slotObj = Instantiate(slotPrefab, slotContainer);
+            GameObject slotObj = Instantiate(slotPrefab, chestSlotContainer.transform);
             slots[i] = slotObj.GetComponent<Slot>();
             slots[i].gameObject.tag = "ChestSlot";
         }
@@ -43,6 +50,7 @@ public class ChestUI : MonoBehaviour
         }
 
         panel.SetActive(true);
+        tabController.ActivateTab(0);
     }
 
     public void Close()
@@ -99,17 +107,10 @@ public class ChestUI : MonoBehaviour
         ItemUI itemUI = inventorySlot.currentItem.GetComponent<ItemUI>();
         if (itemUI == null) return;
 
-        // Cari slot kosong di chest
-        Slot emptySlot = null;
+        // Coba stack dulu
         foreach (Slot slot in slots)
         {
-            if (slot.currentItem == null)
-            {
-                emptySlot = slot;
-                break;
-            }
-
-            // Cek apakah bisa stack
+            if (slot.currentItem == null) continue;
             ItemUI existing = slot.GetItemUI();
             if (existing != null && existing.itemData == itemUI.itemData)
             {
@@ -120,6 +121,7 @@ public class ChestUI : MonoBehaviour
                     existing.stackCount += transfer;
                     existing.UpdateUI();
                     itemUI.stackCount -= transfer;
+                    UpdateRuntimeItems(existing.itemData, existing.stackCount);
 
                     if (itemUI.stackCount <= 0)
                     {
@@ -131,9 +133,22 @@ public class ChestUI : MonoBehaviour
             }
         }
 
+        Slot emptySlot = null;
+        foreach (Slot slot in slots)
+        {
+            if (slot.currentItem == null)
+            {
+                emptySlot = slot;
+                break;
+            }
+        }
+
         if (emptySlot != null)
         {
             SpawnItem(emptySlot, itemUI.itemData, itemUI.stackCount);
+
+            AddToRuntimeItems(itemUI.itemData, itemUI.stackCount);
+
             Destroy(inventorySlot.currentItem);
             inventorySlot.currentItem = null;
         }
@@ -142,6 +157,47 @@ public class ChestUI : MonoBehaviour
             Debug.Log("Chest penuh!");
         }
     }
+
+    void AddToRuntimeItems(ItemData data, int count)
+    {
+        var runtimeItems = currentChest.GetRuntimeItems();
+
+        for (int i = 0; i < runtimeItems.Count; i++)
+        {
+            if (runtimeItems[i].itemData == data)
+            {
+                runtimeItems[i] = new ChestData.ChestItem
+                {
+                    itemData = data,
+                    count = runtimeItems[i].count + count
+                };
+                return;
+            }
+        }
+
+        runtimeItems.Add(new ChestData.ChestItem
+        {
+            itemData = data,
+            count = count
+        });
+    }
+    void UpdateRuntimeItems(ItemData data, int newCount)
+    {
+        var runtimeItems = currentChest.GetRuntimeItems();
+        for (int i = 0; i < runtimeItems.Count; i++)
+        {
+            if (runtimeItems[i].itemData == data)
+            {
+                runtimeItems[i] = new ChestData.ChestItem
+                {
+                    itemData = data,
+                    count = newCount
+                };
+                return;
+            }
+        }
+    }
+
 
     public Slot[] GetSlots() => slots;
 }

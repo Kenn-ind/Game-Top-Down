@@ -20,6 +20,8 @@ public class ChestController : MonoBehaviour
     private Transform player;
     private bool isOpen = false;
     private bool playerInRange = false;
+    private InventoryController playerInventory;
+
 
     private movement playerMovement;
     private List<ChestData.ChestItem> runtimeItems;
@@ -32,6 +34,8 @@ public class ChestController : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         playerMovement = player.GetComponent<movement>();
+        playerInventory = FindObjectOfType<InventoryController>();
+
 
         if (interactPrompt != null)
             interactPrompt.SetActive(false);
@@ -61,16 +65,18 @@ public class ChestController : MonoBehaviour
         isOpen = true;
         CurrentOpenChest = this;
         animator.SetBool(ParamIsOpen, true);
-        chestUI.Open(runtimeItems, this);
+        chestUI.Open(runtimeItems, this); 
+        playerInventory.MoveToChestPanel();
         if (playerMovement != null) playerMovement.SetMovementLocked(true);
     }
 
     public void CloseUI()
     {
         chestUI.Close();
+        playerInventory.MoveToInventoryPanel();
         CurrentOpenChest = null;
-        if (playerMovement != null) playerMovement.SetMovementLocked(false);
         isOpen = false;
+        if (playerMovement != null) playerMovement.SetMovementLocked(false);
     }
 
     // Dipanggil ChestUI saat item di-shift+click dari chest → inventory

@@ -2,12 +2,14 @@
 
 public class InventoryController : MonoBehaviour
 {
-    public GameObject inventoryPanel;
+    [Header("Panels")]
+    public GameObject inventoryPanel;      // InventoryPages di Menu (normal)
+    public GameObject chestInventoryPanel; // InventoryPages di ChestPanel
+
     public GameObject slotPrefab;
     public int slotCount;
     public GameObject itemPrefab;
     public ItemData[] itemDataList;
-
     private Slot[] slots;
 
     void Start()
@@ -23,10 +25,25 @@ public class InventoryController : MonoBehaviour
                 continue;
             }
             if (i < itemDataList.Length && itemDataList[i] != null)
-            {
                 SpawnItem(slots[i], itemDataList[i], 1);
-            }
         }
+    }
+    public void MoveToChestPanel()
+    {
+        foreach (Slot slot in slots)
+            slot.transform.SetParent(chestInventoryPanel.transform, false);
+
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(
+            chestInventoryPanel.GetComponent<RectTransform>());
+    }
+
+    public void MoveToInventoryPanel()
+    {
+        foreach (Slot slot in slots)
+            slot.transform.SetParent(inventoryPanel.transform, false);
+
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(
+            inventoryPanel.GetComponent<RectTransform>());
     }
 
     void SpawnItem(Slot slot, ItemData data, int count)
@@ -59,7 +76,6 @@ public class InventoryController : MonoBehaviour
                 }
             }
         }
-
         foreach (Slot slot in slots)
         {
             if (slot.currentItem == null)
@@ -68,7 +84,6 @@ public class InventoryController : MonoBehaviour
                 return true;
             }
         }
-
         Debug.Log("Inventory penuh!");
         return false;
     }
@@ -76,19 +91,15 @@ public class InventoryController : MonoBehaviour
     public bool RemoveItemByID(string itemID, int amount)
     {
         int remaining = amount;
-
         foreach (Slot slot in slots)
         {
             if (slot.currentItem == null) continue;
-
             ItemUI itemUI = slot.currentItem.GetComponent<ItemUI>();
             if (itemUI == null || itemUI.itemData.itemID != itemID) continue;
-
             if (itemUI.stackCount >= remaining)
             {
                 itemUI.stackCount -= remaining;
                 remaining = 0;
-
                 if (itemUI.stackCount <= 0)
                 {
                     Destroy(slot.currentItem);
@@ -98,7 +109,6 @@ public class InventoryController : MonoBehaviour
                 {
                     itemUI.UpdateUI();
                 }
-
                 break;
             }
             else
@@ -108,13 +118,11 @@ public class InventoryController : MonoBehaviour
                 slot.currentItem = null;
             }
         }
-
         if (remaining > 0)
         {
             Debug.Log($"Item {itemID} tidak cukup di inventory!");
             return false;
         }
-
         return true;
     }
 
