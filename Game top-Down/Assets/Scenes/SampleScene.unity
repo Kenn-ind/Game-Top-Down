@@ -529,11 +529,6 @@ MonoBehaviour:
   steeringRays: 8
   steeringProbeRadius: 0.25
   directionSmoothSpeed: 0.15
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  separationRadius: 0.8
-  separationForce: 2
   attackAnimDuration: 0.3
   chaseZone: {fileID: 1603603827}
 --- !u!114 &36991609
@@ -8404,11 +8399,6 @@ MonoBehaviour:
   steeringRays: 8
   steeringProbeRadius: 0.25
   directionSmoothSpeed: 0.15
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  separationRadius: 0.8
-  separationForce: 2
   attackAnimDuration: 0.3
   chaseZone: {fileID: 1603603827}
 --- !u!114 &573245168
@@ -11399,11 +11389,6 @@ MonoBehaviour:
   steeringRays: 8
   steeringProbeRadius: 0.25
   directionSmoothSpeed: 0.15
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  separationRadius: 0.8
-  separationForce: 2
   attackAnimDuration: 0.3
   chaseZone: {fileID: 513105747}
 --- !u!114 &692795448
@@ -14049,11 +14034,6 @@ MonoBehaviour:
   steeringRays: 8
   steeringProbeRadius: 0.25
   directionSmoothSpeed: 0.15
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  separationRadius: 0.8
-  separationForce: 2
   attackAnimDuration: 0.3
   chaseZone: {fileID: 513105747}
 --- !u!114 &1048827799
@@ -17816,11 +17796,6 @@ MonoBehaviour:
   steeringRays: 8
   steeringProbeRadius: 0.25
   directionSmoothSpeed: 0.15
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  separationRadius: 0.8
-  separationForce: 2
   attackAnimDuration: 0.3
   chaseZone: {fileID: 1603603827}
 --- !u!114 &1381043726
@@ -83705,6 +83680,7 @@ GameObject:
   - component: {fileID: 1848478183}
   - component: {fileID: 1848478182}
   - component: {fileID: 1848478185}
+  - component: {fileID: 1848478186}
   m_Layer: 6
   m_Name: trainer (V2)
   m_TagString: Enemy
@@ -83875,7 +83851,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848478179}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 949a452ddaf138848a6dfa905c222360, type: 3}
   m_Name: 
@@ -83900,13 +83876,29 @@ MonoBehaviour:
   steeringRays: 8
   steeringProbeRadius: 0.25
   directionSmoothSpeed: 0.15
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  separationRadius: 0.8
-  separationForce: 2
-  attackAnimDuration: 0.5
+  attackAnimDuration: 0.3
   chaseZone: {fileID: 0}
+--- !u!95 &1848478186
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848478179}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d28feebcc4d978443b870a5891b83ad3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1851294557
 GameObject:
   m_ObjectHideFlags: 0
@@ -84028,11 +84020,6 @@ MonoBehaviour:
   steeringRays: 8
   steeringProbeRadius: 0.25
   directionSmoothSpeed: 0.15
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  separationRadius: 0.8
-  separationForce: 2
   attackAnimDuration: 0.3
   chaseZone: {fileID: 1603603827}
 --- !u!114 &1851294561
