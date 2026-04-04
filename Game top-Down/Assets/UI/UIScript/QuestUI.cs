@@ -32,7 +32,7 @@ public class QuestUI : MonoBehaviour
     {
         completeText.text = $"Quest Selesai!\n{questName}";
         completePanel.SetActive(true);
-        StartCoroutine(HideAfter(completePanel, 1.5f));
+        StartCoroutine(HideAfter(completePanel, 2.5f));
     }
 
     IEnumerator HideAfter(GameObject panel, float seconds)
