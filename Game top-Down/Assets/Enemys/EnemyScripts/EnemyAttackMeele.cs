@@ -9,7 +9,6 @@ public class EnemyAttackMelee : MonoBehaviour
 
     public float detectRange = 6f;
     public float attackRange = 1.5f;
-    public float losePlayerRange = 9f;
 
     public int damage = 10;
     public float attackCooldown = 1.5f;
@@ -19,14 +18,20 @@ public class EnemyAttackMelee : MonoBehaviour
     public float patrolWaitMin = 1f;
     public float patrolWaitMax = 3f;
     public float patrolPointReachDistance = 0.3f;
+    public float returnHomeReachDistance = 0.3f;
 
     public LayerMask obstacleLayer;
-    public float obstacleDetectDistance = 0.8f;
-    public float avoidStrength = 2f;
+    public float obstacleDetectDistance = 1.2f;
+    public int steeringRays = 12;
+    public float steeringProbeRadius = 0.25f;
+
+    public float directionSmoothSpeed = 0.15f;
 
     public float attackAnimDuration = 0.5f;
 
-    private enum State { Patrol, Chase, Attack }
+    public Collider2D chaseZone;
+
+    private enum State { Patrol, Chase, Attack, ReturnHome }
     private State currentState = State.Patrol;
 
     private Vector2 homePosition;
@@ -35,8 +40,9 @@ public class EnemyAttackMelee : MonoBehaviour
     private bool isWaiting = false;
 
     private float cooldownTimer;
-
     private Vector2 lastMoveDir = Vector2.down;
+
+    private Vector2 smoothedDir = Vector2.down;
 
     private float attackAnimTimer;
     private bool isPlayingAttackAnim = false;
@@ -81,16 +87,28 @@ public class EnemyAttackMelee : MonoBehaviour
             case State.Patrol: HandlePatrol(distToPlayer); break;
             case State.Chase: HandleChase(distToPlayer); break;
             case State.Attack: HandleAttack(distToPlayer); break;
+            case State.ReturnHome: HandleReturnHome(distToPlayer); break;
         }
 
         cooldownTimer -= Time.deltaTime;
         UpdateAnimator();
     }
 
+    bool IsPlayerInChaseZone()
+    {
+        if (chaseZone == null) return true;
+        return chaseZone.OverlapPoint(player.position);
+    }
+
+    bool IsEnemyInChaseZone()
+    {
+        if (chaseZone == null) return true;
+        return chaseZone.OverlapPoint(transform.position);
+    }
 
     void HandlePatrol(float distToPlayer)
     {
-        if (distToPlayer <= detectRange)
+        if (distToPlayer <= detectRange && IsPlayerInChaseZone())
         {
             currentState = State.Chase;
             isWaiting = false;
@@ -100,11 +118,7 @@ public class EnemyAttackMelee : MonoBehaviour
         if (isWaiting)
         {
             patrolWaitTimer -= Time.deltaTime;
-            if (patrolWaitTimer <= 0f)
-            {
-                isWaiting = false;
-                PickNewPatrolTarget();
-            }
+            if (patrolWaitTimer <= 0f) { isWaiting = false; PickNewPatrolTarget(); }
             SetMoving(false);
             return;
         }
@@ -122,19 +136,18 @@ public class EnemyAttackMelee : MonoBehaviour
         }
     }
 
-    void PickNewPatrolTarget()
-    {
-        Vector2 randomOffset = Random.insideUnitCircle * patrolRadius;
-        currentPatrolTarget = homePosition + randomOffset;
-    }
-
     void HandleChase(float distToPlayer)
     {
-        if (distToPlayer > losePlayerRange)
+        if (!IsEnemyInChaseZone())
         {
-            currentState = State.Patrol;
-            homePosition = transform.position;
-            PickNewPatrolTarget();
+            currentState = State.ReturnHome;
+            SetMoving(false);
+            return;
+        }
+
+        if (!IsPlayerInChaseZone())
+        {
+            currentState = State.ReturnHome;
             SetMoving(false);
             return;
         }
@@ -151,6 +164,13 @@ public class EnemyAttackMelee : MonoBehaviour
 
     void HandleAttack(float distToPlayer)
     {
+        if (!IsEnemyInChaseZone() || !IsPlayerInChaseZone())
+        {
+            currentState = State.ReturnHome;
+            SetMoving(false);
+            return;
+        }
+
         if (distToPlayer > attackRange)
         {
             currentState = State.Chase;
@@ -166,6 +186,25 @@ public class EnemyAttackMelee : MonoBehaviour
         }
     }
 
+    void HandleReturnHome(float distToPlayer)
+    {
+        if (IsPlayerInChaseZone() && distToPlayer <= detectRange)
+        {
+            currentState = State.Chase;
+            return;
+        }
+
+        float distToHome = Vector2.Distance(transform.position, homePosition);
+        if (distToHome <= returnHomeReachDistance)
+        {
+            PickNewPatrolTarget();
+            currentState = State.Patrol;
+            SetMoving(false);
+            return;
+        }
+
+        MoveToward(homePosition, moveSpeed);
+    }
     void Attack()
     {
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
@@ -175,7 +214,6 @@ public class EnemyAttackMelee : MonoBehaviour
             playerHealth.TakeDamage(damage, direction * knockbackForce);
         }
     }
-
 
     void UpdateAnimator()
     {
@@ -187,12 +225,10 @@ public class EnemyAttackMelee : MonoBehaviour
     void TriggerAttackAnim()
     {
         Vector2 cardinal = DominantCardinal(lastMoveDir);
-
         animator.SetFloat(ParamAttackX, cardinal.x);
         animator.SetFloat(ParamAttackY, cardinal.y);
-        animator.SetBool(ParamIsMoving, false);      // ← matikan walk dulu
-        animator.SetBool(ParamIsAttacking, true);       // ← baru nyalakan attack
-
+        animator.SetBool(ParamIsMoving, false);
+        animator.SetBool(ParamIsAttacking, true);
         isPlayingAttackAnim = true;
         attackAnimTimer = attackAnimDuration;
     }
@@ -201,46 +237,84 @@ public class EnemyAttackMelee : MonoBehaviour
     {
         animator.SetBool(ParamIsMoving, moving);
     }
-
-
-    void MoveToward(Vector2 target, float speed)
+    Vector2 GetSteeringDirection(Vector2 desiredTarget)
     {
-        Vector2 direction = ((Vector3)target - transform.position).normalized;
+        Vector2 desiredDir = ((Vector3)desiredTarget - transform.position).normalized;
 
-        RaycastHit2D hit = Physics2D.CircleCast(
-            transform.position, 0.3f, direction, obstacleDetectDistance, obstacleLayer);
+        float bestScore = float.MinValue;
+        Vector2 bestDir = desiredDir;
+        bool foundFree = false;
 
-        if (hit.collider != null)
+        float angleStep = 360f / steeringRays;
+
+        for (int i = 0; i < steeringRays; i++)
         {
-            if (currentState == State.Patrol)
-            {
-                PickNewPatrolTarget();
-                SetMoving(false);
-                return;
-            }
-            else
-            {
-                Vector2 avoidDir = Vector2.Perpendicular(direction).normalized;
+            float angle = i * angleStep;
+            Vector2 candidate = Rotate(desiredDir, angle);
 
-                RaycastHit2D hitLeft = Physics2D.CircleCast(transform.position, 0.3f, avoidDir, obstacleDetectDistance, obstacleLayer);
-                RaycastHit2D hitRight = Physics2D.CircleCast(transform.position, 0.3f, -avoidDir, obstacleDetectDistance, obstacleLayer);
+            RaycastHit2D hit = Physics2D.CircleCast(
+                transform.position, steeringProbeRadius,
+                candidate, obstacleDetectDistance, obstacleLayer);
 
-                if (hitLeft.collider == null) direction = (direction + avoidDir * avoidStrength).normalized;
-                else if (hitRight.collider == null) direction = (direction + -avoidDir * avoidStrength).normalized;
+            if (hit.collider != null) continue;
+
+            float score = Vector2.Dot(candidate, desiredDir);
+
+            if (!foundFree || score > bestScore)
+            {
+                bestScore = score;
+                bestDir = candidate;
+                foundFree = true;
             }
         }
 
-        lastMoveDir = direction;
+        if (!foundFree)
+            bestDir = -desiredDir;
 
-        Vector2 cardinal = DominantCardinal(direction);
+        return bestDir;
+    }
 
+    static Vector2 Rotate(Vector2 v, float degrees)
+    {
+        float rad = degrees * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(rad);
+        float sin = Mathf.Sin(rad);
+        return new Vector2(cos * v.x - sin * v.y, sin * v.x + cos * v.y);
+    }
+
+    void MoveToward(Vector2 target, float speed)
+    {
+        Vector2 rawDir = GetSteeringDirection(target);
+
+        smoothedDir = Vector2.Lerp(smoothedDir, rawDir, directionSmoothSpeed).normalized;
+
+        if (Vector2.Dot(smoothedDir, lastMoveDir) < 0.95f || lastMoveDir == Vector2.zero)
+        {
+            lastMoveDir = smoothedDir;
+        }
+
+        Vector2 cardinal = DominantCardinal(smoothedDir);
         animator.SetBool(ParamIsMoving, true);
         animator.SetFloat(ParamMoveX, cardinal.x);
         animator.SetFloat(ParamMoveY, cardinal.y);
 
-        transform.position += (Vector3)(direction * speed * Time.deltaTime);
+        transform.position += (Vector3)(smoothedDir * speed * Time.deltaTime);
     }
 
+    void PickNewPatrolTarget()
+    {
+        for (int attempt = 0; attempt < 10; attempt++)
+        {
+            Vector2 candidate = homePosition + (Vector2)(Random.insideUnitCircle * patrolRadius);
+            bool blocked = Physics2D.OverlapCircle(candidate, steeringProbeRadius, obstacleLayer);
+            if (!blocked)
+            {
+                currentPatrolTarget = candidate;
+                return;
+            }
+        }
+        currentPatrolTarget = transform.position;
+    }
 
     Vector2 DominantCardinal(Vector2 dir)
     {
@@ -250,19 +324,15 @@ public class EnemyAttackMelee : MonoBehaviour
             return new Vector2(0f, Mathf.Sign(dir.y));
     }
 
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(Application.isPlaying ? (Vector3)homePosition : transform.position, patrolRadius);
-
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectRange);
-
-        Gizmos.color = new Color(1f, 0.5f, 0f);
-        Gizmos.DrawWireSphere(transform.position, losePlayerRange);
-
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(Application.isPlaying ? (Vector3)homePosition : transform.position, returnHomeReachDistance);
     }
 }
