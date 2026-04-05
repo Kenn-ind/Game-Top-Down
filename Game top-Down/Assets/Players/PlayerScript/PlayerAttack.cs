@@ -19,7 +19,8 @@ public class PlayerAttack : MonoBehaviour
     private float nextAttackTime;
     private Animator animator;
     private movement playerMovement;
-    private skill3 _skill3;
+    private Skill3SO _skill3;         // ganti dari skill3 ke Skill3SO
+    private PlayerSkillState _skillState;
     private PlayerHealth _playerHealth;
     private PlayerStats _stats;
 
@@ -33,9 +34,14 @@ public class PlayerAttack : MonoBehaviour
         AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<movement>();
-        _skill3 = GetComponent<skill3>();
         _playerHealth = GetComponent<PlayerHealth>();
         _stats = GetComponent<PlayerStats>();
+        _skillState = GetComponent<PlayerSkillState>();
+
+        // Ambil Skill3SO dari SkillController
+        SkillController skillController = GetComponent<SkillController>();
+        if (skillController != null)
+            _skill3 = skillController.skill3 as Skill3SO;
 
         if (swordHitbox != null)
             swordHitbox.SetActive(false);
@@ -50,6 +56,9 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
+        // Block attack biasa saat skill sedang digunakan
+        if (_skillState != null && _skillState.isUsingSkill) return;
+
         if (Input.GetKeyDown(KeyCode.Space) && Time.time >= nextAttackTime && !isAttacking)
         {
             nextAttackTime = Time.time + GetAttackDelay();

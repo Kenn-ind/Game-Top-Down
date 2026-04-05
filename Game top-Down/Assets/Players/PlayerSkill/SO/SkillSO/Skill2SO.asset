@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9948b34eb6007ab4fa1577a50565ec5f, type: 3}
+  m_Name: Skill2SO
+  m_EditorClassIdentifier: 
+  keyBind: 113
+  cooldown: 3
+  staminaCost: 3
+  closeRange: 2
+  detectRadius: 5
+  melee: {fileID: 11400000, guid: dc17709ef7f9c624e844e04fa107dbc1, type: 2}
+  range: {fileID: 11400000, guid: 2b2055f82ee84294983807dc3b9ed144, type: 2}

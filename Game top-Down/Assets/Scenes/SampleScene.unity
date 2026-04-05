@@ -82271,9 +82271,6 @@ GameObject:
   - component: {fileID: 1750446664}
   - component: {fileID: 1750446665}
   - component: {fileID: 1750446666}
-  - component: {fileID: 1750446667}
-  - component: {fileID: 1750446668}
-  - component: {fileID: 1750446669}
   - component: {fileID: 1750446670}
   - component: {fileID: 1750446671}
   - component: {fileID: 1750446672}
@@ -82283,6 +82280,8 @@ GameObject:
   - component: {fileID: 1750446676}
   - component: {fileID: 1750446677}
   - component: {fileID: 1750446678}
+  - component: {fileID: 1750446679}
+  - component: {fileID: 1750446680}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -82585,82 +82584,6 @@ MonoBehaviour:
   meleeRadius: 1.9
   meleeDuration: 0.4
   attackDelay: 0.5
---- !u!114 &1750446667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750446658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 867a55072bf67824cb83a02ad97ff8a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shurikenPrefab: {fileID: 1775667784230767006, guid: 7491c8021254e1f44b0c3b34df74453d, type: 3}
-  KeyBindSkill1: 101
-  closeRange: 2
-  detectRadius: 8
-  shurikenAmount: 8
-  shurikenSpeed: 8
-  shurikenLifetime: 1
-  dashDistance: 2
-  dashSpeed: 15
-  dashDamage: 1
-  dashHitRadius: 0.5
-  dashCount: 2
-  cooldown: 3
-  staminaCost: 3
---- !u!114 &1750446668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750446658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa080267bd8a6b644b186121cac09d1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shurikenPrefab: {fileID: 1775667784230767006, guid: 7491c8021254e1f44b0c3b34df74453d, type: 3}
-  KeyBindSkill2: 113
-  closeRange: 2
-  detectRadius: 8
-  cooldown: 3
-  staminaCost: 3
-  spinDuration: 0.5
-  spinSpeed: 720
-  spinRadius: 1.5
-  shurikenAmount: 6
-  shurikenSpeed: 10
-  shurikenLifetime: 1
-  fireDelay: 0.1
---- !u!114 &1750446669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750446658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fe53d571a7a21a428b8ca97e1b5e306, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shurikenPrefab: {fileID: 1775667784230767006, guid: 7491c8021254e1f44b0c3b34df74453d, type: 3}
-  KeyBindSkill3: 99
-  shurikenCount: 6
-  orbitRadius: 1.5
-  rotateSpeed: 200
-  ringDuration: 5
-  holdThreshold: 0.5
-  berserkerDuration: 10
-  damageMultiplier: 2
-  attackSpeedMultiplier: 2
-  lifestealPercent: 0.5
-  cooldown: 8
-  staminaCost: 5
 --- !u!114 &1750446670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82869,6 +82792,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingCoins: 100
+--- !u!114 &1750446679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750446658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a7cd96527103141abb80b4f137de60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skill1: {fileID: 11400000, guid: 8d0f23195e0e5054595652738a8817ea, type: 2}
+  skill2: {fileID: 11400000, guid: 4cd7fc51ff9d38146934869bc1df2e76, type: 2}
+  skill3: {fileID: 11400000, guid: f96d588cf3c8459458babc1d4f0fb559, type: 2}
+--- !u!114 &1750446680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750446658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a3ff1c65b70f1e47a3e02094964c079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUsingSkill: 0
 --- !u!1 &1752585750
 GameObject:
   m_ObjectHideFlags: 0
