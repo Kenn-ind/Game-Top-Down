@@ -16,6 +16,8 @@ public class Skill2SO : SkillSO
         _stamina = player.GetComponent<PlayerStamina>();
         _skillState = player.GetComponent<PlayerSkillState>();
 
+        _nextSkillTime = 0f;
+
         melee?.Initialize(player);
         range?.Initialize(player);
     }
