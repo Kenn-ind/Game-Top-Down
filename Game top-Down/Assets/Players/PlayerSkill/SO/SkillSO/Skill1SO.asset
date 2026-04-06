@@ -15,7 +15,7 @@ MonoBehaviour:
   keyBind: 101
   cooldown: 3
   staminaCost: 3
-  closeRange: 2
+  closeRange: 1.5
   detectRadius: 5
   melee: {fileID: 11400000, guid: 30b64e4dd812fe04badde0e4f296b935, type: 2}
   range: {fileID: 11400000, guid: 5ba5b989290c498438dda4f8b58991eb, type: 2}

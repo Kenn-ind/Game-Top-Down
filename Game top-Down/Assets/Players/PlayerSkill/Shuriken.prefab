@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4537354393571991104}
   - component: {fileID: 7153916781910923519}
   - component: {fileID: 1296587020430263910}
+  - component: {fileID: -2456339862156469025}
   m_Layer: 0
   m_Name: Shuriken
   m_TagString: Untagged
@@ -175,6 +176,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4322948f4b2335d4b8711da0134027cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
   rotateSpeed: 2000
   hitParticle: {fileID: 8775635695556611997, guid: c1218d1f1647ae844a23b5daec0175f4, type: 3}
+  stats: {fileID: 0}
+--- !u!114 &-2456339862156469025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775667784230767006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a3ff1c65b70f1e47a3e02094964c079, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUsingSkill: 0
