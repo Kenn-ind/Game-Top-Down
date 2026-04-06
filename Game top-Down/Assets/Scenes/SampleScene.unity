@@ -547,6 +547,7 @@ MonoBehaviour:
   enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
+  deathDelay: 0.5
   flashTime: 0.1
 --- !u!61 &36991610
 BoxCollider2D:
@@ -3705,6 +3706,7 @@ MonoBehaviour:
   enemyID: 
   knockbackForce: 5
   knockbackTime: 0.15
+  deathDelay: 0.5
   flashTime: 0.2
 --- !u!212 &308107028
 SpriteRenderer:
@@ -8417,6 +8419,7 @@ MonoBehaviour:
   enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
+  deathDelay: 0.5
   flashTime: 0.1
 --- !u!61 &573245169
 BoxCollider2D:
@@ -11407,6 +11410,7 @@ MonoBehaviour:
   enemyID: NyetRed
   knockbackForce: 10
   knockbackTime: 0.15
+  deathDelay: 0.5
   flashTime: 0.1
 --- !u!61 &692795449
 BoxCollider2D:
@@ -14052,6 +14056,7 @@ MonoBehaviour:
   enemyID: NyetRed
   knockbackForce: 10
   knockbackTime: 0.15
+  deathDelay: 0.5
   flashTime: 0.1
 --- !u!61 &1048827800
 BoxCollider2D:
@@ -17814,6 +17819,7 @@ MonoBehaviour:
   enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
+  deathDelay: 0.5
   flashTime: 0.1
 --- !u!61 &1381043727
 BoxCollider2D:
@@ -83762,6 +83768,7 @@ MonoBehaviour:
   enemyID: Trainer1
   knockbackForce: 11
   knockbackTime: 0.15
+  deathDelay: 2
   flashTime: 0.2
 --- !u!61 &1848478183
 BoxCollider2D:
@@ -84029,6 +84036,7 @@ MonoBehaviour:
   enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
+  deathDelay: 0.5
   flashTime: 0.1
 --- !u!61 &1851294562
 BoxCollider2D:
@@ -85346,6 +85354,7 @@ MonoBehaviour:
   enemyID: 
   knockbackForce: 5
   knockbackTime: 0.15
+  deathDelay: 0.5
   flashTime: 0.2
 --- !u!212 &1933726417
 SpriteRenderer:

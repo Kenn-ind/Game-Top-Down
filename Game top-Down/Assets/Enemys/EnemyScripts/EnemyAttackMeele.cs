@@ -47,6 +47,8 @@ public class EnemyAttackMelee : MonoBehaviour
     private float attackAnimTimer;
     private bool isPlayingAttackAnim = false;
 
+    private BaseEnemy baseEnemy; // tambah field ini
+
     private Animator animator;
 
     private static readonly int ParamMoveX = Animator.StringToHash("MoveX");
@@ -58,6 +60,7 @@ public class EnemyAttackMelee : MonoBehaviour
 
     void Start()
     {
+        baseEnemy = GetComponent<BaseEnemy>(); // tambah baris ini
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
         homePosition = transform.position;
@@ -66,6 +69,7 @@ public class EnemyAttackMelee : MonoBehaviour
 
     void Update()
     {
+        if (baseEnemy != null && baseEnemy.IsDead()) return; // tambah ini
         if (player == null) return;
 
         float distToPlayer = Vector2.Distance(transform.position, player.position);
