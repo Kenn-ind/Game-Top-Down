@@ -46,9 +46,9 @@ public class EnemyAttackMelee : MonoBehaviour
 
     private float attackAnimTimer;
     private bool isPlayingAttackAnim = false;
+    private bool wasDeadLastFrame = false;
 
-    private BaseEnemy baseEnemy; // tambah field ini
-
+    private BaseEnemy baseEnemy;
     private Animator animator;
 
     private static readonly int ParamMoveX = Animator.StringToHash("MoveX");
@@ -57,10 +57,11 @@ public class EnemyAttackMelee : MonoBehaviour
     private static readonly int ParamIsAttacking = Animator.StringToHash("IsAttacking");
     private static readonly int ParamAttackX = Animator.StringToHash("AttackX");
     private static readonly int ParamAttackY = Animator.StringToHash("AttackY");
+    private static readonly int ParamDie = Animator.StringToHash("Die");
 
     void Start()
     {
-        baseEnemy = GetComponent<BaseEnemy>(); // tambah baris ini
+        baseEnemy = GetComponent<BaseEnemy>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
         homePosition = transform.position;
@@ -69,7 +70,19 @@ public class EnemyAttackMelee : MonoBehaviour
 
     void Update()
     {
-        if (baseEnemy != null && baseEnemy.IsDead()) return; // tambah ini
+        if (baseEnemy != null && baseEnemy.IsDead())
+        {
+            if (!wasDeadLastFrame)
+            {
+                animator.SetBool(ParamIsMoving, false);
+                animator.SetBool(ParamIsAttacking, false);
+                animator.ResetTrigger(ParamDie);
+                animator.SetTrigger(ParamDie);
+                wasDeadLastFrame = true;
+            }
+            return;
+        }
+
         if (player == null) return;
 
         float distToPlayer = Vector2.Distance(transform.position, player.position);
@@ -209,6 +222,7 @@ public class EnemyAttackMelee : MonoBehaviour
 
         MoveToward(homePosition, moveSpeed);
     }
+
     void Attack()
     {
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
@@ -241,6 +255,7 @@ public class EnemyAttackMelee : MonoBehaviour
     {
         animator.SetBool(ParamIsMoving, moving);
     }
+
     Vector2 GetSteeringDirection(Vector2 desiredTarget)
     {
         Vector2 desiredDir = ((Vector3)desiredTarget - transform.position).normalized;
