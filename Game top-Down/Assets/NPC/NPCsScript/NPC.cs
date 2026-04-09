@@ -17,6 +17,11 @@ public class NPC : MonoBehaviour, IInteractable
             Debug.LogError("DialogueController.Instance tidak ditemukan! Pastikan ada di scene.");
     }
 
+    private movement GetPlayer()
+    {
+        return FindObjectOfType<movement>();
+    }
+
     public bool CanInteract() => true;
 
     public void Interact()
@@ -35,6 +40,7 @@ public class NPC : MonoBehaviour, IInteractable
         isDialogueActive = true;
         dialogueUI.SetNPCInfo(dialogueData.npcName, dialogueData.npcPortrait);
         dialogueUI.ShowDialogueUI(true);
+        GetPlayer()?.SetMovementLocked(true);
 
         if (questGiver != null)
         {
@@ -219,6 +225,7 @@ public class NPC : MonoBehaviour, IInteractable
         isDialogueActive = false;
         dialogueUI.SetDialogueText("");
         dialogueUI.ShowDialogueUI(false);
+        GetPlayer()?.SetMovementLocked(false);
         PauseController.SetPause(false);
     }
 }
