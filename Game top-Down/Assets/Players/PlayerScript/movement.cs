@@ -150,4 +150,19 @@ public class movement : MonoBehaviour
             animator.SetFloat("InputY", 0f);
         }
     }
+
+    public void FaceTowards(Vector2 targetPosition)
+    {
+        Vector2 dir = (targetPosition - (Vector2)transform.position);
+        float absX = Mathf.Abs(dir.x);
+        float absY = Mathf.Abs(dir.y);
+
+        if (absX > absY)
+            lastDirection = dir.x > 0 ? Vector2.right : Vector2.left;
+        else
+            lastDirection = dir.y > 0 ? Vector2.up : Vector2.down;
+
+        animator.SetFloat("LastInputX", lastDirection.x);
+        animator.SetFloat("LastInputY", lastDirection.y);
+    }
 }

@@ -38,6 +38,16 @@ public class NPC : MonoBehaviour, IInteractable
     void StartDialogue()
     {
         isDialogueActive = true;
+
+        var npcScript = GetComponent<NPCScript>();
+        var player = GetPlayer();
+
+        if (npcScript != null && player != null)
+            npcScript.StartInteraction(player.transform.position);
+
+        if (player != null)
+            player.FaceTowards(transform.position);
+
         dialogueUI.SetNPCInfo(dialogueData.npcName, dialogueData.npcPortrait);
         dialogueUI.ShowDialogueUI(true);
         GetPlayer()?.SetMovementLocked(true);
@@ -218,7 +228,7 @@ public class NPC : MonoBehaviour, IInteractable
         dialogueUI.ClearChoices();
         DisplayCurrentLine();
     }
-
+        
     public void EndDialogue()
     {
         StopAllCoroutines();
@@ -226,6 +236,7 @@ public class NPC : MonoBehaviour, IInteractable
         dialogueUI.SetDialogueText("");
         dialogueUI.ShowDialogueUI(false);
         GetPlayer()?.SetMovementLocked(false);
+        GetComponent<NPCScript>()?.StopInteraction();
         PauseController.SetPause(false);
     }
 }
