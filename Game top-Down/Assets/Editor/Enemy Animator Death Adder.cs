@@ -91,7 +91,7 @@ public class EnemyAnimatorDeathAdder : EditorWindow
 
             log += $"--- {ac.name} ({path})\n";
 
-            bool needsParam = !HasParameter(ac, "IsDead");
+            bool needsParam = !HasParameter(ac, "Die");
             bool needsState = !HasState(ac, "Death");
 
             if (!needsParam && !needsState)
@@ -103,17 +103,17 @@ public class EnemyAnimatorDeathAdder : EditorWindow
 
             if (dryRun)
             {
-                if (needsParam) log += "    → Akan tambah parameter: IsDead (Bool)\n";
+                if (needsParam) log += "    → Akan tambah parameter: Die (Trigger)\n";
                 if (needsState) log += "    → Akan tambah state: Death\n";
-                if (needsState) log += "    → Akan tambah transisi: AnyState → Death (IsDead = true)\n";
+                if (needsState) log += "    → Akan tambah transisi: AnyState → Death (Die)\n";
             }
             else
             {
                 // Tambah parameter IsDead
                 if (needsParam)
                 {
-                    ac.AddParameter("IsDead", AnimatorControllerParameterType.Bool);
-                    log += "    + Parameter IsDead (Bool) ditambahkan\n";
+                    ac.AddParameter(name: "Die", AnimatorControllerParameterType.Trigger);
+                    log += "    + Parameter Die (Trigger) ditambahkan\n";
                 }
 
                 // Tambah state Death di layer 0
@@ -135,7 +135,7 @@ public class EnemyAnimatorDeathAdder : EditorWindow
                     transition.canTransitionToSelf = false;
 
                     // Kondisi: IsDead = true
-                    transition.AddCondition(AnimatorConditionMode.If, 0, "IsDead");
+                    transition.AddCondition(AnimatorConditionMode.If, 0, "Die");
                     log += "    + Transisi AnyState → Death ditambahkan\n";
 
                     // Pindahkan transisi Death ke urutan PALING ATAS di AnyState

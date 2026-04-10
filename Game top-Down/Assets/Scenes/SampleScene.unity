@@ -547,7 +547,7 @@ MonoBehaviour:
   enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
-  deathDelay: 0.5
+  deathDelay: 1.2
   flashTime: 0.1
 --- !u!61 &36991610
 BoxCollider2D:
@@ -631,7 +631,7 @@ Animator:
   m_GameObject: {fileID: 36991605}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cc7d9f402279b00468d021cc214deb05, type: 2}
+  m_Controller: {fileID: 9100000, guid: ce95ba5b44d6b5146a72f294eff244d9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -8419,7 +8419,7 @@ MonoBehaviour:
   enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
-  deathDelay: 0.5
+  deathDelay: 1.2
   flashTime: 0.1
 --- !u!61 &573245169
 BoxCollider2D:
@@ -8503,7 +8503,7 @@ Animator:
   m_GameObject: {fileID: 573245164}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cc7d9f402279b00468d021cc214deb05, type: 2}
+  m_Controller: {fileID: 9100000, guid: ce95ba5b44d6b5146a72f294eff244d9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -11410,7 +11410,7 @@ MonoBehaviour:
   enemyID: NyetRed
   knockbackForce: 10
   knockbackTime: 0.15
-  deathDelay: 0.5
+  deathDelay: 1.2
   flashTime: 0.1
 --- !u!61 &692795449
 BoxCollider2D:
@@ -11494,7 +11494,7 @@ Animator:
   m_GameObject: {fileID: 692795444}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 76ac38355b324b34ca9551200f583ff7, type: 2}
+  m_Controller: {fileID: 9100000, guid: b1c460359b204284aa9f6c671c8cfbe8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -14056,7 +14056,7 @@ MonoBehaviour:
   enemyID: NyetRed
   knockbackForce: 10
   knockbackTime: 0.15
-  deathDelay: 0.5
+  deathDelay: 1.2
   flashTime: 0.1
 --- !u!61 &1048827800
 BoxCollider2D:
@@ -14140,7 +14140,7 @@ Animator:
   m_GameObject: {fileID: 1048827795}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 76ac38355b324b34ca9551200f583ff7, type: 2}
+  m_Controller: {fileID: 9100000, guid: b1c460359b204284aa9f6c671c8cfbe8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -15378,7 +15378,7 @@ Tilemap:
       - {fileID: -340287675, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: 1525142490, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
       - {fileID: -1211784664, guid: e4971e4c1a5a9b84aaa019933d1c05fe, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -30, y: -20, z: 0}
@@ -17819,7 +17819,7 @@ MonoBehaviour:
   enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
-  deathDelay: 0.5
+  deathDelay: 1.2
   flashTime: 0.1
 --- !u!61 &1381043727
 BoxCollider2D:
@@ -17903,7 +17903,7 @@ Animator:
   m_GameObject: {fileID: 1381043722}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cc7d9f402279b00468d021cc214deb05, type: 2}
+  m_Controller: {fileID: 9100000, guid: ce95ba5b44d6b5146a72f294eff244d9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -83768,7 +83768,7 @@ MonoBehaviour:
   enemyID: Trainer1
   knockbackForce: 11
   knockbackTime: 0.15
-  deathDelay: 2
+  deathDelay: 1.2
   flashTime: 0.2
 --- !u!61 &1848478183
 BoxCollider2D:
@@ -84036,7 +84036,7 @@ MonoBehaviour:
   enemyID: Skeletons
   knockbackForce: 10
   knockbackTime: 0.15
-  deathDelay: 0.5
+  deathDelay: 1.2
   flashTime: 0.1
 --- !u!61 &1851294562
 BoxCollider2D:
@@ -84120,7 +84120,7 @@ Animator:
   m_GameObject: {fileID: 1851294557}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cc7d9f402279b00468d021cc214deb05, type: 2}
+  m_Controller: {fileID: 9100000, guid: ce95ba5b44d6b5146a72f294eff244d9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
