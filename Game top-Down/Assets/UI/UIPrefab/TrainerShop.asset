@@ -15,4 +15,6 @@ MonoBehaviour:
   shopName: Tokber
   items:
   - itemData: {fileID: 11400000, guid: 2a5e14aac0bcdcf40ad5cf09715b0d32, type: 2}
-    stock: 93
+    stock: 89
+  - itemData: {fileID: 11400000, guid: 2a5e14aac0bcdcf40ad5cf09715b0d32, type: 2}
+    stock: 56

@@ -145,13 +145,13 @@ ScriptedImporter:
   spriteSheetImportData:
   - name: Shop stat_0
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 10
-      y: 61
+      x: 4
+      y: 64
       width: 74
       height: 46
     spriteID: 3922c8790cd45a148bcd00004eaa4e51
@@ -165,15 +165,15 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: Shop stat_1
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 11
-      y: 44
-      width: 74
-      height: 9
+      x: 85
+      y: 66
+      width: 33
+      height: 35
     spriteID: 66d16467c3af9424782b59612a5f8809
     spriteBone: []
     spriteOutline: []
@@ -185,15 +185,15 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: Shop stat_2
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 4
-      width: 37
-      height: 37
+      x: 29
+      y: 44
+      width: 74
+      height: 9
     spriteID: 26cc467897889104f9146658ba31c351
     spriteBone: []
     spriteOutline: []
@@ -205,16 +205,36 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   - name: Shop stat_3
     originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 22
+      y: 4
+      width: 37
+      height: 37
+    spriteID: e2b16d95f884a4a4e9e29aee946746e6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: Shop stat_4
+    originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 55
+      x: 73
       y: 4
       width: 37
       height: 37
-    spriteID: e2b16d95f884a4a4e9e29aee946746e6
+    spriteID: 77de355a9bf44b940b01238cb57391eb
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -240,10 +260,10 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 20
+        x: 2
         y: 11
-        width: 88
-        height: 103
+        width: 114
+        height: 106
       spriteId: 599cd7e4cbd0df24e9c98fcfd68eec9d
     linkedCells: []
     parentIndex: -1
