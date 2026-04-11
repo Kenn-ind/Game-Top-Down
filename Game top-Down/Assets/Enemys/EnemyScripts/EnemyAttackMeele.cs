@@ -3,6 +3,7 @@
 public class EnemyAttackMelee : MonoBehaviour
 {
     public Transform player;
+    AudioManage AudioManager;
 
     public float moveSpeed = 2f;
     public float chaseSpeed = 3.5f;
@@ -61,6 +62,8 @@ public class EnemyAttackMelee : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponent<Animator>();
+        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         baseEnemy = GetComponent<BaseEnemy>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();
@@ -76,6 +79,7 @@ public class EnemyAttackMelee : MonoBehaviour
             {
                 animator.SetBool(ParamIsMoving, false);
                 animator.SetBool(ParamIsAttacking, false);
+                AudioManager.PlaySFX(AudioManager.enemyDie);
                 animator.ResetTrigger(ParamDie);
                 animator.SetTrigger(ParamDie);
                 wasDeadLastFrame = true;
@@ -228,6 +232,7 @@ public class EnemyAttackMelee : MonoBehaviour
         PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
+            AudioManager.PlaySFX(AudioManager.enemyAtk);
             Vector2 direction = (player.position - transform.position).normalized;
             playerHealth.TakeDamage(damage, direction * knockbackForce);
         }

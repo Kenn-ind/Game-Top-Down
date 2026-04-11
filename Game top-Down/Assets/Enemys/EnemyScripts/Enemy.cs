@@ -19,6 +19,7 @@ public class Enemy : BaseEnemy
         if (isDead) return; // Jangan flash jika sudah mati
 
         StartCoroutine(FlashRed());
+        AudioManager.PlaySFX(AudioManager.enemyHurt);
         Debug.Log("Enemy kena hit");
         base.TakeDamage(damage, knockbackDir, applyKnockback);
     }
