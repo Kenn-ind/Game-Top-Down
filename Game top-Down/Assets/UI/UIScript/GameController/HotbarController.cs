@@ -1,5 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 
+/// <summary>
+/// Mengontrol hotbar: spawn slot, highlight, tambah/hapus item.
+/// PERUBAHAN dari versi lama:
+/// - Tidak ada perubahan logika — ItemUser yang menangani pemakaian item.
+/// - RemoveFromSelectedSlot() ditambah agar ItemUser bisa hapus item dengan mudah.
+/// </summary>
 public class HotbarController : MonoBehaviour
 {
     public GameObject hotbarPanel;
@@ -20,13 +26,11 @@ public class HotbarController : MonoBehaviour
     void Start()
     {
         slots = new HotbarSlot[slotCount];
-
         for (int i = 0; i < slotCount; i++)
         {
             GameObject slotObj = Instantiate(hotbarSlotPrefab, hotbarPanel.transform);
             slots[i] = slotObj.GetComponent<HotbarSlot>();
         }
-
         UpdateHighlight();
     }
 
@@ -53,8 +57,11 @@ public class HotbarController : MonoBehaviour
             slots[i].SetHighlight(i == selectedIndex);
     }
 
+    // ─── Tambah Item ────────────────────────────────────────────────────────────
+
     public bool AddItem(ItemData data, int count)
     {
+        // Coba stack ke slot yang sudah ada
         foreach (HotbarSlot slot in slots)
         {
             if (slot.currentItem == null) continue;
@@ -71,6 +78,7 @@ public class HotbarController : MonoBehaviour
             }
         }
 
+        // Slot kosong
         foreach (HotbarSlot slot in slots)
         {
             if (slot.currentItem == null)
@@ -88,19 +96,16 @@ public class HotbarController : MonoBehaviour
     {
         GameObject item = Instantiate(itemPrefab, slot.transform);
         item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-
         ItemUI itemUI = item.GetComponent<ItemUI>();
         itemUI.itemData = data;
         itemUI.stackCount = count;
         itemUI.UpdateUI();
-
         slot.currentItem = item;
     }
 
-    public HotbarSlot GetSelectedSlot()
-    {
-        return slots[selectedIndex];
-    }
+    // ─── Akses Slot ─────────────────────────────────────────────────────────────
+
+    public HotbarSlot GetSelectedSlot() => slots[selectedIndex];
 
     public ItemUI GetSelectedItem()
     {
@@ -108,4 +113,19 @@ public class HotbarController : MonoBehaviour
         if (slot.currentItem == null) return null;
         return slot.currentItem.GetComponent<ItemUI>();
     }
+
+    /// <summary>
+    /// Hapus item dari slot yang sedang dipilih (dipanggil oleh ItemUser setelah pakai).
+    /// </summary>
+    public void RemoveFromSelectedSlot()
+    {
+        HotbarSlot slot = GetSelectedSlot();
+        if (slot.currentItem != null)
+        {
+            Object.Destroy(slot.currentItem);
+            slot.currentItem = null;
+        }
+    }
+
+    public HotbarSlot[] GetSlots() => slots;
 }

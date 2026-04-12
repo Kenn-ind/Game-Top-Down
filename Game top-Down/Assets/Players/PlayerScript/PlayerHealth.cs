@@ -9,7 +9,6 @@ public class PlayerHealth : MonoBehaviour
     private int currentHealth;
     private Rigidbody2D rb;
     public bool isKnockback;
-
     public Sprite[] healthFrames;
     public Image healthImage;
     private int _currentFrame = 0;
@@ -17,6 +16,8 @@ public class PlayerHealth : MonoBehaviour
     private PlayerStats _stats;
     private PlayerUlt _ult;
 
+    // ── Property baru: cek dari luar tanpa expose currentHealth langsung ─────────
+    public bool IsFullHealth => currentHealth >= maxHealth;
 
     void Start()
     {
@@ -31,7 +32,6 @@ public class PlayerHealth : MonoBehaviour
     public void TakeDamage(int damage, Vector2 knockback)
     {
         if (_ult != null) _ult.CancelCharge();
-
         int finalDamage = _stats != null ? _stats.CalculateDamage(damage) : damage;
         currentHealth -= finalDamage;
         currentHealth = Mathf.Max(currentHealth, 0);

@@ -16,3 +16,7 @@ MonoBehaviour:
   icon: {fileID: 790771988, guid: f473e8329f95e234ea4259c39ba56f57, type: 3}
   maxStack: 5
   itemID: Stamina_Potion
+  isFree: 0
+  price: 0
+  sellPrice: 0
+  itemPrefab: {fileID: 3494702439178546717, guid: 279dc747a5fd75543a1eb8be16910880, type: 3}
