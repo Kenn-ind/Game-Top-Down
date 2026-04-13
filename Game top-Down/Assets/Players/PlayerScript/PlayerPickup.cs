@@ -11,7 +11,6 @@ public class PlayerPickup : MonoBehaviour
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position, pickupRadius, itemLayer
         );
-
         foreach (Collider2D hit in hits)
         {
             WorldItem worldItem = hit.GetComponent<WorldItem>();
@@ -20,6 +19,8 @@ public class PlayerPickup : MonoBehaviour
                 bool picked = inventory.AddItem(worldItem.itemData, worldItem.stackCount);
                 if (picked)
                 {
+                    ItemPickupPopup.Instance?.Show(worldItem.itemData, worldItem.stackCount);
+
                     Destroy(hit.gameObject);
                     QuestManager.Instance?.ReportCollect(worldItem.itemData.itemID);
                 }

@@ -93,8 +93,18 @@ public class QuestManager : MonoBehaviour
 
         if (quest.rewardItemPrefab != null)
         {
-            for (int i = 0; i < quest.rewardItemAmount; i++)
-                Instantiate(quest.rewardItemPrefab, playerTransform.position, Quaternion.identity);
+            WorldItem worldItem = quest.rewardItemPrefab.GetComponent<WorldItem>();
+            if (worldItem != null && inventory != null)
+            {
+                inventory.AddItem(worldItem.itemData, quest.rewardItemAmount);
+
+                ItemPickupPopup.Instance?.Show(worldItem.itemData, quest.rewardItemAmount);
+            }
+            else
+            {
+                for (int i = 0; i < quest.rewardItemAmount; i++)
+                    Instantiate(quest.rewardItemPrefab, playerTransform.position, Quaternion.identity);
+            }
         }
 
         turnedInQuests.Add(quest);
