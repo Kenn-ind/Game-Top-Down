@@ -23,6 +23,8 @@ public class AudioManage : MonoBehaviour
     public AudioClip enemyHurt;
     public AudioClip enemyAtk;
     public AudioClip enemyDie;
+    public AudioClip DashSfx;
+    public AudioClip DialogSfx;
 
     [Header("Fade Settings")]
     [SerializeField] float fadeDuration = 1.5f;

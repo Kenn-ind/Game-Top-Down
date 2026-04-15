@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class movement : MonoBehaviour
 {
+    AudioManage AudioManager;
+
     [SerializeField] private float speed = 5f;
     private Rigidbody2D rb;
     private Vector2 moveInput;
@@ -14,6 +16,7 @@ public class movement : MonoBehaviour
     private PlayerHealth playerHealth;
     private PlayerStamina _stamina;
     private PlayerUlt _ult;
+    
 
     public float dashSpeed = 15f;
     public float dashDuration = 0.15f;
@@ -33,6 +36,7 @@ public class movement : MonoBehaviour
 
     void Start()
     {
+        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerAttack = GetComponent<PlayerAttack>();
@@ -67,6 +71,7 @@ public class movement : MonoBehaviour
             }
             else
             {
+                AudioManager.PlaySFX(AudioManager.DashSfx);
                 StartCoroutine(DoDash());
             }
             return;

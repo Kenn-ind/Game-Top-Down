@@ -166336,6 +166336,16 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
+  - first: {x: 0, y: 0, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 6
+      m_TileSpriteIndex: 6
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: 1, y: 0, z: 0}
     second:
       serializedVersion: 2
@@ -185710,7 +185720,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 1028be34ed2177c4493094d72b07efbc, type: 2}
   - m_RefCount: 23
     m_Data: {fileID: 11400000, guid: 9eeb2718a7d2d9c40933d14ef0ce56dc, type: 2}
-  - m_RefCount: 123
+  - m_RefCount: 124
     m_Data: {fileID: 11400000, guid: 9d7f453fcf9391243a9cf1d9629ff34b, type: 2}
   - m_RefCount: 55
     m_Data: {fileID: 11400000, guid: 769b2c362f30d3a4ebc3a6c4581408f7, type: 2}
@@ -186107,7 +186117,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 23
     m_Data: {fileID: 303936726, guid: 26aff99c1f3261341aaacb6a082e6ba1, type: 3}
-  - m_RefCount: 123
+  - m_RefCount: 124
     m_Data: {fileID: 1355335461, guid: 26aff99c1f3261341aaacb6a082e6ba1, type: 3}
   - m_RefCount: 55
     m_Data: {fileID: -1320137797, guid: 26aff99c1f3261341aaacb6a082e6ba1, type: 3}
@@ -186490,7 +186500,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: 1657989271, guid: d05bd7dfefb079e4cba4320160f701d3, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 11158
+  - m_RefCount: 11159
     m_Data:
       e00: 1
       e01: 0
@@ -186509,7 +186519,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 11158
+  - m_RefCount: 11159
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -188179,6 +188189,8 @@ MonoBehaviour:
   enemyHurt: {fileID: 8300000, guid: 8d4209cd92d9ec440b2956007d693f28, type: 3}
   enemyAtk: {fileID: 8300000, guid: 8ca0cb7da44cdec4aafe03bd072f2a11, type: 3}
   enemyDie: {fileID: 8300000, guid: b94cf564d10596146bfb0c9b2b0359fd, type: 3}
+  DashSfx: {fileID: 8300000, guid: 7c069a4b7c1b3b54c8e7f9812eb6a253, type: 3}
+  DialogSfx: {fileID: 0}
   fadeDuration: 1.2
   targetVolume: 0.55
 --- !u!4 &1802358682
