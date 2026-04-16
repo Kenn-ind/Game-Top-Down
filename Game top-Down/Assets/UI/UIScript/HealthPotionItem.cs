@@ -1,12 +1,7 @@
 using UnityEngine;
 
-/// <summary>
-/// Taruh script ini di Prefab HealthPotion.
-/// Lalu assign prefab tersebut ke field itemPrefab di ItemData HealthPotion.
-/// </summary>
 public class HealthPotionItem : MonoBehaviour, IUsable
-{
-    [Header("Pengaturan")]
+{   
     public int healAmount = 3;
     public GameObject useEffectPrefab;
 
@@ -14,7 +9,7 @@ public class HealthPotionItem : MonoBehaviour, IUsable
     {
         PlayerHealth health = user.GetComponent<PlayerHealth>();
         if (health == null) return false;
-        return !health.IsFullHealth; // tidak bisa dipakai jika HP sudah penuh
+        return !health.IsFullHealth;
     }
 
     public void Use(GameObject user)
@@ -25,10 +20,21 @@ public class HealthPotionItem : MonoBehaviour, IUsable
             Debug.LogWarning("[HealthPotion] PlayerHealth tidak ditemukan!");
             return;
         }
+
         health.Heal(healAmount);
         Debug.Log($"[HealthPotion] Memulihkan {healAmount} HP.");
 
         if (useEffectPrefab != null)
-            Instantiate(useEffectPrefab, user.transform.position, Quaternion.identity);
+        {
+            GameObject effect = Instantiate(
+                useEffectPrefab,
+                user.transform.position,
+                Quaternion.identity
+            );
+
+            effect.transform.SetParent(user.transform);
+
+            Destroy(effect, 2f);
+        }
     }
 }

@@ -151,4 +151,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   restoreAmount: 3
-  useEffectPrefab: {fileID: 0}
+  useEffectPrefab: {fileID: 3621697223486347251, guid: c5a60c434b5249b4797cd4c65edc3643, type: 3}

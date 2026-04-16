@@ -151,4 +151,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healAmount: 3
-  useEffectPrefab: {fileID: 0}
+  useEffectPrefab: {fileID: 3621697223486347251, guid: e477fbfbb64cd884781fedf3e69d76e4, type: 3}

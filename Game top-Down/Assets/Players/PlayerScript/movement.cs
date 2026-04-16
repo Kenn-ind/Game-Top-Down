@@ -16,7 +16,12 @@ public class movement : MonoBehaviour
     private PlayerHealth playerHealth;
     private PlayerStamina _stamina;
     private PlayerUlt _ult;
-    
+
+    [Header("Dust Particle")]
+    public GameObject dustParticlePrefab;
+    public Transform dustSpawnPoint;
+    public float stepInterval = 0.3f;
+    private float _stepTimer;
 
     public float dashSpeed = 15f;
     public float dashDuration = 0.15f;
@@ -87,6 +92,43 @@ public class movement : MonoBehaviour
             rb.velocity = moveInput * speed;
             animator.SetBool("IsWalking", moveInput != Vector2.zero);
         }
+
+        // Spawn dust saat berjalan (bukan saat dash)
+        HandleDustParticle();
+    }
+
+    void HandleDustParticle()
+    {
+        bool isMoving = moveInput != Vector2.zero;
+        bool isAttacking = playerAttack != null && playerAttack.IsAttacking();
+
+        if (isMoving && !isAttacking)
+        {
+            _stepTimer -= Time.deltaTime;
+            if (_stepTimer <= 0f)
+            {
+                SpawnDust();
+                _stepTimer = stepInterval;
+            }
+        }
+        else
+        {
+            _stepTimer = 0f; // reset agar langsung spawn begitu jalan lagi
+        }
+    }
+
+    void SpawnDust()
+    {
+        if (dustParticlePrefab == null) return;
+
+        // Gunakan dustSpawnPoint kalau ada, fallback ke posisi player
+        Vector3 spawnPos = dustSpawnPoint != null ? dustSpawnPoint.position : transform.position;
+
+        // Spawn sedikit di belakang arah gerak agar terlihat natural
+        spawnPos += (Vector3)(-moveInput.normalized * 0.1f);
+
+        GameObject dust = Instantiate(dustParticlePrefab, spawnPos, Quaternion.Euler(-90f, 0f, 0f));
+        Destroy(dust, 1.2f);
     }
 
     IEnumerator DoDash()
@@ -144,6 +186,7 @@ public class movement : MonoBehaviour
         animator.SetFloat("InputX", moveInput.x);
         animator.SetFloat("InputY", moveInput.y);
     }
+
     public void SetMovementLocked(bool locked)
     {
         _isLocked = locked;

@@ -28,7 +28,16 @@ public class StaminaPotionItem : MonoBehaviour, IUsable
         stamina.RestoreStamina(restoreAmount);
         Debug.Log($"[StaminaPotion] Memulihkan {restoreAmount} Stamina.");
 
-        if (useEffectPrefab != null)
-            Instantiate(useEffectPrefab, user.transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(
+
+            useEffectPrefab,
+            user.transform.position,
+            Quaternion.identity
+
+        );
+
+        effect.transform.SetParent(user.transform);
+        Destroy(effect, 2f);
+
     }
 }
