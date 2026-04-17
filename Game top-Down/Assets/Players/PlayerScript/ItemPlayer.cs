@@ -1,10 +1,5 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Taruh script ini di GameObject PLAYER.
-/// HotbarController boleh ada di tempat lain (Canvas/HotbarPanel),
-/// karena diambil lewat HotbarController.Instance.
-/// </summary>
 public class ItemPlayer : MonoBehaviour
 {
     void Update()
@@ -13,10 +8,6 @@ public class ItemPlayer : MonoBehaviour
             UseSelectedItem();
     }
 
-    /// <summary>
-    /// Gunakan item dari slot hotbar yang sedang dipilih.
-    /// Bisa juga dipanggil dari UI Button.
-    /// </summary>
     public void UseSelectedItem()
     {
         if (HotbarController.Instance == null)
@@ -36,23 +27,18 @@ public class ItemPlayer : MonoBehaviour
         UseItem(itemUI);
     }
 
-    /// <summary>
-    /// Gunakan item dari ItemUI tertentu.
-    /// </summary>
     public void UseItem(ItemUI itemUI)
     {
         if (itemUI == null || itemUI.itemData == null) return;
 
         ItemData data = itemUI.itemData;
 
-        // Cek prefab
         if (data.itemPrefab == null)
         {
             Debug.Log($"[ItemUser] '{data.itemName}' tidak punya itemPrefab, tidak bisa digunakan.");
             return;
         }
 
-        // Cari IUsable di prefab
         IUsable usable = data.itemPrefab.GetComponent<IUsable>();
         if (usable == null)
         {
@@ -60,7 +46,6 @@ public class ItemPlayer : MonoBehaviour
             return;
         }
 
-        // Cek kondisi (misal HP sudah penuh)
         if (!usable.CanUse(gameObject))
         {
             Debug.Log($"[ItemUser] '{data.itemName}' tidak bisa digunakan sekarang.");

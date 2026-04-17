@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class QuestGiver : MonoBehaviour
 {
@@ -27,7 +27,8 @@ public class QuestGiver : MonoBehaviour
     {
         if (QuestManager.Instance.IsActive(quest) ||
             QuestManager.Instance.IsTurnedIn(quest)) return;
-        QuestManager.Instance.AcceptQuest(quest);
+
+        QuestManager.Instance.AcceptQuest(quest, inventory);
     }
 
     public void TryTurnIn()

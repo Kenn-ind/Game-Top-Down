@@ -26,12 +26,40 @@ public class QuestManager : MonoBehaviour
         return activeQuests.TryGetValue(quest, out int val) ? val : 0;
     }
 
-    public void AcceptQuest(QuestData quest)
+    public void AcceptQuest(QuestData quest, InventoryController inventory = null)
     {
         if (IsActive(quest) || IsCompleted(quest) || IsTurnedIn(quest)) return;
+
         activeQuests[quest] = 0;
         Debug.Log($"Quest diterima: {quest.questName}");
-        QuestUI.Instance?.ShowTracker(quest, 0);
+
+        if (quest.questType == QuestType.Collect && inventory != null)
+        {
+            int existingCount = 0;
+            foreach (Slot slot in inventory.GetSlots())
+            {
+                if (slot.currentItem == null) continue;
+                ItemUI itemUI = slot.currentItem.GetComponent<ItemUI>();
+                if (itemUI != null && itemUI.itemData.itemID == quest.targetID)
+                    existingCount += itemUI.stackCount;
+            }
+
+            if (existingCount > 0)
+            {
+                int progress = Mathf.Min(existingCount, quest.requiredAmount);
+                activeQuests[quest] = progress;
+                Debug.Log($"Item sudah ada di inventory: {progress}/{quest.requiredAmount}");
+                QuestUI.Instance?.ShowTracker(quest, progress);
+
+                if (progress >= quest.requiredAmount)
+                {
+                    CompleteQuest(quest);
+                    return;
+                }
+            }
+        }
+
+        QuestUI.Instance?.ShowTracker(quest, activeQuests[quest]);
     }
 
     public void ReportKill(string enemyID) => Report(QuestType.Kill, enemyID);
@@ -42,9 +70,7 @@ public class QuestManager : MonoBehaviour
     void Report(QuestType type, string id)
     {
         Debug.Log($"Report dipanggil: type={type}, id={id}, activeQuests={activeQuests.Count}");
-
         List<QuestData> toUpdate = new List<QuestData>();
-
         foreach (var kv in activeQuests)
         {
             if (kv.Key.questType == type && kv.Key.targetID == id)
@@ -52,13 +78,12 @@ public class QuestManager : MonoBehaviour
         }
 
         List<QuestData> toComplete = new List<QuestData>();
-
         foreach (QuestData q in toUpdate)
         {
             activeQuests[q]++;
+            activeQuests[q] = Mathf.Min(activeQuests[q], q.requiredAmount);
             Debug.Log($"Progress {q.questName}: {activeQuests[q]}/{q.requiredAmount}");
             QuestUI.Instance?.ShowTracker(q, activeQuests[q]);
-
             if (activeQuests[q] >= q.requiredAmount)
                 toComplete.Add(q);
         }
