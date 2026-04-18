@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
@@ -8,8 +8,12 @@ public class QuestManager : MonoBehaviour
     private Dictionary<QuestData, int> activeQuests = new Dictionary<QuestData, int>();
     private HashSet<QuestData> completedQuests = new HashSet<QuestData>();
     private HashSet<QuestData> turnedInQuests = new HashSet<QuestData>();
+    private QuestData trackedQuest = null;
 
     public Dictionary<QuestData, int> GetActiveQuests() => activeQuests;
+    public HashSet<QuestData> GetCompletedQuests() => completedQuests;
+    public HashSet<QuestData> GetTurnedInQuests() => turnedInQuests;
+    public QuestData GetTrackedQuest() => trackedQuest;
 
     void Awake()
     {
@@ -24,6 +28,23 @@ public class QuestManager : MonoBehaviour
     public int GetProgress(QuestData quest)
     {
         return activeQuests.TryGetValue(quest, out int val) ? val : 0;
+    }
+
+    public void SetTrackedQuest(QuestData quest)
+    {
+        trackedQuest = quest;
+        QuestUI.Instance?.RefreshTracker();
+        QuestLogUI.Instance?.RefreshLog();
+    }
+
+    void OpenQuestTab()
+    {
+        MenuController menu = FindObjectOfType<MenuController>();
+        if (menu != null && !menu.menuCanvas.activeSelf)
+            menu.menuCanvas.SetActive(true);
+
+        TabController tab = FindObjectOfType<TabController>();
+        tab?.ActivateTab(3); // index 3 = QuestTab
     }
 
     public void AcceptQuest(QuestData quest, InventoryController inventory = null)
@@ -43,23 +64,23 @@ public class QuestManager : MonoBehaviour
                 if (itemUI != null && itemUI.itemData.itemID == quest.targetID)
                     existingCount += itemUI.stackCount;
             }
-
             if (existingCount > 0)
             {
                 int progress = Mathf.Min(existingCount, quest.requiredAmount);
                 activeQuests[quest] = progress;
-                Debug.Log($"Item sudah ada di inventory: {progress}/{quest.requiredAmount}");
-                QuestUI.Instance?.ShowTracker(quest, progress);
-
                 if (progress >= quest.requiredAmount)
                 {
+                    SetTrackedQuest(quest);
+                    OpenQuestTab();
                     CompleteQuest(quest);
                     return;
                 }
             }
         }
 
-        QuestUI.Instance?.ShowTracker(quest, activeQuests[quest]);
+        SetTrackedQuest(quest);
+        OpenQuestTab();
+        QuestUI.Instance?.RefreshTracker();
     }
 
     public void ReportKill(string enemyID) => Report(QuestType.Kill, enemyID);
@@ -69,27 +90,20 @@ public class QuestManager : MonoBehaviour
 
     void Report(QuestType type, string id)
     {
-        Debug.Log($"Report dipanggil: type={type}, id={id}, activeQuests={activeQuests.Count}");
         List<QuestData> toUpdate = new List<QuestData>();
         foreach (var kv in activeQuests)
-        {
             if (kv.Key.questType == type && kv.Key.targetID == id)
                 toUpdate.Add(kv.Key);
-        }
 
         List<QuestData> toComplete = new List<QuestData>();
         foreach (QuestData q in toUpdate)
         {
-            activeQuests[q]++;
-            activeQuests[q] = Mathf.Min(activeQuests[q], q.requiredAmount);
-            Debug.Log($"Progress {q.questName}: {activeQuests[q]}/{q.requiredAmount}");
-            QuestUI.Instance?.ShowTracker(q, activeQuests[q]);
-            if (activeQuests[q] >= q.requiredAmount)
-                toComplete.Add(q);
+            activeQuests[q] = Mathf.Min(activeQuests[q] + 1, q.requiredAmount);
+            if (q == trackedQuest) QuestUI.Instance?.RefreshTracker();
+            QuestLogUI.Instance?.RefreshLog();
+            if (activeQuests[q] >= q.requiredAmount) toComplete.Add(q);
         }
-
-        foreach (QuestData q in toComplete)
-            CompleteQuest(q);
+        foreach (QuestData q in toComplete) CompleteQuest(q);
     }
 
     void CompleteQuest(QuestData quest)
@@ -97,8 +111,16 @@ public class QuestManager : MonoBehaviour
         activeQuests.Remove(quest);
         completedQuests.Add(quest);
         Debug.Log($"Quest selesai: {quest.questName}");
-        QuestUI.Instance?.HideTracker(quest);
+
+        if (trackedQuest == quest)
+        {
+            trackedQuest = null;
+            foreach (var kv in activeQuests) { trackedQuest = kv.Key; break; }
+        }
+
+        QuestUI.Instance?.RefreshTracker();
         QuestUI.Instance?.ShowCompleteNotif(quest.questName);
+        QuestLogUI.Instance?.RefreshLog();
     }
 
     public bool TryTurnIn(QuestData quest, Transform playerTransform, InventoryController inventory)
@@ -109,11 +131,7 @@ public class QuestManager : MonoBehaviour
         if (quest.questType == QuestType.Collect && inventory != null)
         {
             bool removed = inventory.RemoveItemByID(quest.targetID, quest.requiredAmount);
-            if (!removed)
-            {
-                Debug.Log("Item tidak cukup di inventory!");
-                return false;
-            }
+            if (!removed) { Debug.Log("Item tidak cukup!"); return false; }
         }
 
         if (quest.rewardItemPrefab != null)
@@ -122,7 +140,6 @@ public class QuestManager : MonoBehaviour
             if (worldItem != null && inventory != null)
             {
                 inventory.AddItem(worldItem.itemData, quest.rewardItemAmount);
-
                 ItemPickupPopup.Instance?.Show(worldItem.itemData, quest.rewardItemAmount);
             }
             else
@@ -133,6 +150,7 @@ public class QuestManager : MonoBehaviour
         }
 
         turnedInQuests.Add(quest);
+        QuestLogUI.Instance?.RefreshLog();
         Debug.Log($"Reward diberikan: {quest.questName}");
         return true;
     }
