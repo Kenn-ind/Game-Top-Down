@@ -43,9 +43,9 @@ public class QuestUI : MonoBehaviour
         if (tracked != null && active.ContainsKey(tracked))
         {
             int cur = active[tracked];
-            string arrow = active.Count > 1 ? " \u25BC" : ""; // ▼ jika >1 quest
+            string arrow = active.Count > 1 ? " \u25BC" : "";
             trackerText.text = $"{tracked.questName}{arrow}\n{cur} / {tracked.requiredAmount}";
-            trackerPanel.SetActive(true);
+            SetTrackerVisible(true);  // ← pakai ini
         }
         else if (active.Count > 0)
         {
@@ -54,13 +54,15 @@ public class QuestUI : MonoBehaviour
         }
         else
         {
-            trackerPanel.SetActive(false);
+            SetTrackerVisible(false); // ← pakai ini
         }
     }
 
     public void ToggleQuestSelectPanel()
     {
+        Debug.Log("Tombol diklik!");  // ← tambah ini
         var active = QuestManager.Instance.GetActiveQuests();
+        Debug.Log($"Quest aktif: {active.Count}");  // ← dan ini
         if (active.Count <= 1) { questSelectPanel?.SetActive(false); return; }
 
         bool isOpen = questSelectPanel.activeSelf;
@@ -95,6 +97,17 @@ public class QuestUI : MonoBehaviour
         completeText.text = $"Quest Selesai!\n{questName}";
         completePanel.SetActive(true);
         StartCoroutine(HideAfter(completePanel, 2.5f));
+    }
+
+    void SetTrackerVisible(bool visible)
+    {
+        trackerPanel.SetActive(visible);
+
+        if (trackerButton != null)
+        {
+            var active = QuestManager.Instance.GetActiveQuests();
+            trackerButton.gameObject.SetActive(visible && active.Count > 1);
+        }
     }
 
     IEnumerator HideAfter(GameObject panel, float seconds)
