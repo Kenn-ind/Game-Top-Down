@@ -59,6 +59,7 @@ public class InventoryController : MonoBehaviour
 
     public bool AddItem(ItemData data, int count)
     {
+        // 1. Coba stack ke slot yang sudah ada dulu
         foreach (Slot slot in slots)
         {
             if (slot.currentItem == null) continue;
@@ -76,16 +77,32 @@ public class InventoryController : MonoBehaviour
                 }
             }
         }
-        foreach (Slot slot in slots)
+
+        // 2. Sisa count dipecah ke slot kosong sesuai maxStack
+        while (count > 0)
         {
-            if (slot.currentItem == null)
+            Slot emptySlot = null;
+            foreach (Slot slot in slots)
             {
-                SpawnItem(slot, data, count);
-                return true;
+                if (slot.currentItem == null)
+                {
+                    emptySlot = slot;
+                    break;
+                }
             }
+
+            if (emptySlot == null)
+            {
+                Debug.Log($"Inventory penuh! Sisa item tidak bisa masuk: {count}");
+                return false;
+            }
+
+            int spawnCount = Mathf.Min(count, data.maxStack);
+            SpawnItem(emptySlot, data, spawnCount);
+            count -= spawnCount;
         }
-        Debug.Log("Inventory penuh!");
-        return false;
+
+        return true;
     }
 
     public bool RemoveItemByID(string itemID, int amount)

@@ -17,28 +17,49 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Hanya proses shift + klik kiri
         if (eventData.button != PointerEventData.InputButton.Left) return;
         if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)) return;
 
-        ChestController openChest = ChestController.CurrentOpenChest;
-        if (openChest == null) return; // Chest tidak sedang terbuka, abaikan
+        // ── Guard: jika item sedang di hotbar, abaikan shift+click ──────
+        HotbarSlot hotbarSlot = transform.parent.GetComponent<HotbarSlot>();
+        if (hotbarSlot != null) return;
 
-        ChestUI chestUI = openChest.chestUI;
         Slot thisSlot = transform.parent.GetComponent<Slot>();
         if (thisSlot == null) return;
 
+        bool chestIsOpen = ChestController.CurrentOpenChest != null;
         bool isChestSlot = thisSlot.CompareTag("ChestSlot");
 
-        if (isChestSlot)
+        if (chestIsOpen)
         {
-            // Item ada di chest → pindah ke inventory
-            chestUI.ShiftClickFromChest(thisSlot);
+            ChestUI chestUI = ChestController.CurrentOpenChest.chestUI;
+
+            if (isChestSlot)
+                chestUI.ShiftClickFromChest(thisSlot);
+            else
+                chestUI.ShiftClickFromInventory(thisSlot);
         }
         else
         {
-            // Item ada di inventory → pindah ke chest
-            chestUI.ShiftClickFromInventory(thisSlot);
+            if (isChestSlot) return;
+
+            ItemUI itemUI = GetComponent<ItemUI>();
+            if (itemUI == null || itemUI.itemData == null) return;
+
+            bool added = HotbarController.Instance.AddItem(itemUI.itemData, itemUI.stackCount);
+            if (added)
+            {
+                Slot slot = transform.parent.GetComponent<Slot>();
+                if (slot != null)
+                {
+                    Object.Destroy(slot.currentItem);
+                    slot.currentItem = null;
+                }
+            }
+            else
+            {
+                Debug.Log("[ShiftClick] Hotbar penuh!");
+            }
         }
     }
 

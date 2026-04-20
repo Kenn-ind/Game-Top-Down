@@ -27,6 +27,8 @@ public class ChestController : MonoBehaviour
     private List<ChestData.ChestItem> runtimeItems;
     public List<ChestData.ChestItem> GetRuntimeItems() => runtimeItems;
 
+    public static bool IsChestOpen => CurrentOpenChest != null;
+
     public static ChestController CurrentOpenChest { get; private set; }
 
     void Start()

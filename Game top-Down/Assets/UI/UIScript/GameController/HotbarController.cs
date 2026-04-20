@@ -61,7 +61,7 @@ public class HotbarController : MonoBehaviour
 
     public bool AddItem(ItemData data, int count)
     {
-        // Coba stack ke slot yang sudah ada
+        // 1. Coba stack ke slot yang sudah ada
         foreach (HotbarSlot slot in slots)
         {
             if (slot.currentItem == null) continue;
@@ -71,25 +71,40 @@ public class HotbarController : MonoBehaviour
                 int space = data.maxStack - itemUI.stackCount;
                 if (space > 0)
                 {
-                    itemUI.stackCount += Mathf.Min(space, count);
+                    int add = Mathf.Min(space, count);
+                    itemUI.stackCount += add;
                     itemUI.UpdateUI();
-                    return true;
+                    count -= add;
+                    if (count <= 0) return true;
                 }
             }
         }
 
-        // Slot kosong
-        foreach (HotbarSlot slot in slots)
+        // 2. Sisa count dipecah ke slot kosong sesuai maxStack
+        while (count > 0)
         {
-            if (slot.currentItem == null)
+            HotbarSlot emptySlot = null;
+            foreach (HotbarSlot slot in slots)
             {
-                SpawnItem(slot, data, count);
-                return true;
+                if (slot.currentItem == null)
+                {
+                    emptySlot = slot;
+                    break;
+                }
             }
+
+            if (emptySlot == null)
+            {
+                Debug.Log("Hotbar penuh!");
+                return false;
+            }
+
+            int spawnCount = Mathf.Min(count, data.maxStack);
+            SpawnItem(emptySlot, data, spawnCount);
+            count -= spawnCount;
         }
 
-        Debug.Log("Hotbar penuh!");
-        return false;
+        return true;
     }
 
     void SpawnItem(HotbarSlot slot, ItemData data, int count)
