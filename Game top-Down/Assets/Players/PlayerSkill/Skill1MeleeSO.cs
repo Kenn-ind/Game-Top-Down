@@ -16,6 +16,8 @@ public class Skill1MeleeSO : SkillActionSO
     private PlayerSkillState _skillState;
     private AudioManage _audio;
     private MonoBehaviour _runner;
+    public SkillUpgradeData upgradeData;
+
 
     public override void Initialize(GameObject player)
     {
@@ -62,7 +64,7 @@ public class Skill1MeleeSO : SkillActionSO
                     if (enemy != null && !hitEnemies.Contains(enemy))
                     {
                         _audio.PlaySFX(_audio.S1Sword);
-                        enemy.TakeDamage(_stats.attackDamage, Vector2.zero, false);
+                        enemy.TakeDamage(_stats.attackDamage + (upgradeData != null ? upgradeData.meleeDamageBonus : 0), Vector2.zero, false);
                         hitEnemies.Add(enemy);
                     }
                 }

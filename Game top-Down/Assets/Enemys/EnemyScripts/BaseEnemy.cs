@@ -1,24 +1,24 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class BaseEnemy : MonoBehaviour
 {
     protected AudioManage AudioManager;
-
     public int maxHealth = 5;
     protected int currentHealth;
-
     public string enemyID = "";
     public float knockbackForce = 10f;
     public float knockbackTime = 0.15f;
 
+    [Header("XP Settings")]
+    public int xpReward = 30; // ← XP yang diberikan saat mati
+
     [Header("Death Settings")]
     public float deathDelay = 0.5f;
-
     protected bool isDead = false;
+
     protected Animator animator;
     private Rigidbody2D rb;
-
     private static readonly int ParamDie = Animator.StringToHash("Die");
 
     protected virtual void Start()
@@ -43,15 +43,12 @@ public class BaseEnemy : MonoBehaviour
     public virtual void TakeDamage(int damage, Vector2 knockbackDir, bool applyKnockback = false)
     {
         if (isDead) return;
-
         currentHealth -= damage;
-
         if (applyKnockback)
         {
             AudioManager.PlaySFX(AudioManager.enemyHurt);
             StartCoroutine(Knockback(knockbackDir));
         }
-
         if (currentHealth <= 0)
         {
             Die();
@@ -71,25 +68,25 @@ public class BaseEnemy : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        // Stop movement
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
 
-        // Disable collider agar tidak bisa kena hit lagi
         Collider2D col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        // Trigger animasi death
         if (animator != null)
             animator.SetTrigger(ParamDie);
 
-        // Reward & quest sebelum destroy
+        // ← Berikan XP ke player
+        PlayerLevel playerLevel = FindObjectOfType<PlayerLevel>();
+        if (playerLevel != null)
+            playerLevel.AddXP(xpReward);
+
         PlayerUlt playerUlt = FindObjectOfType<PlayerUlt>();
         if (playerUlt != null)
             playerUlt.OnEnemyKilled();
 
         QuestManager.Instance?.ReportKill(enemyID);
-
         StartCoroutine(DestroyAfterDelay());
     }
 
