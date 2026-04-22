@@ -137,7 +137,7 @@ public class PlayerAttack : MonoBehaviour
 
         Shuriken shurikenScript = shuriken.GetComponent<Shuriken>();
         if (shurikenScript != null)
-            shurikenScript.stats = _stats;
+            shurikenScript.Init(_stats, null, false);
 
         Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
         if (rb != null) rb.velocity = direction * shurikenSpeed;

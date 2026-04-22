@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Skill2RangeSO", menuName = "Skills/Skill2/Range")]
@@ -10,6 +10,7 @@ public class Skill2RangeSO : SkillActionSO
     public float shurikenLifetime = 2f;
     public float fireDelay = 0.1f;
     public float detectRadius = 8f;
+    public SkillUpgradeData upgradeData;
 
     private GameObject _player;
     private PlayerStats _stats;
@@ -41,14 +42,19 @@ public class Skill2RangeSO : SkillActionSO
             if (target == null) break;
 
             _audio.PlaySFX(_audio.S2Shu);
+
             Vector2 direction = (target.transform.position - _player.transform.position).normalized;
-            GameObject shuriken = Object.Instantiate(shurikenPrefab, _player.transform.position, Quaternion.identity);
+
+            GameObject shuriken = Object.Instantiate(
+                shurikenPrefab, _player.transform.position, Quaternion.identity);
 
             Shuriken shurikenScript = shuriken.GetComponent<Shuriken>();
-            if (shurikenScript != null) shurikenScript.stats = _stats;
+            if (shurikenScript != null)
+                shurikenScript.Init(_stats, upgradeData, isRangeSkill: true);
 
             Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
             if (rb != null) rb.velocity = direction * shurikenSpeed;
+
             Object.Destroy(shuriken, shurikenLifetime);
 
             yield return new WaitForSeconds(fireDelay);
@@ -65,7 +71,11 @@ public class Skill2RangeSO : SkillActionSO
         foreach (BaseEnemy enemy in enemies)
         {
             float dist = Vector2.Distance(_player.transform.position, enemy.transform.position);
-            if (dist < shortest && dist <= detectRadius) { shortest = dist; nearest = enemy.gameObject; }
+            if (dist < shortest && dist <= detectRadius)
+            {
+                shortest = dist;
+                nearest = enemy.gameObject;
+            }
         }
         return nearest;
     }

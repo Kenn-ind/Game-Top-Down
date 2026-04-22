@@ -18,3 +18,4 @@ MonoBehaviour:
   shurikenLifetime: 2
   fireDelay: 0.1
   detectRadius: 8
+  upgradeData: {fileID: 11400000, guid: 7cd0ed84511bb40408d43559ce73c90f, type: 2}

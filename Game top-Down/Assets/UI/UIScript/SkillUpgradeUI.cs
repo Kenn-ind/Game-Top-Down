@@ -113,14 +113,20 @@ public class SkillUpgradeUI : MonoBehaviour
 
     void UpdateButtonStates()
     {
+        if (scrollInventory == null) return;
         bool hasScroll = scrollInventory.scrollCount > 0;
-        meleeUpgradeButton.interactable = hasScroll;
-        rangeUpgradeButton.interactable = hasScroll;
 
-        // Ganti warna teks button jika tidak bisa upgrade
-        Color btnColor = hasScroll ? Color.white : Color.gray;
-        meleeUpgradeButton.GetComponentInChildren<TextMeshProUGUI>().color = btnColor;
-        rangeUpgradeButton.GetComponentInChildren<TextMeshProUGUI>().color = btnColor;
+        if (meleeUpgradeButton != null)
+        {
+            meleeUpgradeButton.interactable = hasScroll;
+            // Hapus baris GetComponentInChildren jika tidak pakai warna
+        }
+
+        if (rangeUpgradeButton != null)
+        {
+            rangeUpgradeButton.interactable = hasScroll;
+            // Hapus baris GetComponentInChildren jika tidak pakai warna
+        }
     }
 
     void ShowFeedback(bool success, string skillName, string upgradeName)

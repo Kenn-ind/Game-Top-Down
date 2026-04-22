@@ -4,8 +4,17 @@ public class Shuriken : MonoBehaviour
 {
     public float rotateSpeed = 720f;
     public GameObject hitParticle;
-    public PlayerStats stats;
-    public SkillUpgradeData upgradeData;
+
+    private PlayerStats _stats;
+    private SkillUpgradeData _upgradeData;
+    private bool _isRangeSkill = false; // true = pakai rangeDamageBonus
+
+    public void Init(PlayerStats stats, SkillUpgradeData data, bool isRangeSkill = false)
+    {
+        _stats = stats;
+        _upgradeData = data;
+        _isRangeSkill = isRangeSkill;
+    }
 
     void Update()
     {
@@ -17,8 +26,13 @@ public class Shuriken : MonoBehaviour
         BaseEnemy enemy = collision.GetComponent<BaseEnemy>();
         if (enemy != null)
         {
-            int damage = stats != null ? stats.attackDamage : 1;
-            enemy.TakeDamage(stats.attackDamage + (upgradeData != null ? upgradeData.meleeDamageBonus : 0), Vector2.zero, false);
+            int baseDamage = _stats != null ? _stats.attackDamage : 1;
+            int bonus = 0;
+
+            if (_upgradeData != null)
+                bonus = _isRangeSkill ? _upgradeData.rangeDamageBonus : _upgradeData.meleeDamageBonus;
+
+            enemy.TakeDamage(baseDamage + bonus, Vector2.zero, false);
 
             if (hitParticle != null)
             {
