@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SkillUpgradeUI : MonoBehaviour
 {
@@ -9,24 +10,59 @@ public class SkillUpgradeUI : MonoBehaviour
     public SkillUpgradeManager upgradeManager;
     public ScrollInventory scrollInventory;
 
-    [Header("Melee UI")]
-    public TMP_Dropdown meleeDropdown;
-    public Button meleeUpgradeButton;
-    public TextMeshProUGUI meleePreviewText;   // teks preview "Damage: 1 → 2"
+    [Header("Skill1 Melee UI")]
+    public TMP_Dropdown skill1MeleeDropdown;
+    public Button skill1MeleeButton;
+    public TextMeshProUGUI skill1MeleePreview;
 
-    [Header("Range UI")]
-    public TMP_Dropdown rangeDropdown;
-    public Button rangeUpgradeButton;
-    public TextMeshProUGUI rangePreviewText;
+    [Header("Skill1 Range UI")]
+    public TMP_Dropdown skill1RangeDropdown;
+    public Button skill1RangeButton;
+    public TextMeshProUGUI skill1RangePreview;
+
+    [Header("Skill2 Melee UI")]
+    public TMP_Dropdown skill2MeleeDropdown;
+    public Button skill2MeleeButton;
+    public TextMeshProUGUI skill2MeleePreview;
+
+    [Header("Skill2 Range UI")]
+    public TMP_Dropdown skill2RangeDropdown;
+    public Button skill2RangeButton;
+    public TextMeshProUGUI skill2RangePreview;
+
+    [Header("Skill3 UI")]
+    public TMP_Dropdown skill3Dropdown;
+    public Button skill3Button;
+    public TextMeshProUGUI skill3Preview;
 
     [Header("Shared UI")]
-    public TextMeshProUGUI scrollCountText;    // "Scroll: 3"
-    public TextMeshProUGUI feedbackText;       // "✓ Berhasil!" / "✗ Gagal!"
+    public TextMeshProUGUI scrollCountText;
+    public TextMeshProUGUI feedbackText;
 
     private Coroutine _feedbackCoroutine;
 
+    // Pasangan dropdown + button + preview + skillType
+    private struct SkillUIGroup
+    {
+        public TMP_Dropdown dropdown;
+        public Button button;
+        public TextMeshProUGUI preview;
+        public SkillUpgradeManager.SkillType skillType;
+    }
+
+    private List<SkillUIGroup> _groups;
+
     void Start()
     {
+        _groups = new List<SkillUIGroup>
+        {
+            new SkillUIGroup { dropdown = skill1MeleeDropdown, button = skill1MeleeButton, preview = skill1MeleePreview, skillType = SkillUpgradeManager.SkillType.Skill1Melee },
+            new SkillUIGroup { dropdown = skill1RangeDropdown, button = skill1RangeButton, preview = skill1RangePreview, skillType = SkillUpgradeManager.SkillType.Skill1Range },
+            new SkillUIGroup { dropdown = skill2MeleeDropdown, button = skill2MeleeButton, preview = skill2MeleePreview, skillType = SkillUpgradeManager.SkillType.Skill2Melee },
+            new SkillUIGroup { dropdown = skill2RangeDropdown, button = skill2RangeButton, preview = skill2RangePreview, skillType = SkillUpgradeManager.SkillType.Skill2Range },
+            new SkillUIGroup { dropdown = skill3Dropdown,      button = skill3Button,      preview = skill3Preview,      skillType = SkillUpgradeManager.SkillType.Skill3 },
+        };
+
         SetupDropdowns();
         SetupButtons();
         RefreshAll();
@@ -34,9 +70,8 @@ public class SkillUpgradeUI : MonoBehaviour
 
     void SetupDropdowns()
     {
-        // Melee options
-        meleeDropdown.ClearOptions();
-        meleeDropdown.AddOptions(new System.Collections.Generic.List<string>
+        // Skill1 Melee
+        SetOptions(skill1MeleeDropdown, new List<string>
         {
             "⚔ Damage +1",
             "⏱ Cooldown -0.5s",
@@ -44,9 +79,8 @@ public class SkillUpgradeUI : MonoBehaviour
             "🔁 Dash Count +1"
         });
 
-        // Range options
-        rangeDropdown.ClearOptions();
-        rangeDropdown.AddOptions(new System.Collections.Generic.List<string>
+        // Skill1 Range
+        SetOptions(skill1RangeDropdown, new List<string>
         {
             "⚔ Damage +1",
             "⏱ Cooldown -0.5s",
@@ -54,38 +88,83 @@ public class SkillUpgradeUI : MonoBehaviour
             "🌀 Shuriken +1"
         });
 
-        // Update preview saat dropdown berubah
-        meleeDropdown.onValueChanged.AddListener(_ => RefreshAll());
-        rangeDropdown.onValueChanged.AddListener(_ => RefreshAll());
+        // Skill2 Melee (tidak ada Unique)
+        SetOptions(skill2MeleeDropdown, new List<string>
+        {
+            "⚔ Damage +1",
+            "⏱ Cooldown -0.5s",
+            "💨 Stamina Cost -1"
+        });
+
+        // Skill2 Range
+        SetOptions(skill2RangeDropdown, new List<string>
+        {
+            "⚔ Damage +1",
+            "⏱ Cooldown -0.5s",
+            "💨 Stamina Cost -1",
+            "🌀 Shuriken +1"
+        });
+
+        // Skill3 — index harus match UpgradeType enum
+        // Damage=0(Lifesteal), Cooldown=1, Stamina=2, Unique=3(Shuriken), Unique2=4(Berserker)
+        SetOptions(skill3Dropdown, new List<string>
+        {
+            "💉 Lifesteal +5%",
+            "⏱ Cooldown -0.5s",
+            "💨 Stamina Cost -1",
+            "🌀 Shuriken +1",
+            "🔥 Berserker Duration +1s"
+        });
+
+        // Listener update preview saat pilihan berubah
+        foreach (var g in _groups)
+        {
+            var group = g; // capture untuk lambda
+            if (group.dropdown != null)
+                group.dropdown.onValueChanged.AddListener(_ => UpdatePreview(group));
+        }
+    }
+
+    void SetOptions(TMP_Dropdown dropdown, List<string> options)
+    {
+        if (dropdown == null) return;
+        dropdown.ClearOptions();
+        dropdown.AddOptions(options);
     }
 
     void SetupButtons()
     {
-        meleeUpgradeButton.onClick.AddListener(OnMeleeUpgrade);
-        rangeUpgradeButton.onClick.AddListener(OnRangeUpgrade);
+        foreach (var g in _groups)
+        {
+            var group = g;
+            if (group.button != null)
+                group.button.onClick.AddListener(() => OnUpgradeClicked(group));
+        }
     }
 
-    void OnMeleeUpgrade()
+    void OnUpgradeClicked(SkillUIGroup group)
     {
-        var upgradeType = (SkillUpgradeManager.UpgradeType)meleeDropdown.value;
-        bool success = upgradeManager.TryUpgrade(SkillUpgradeManager.SkillType.Melee, upgradeType);
-        ShowFeedback(success, "Melee", meleeDropdown.options[meleeDropdown.value].text);
-        RefreshAll();
-    }
-
-    void OnRangeUpgrade()
-    {
-        var upgradeType = (SkillUpgradeManager.UpgradeType)rangeDropdown.value;
-        bool success = upgradeManager.TryUpgrade(SkillUpgradeManager.SkillType.Range, upgradeType);
-        ShowFeedback(success, "Range", rangeDropdown.options[rangeDropdown.value].text);
+        if (group.dropdown == null) return;
+        var upgradeType = (SkillUpgradeManager.UpgradeType)group.dropdown.value;
+        bool success = upgradeManager.TryUpgrade(group.skillType, upgradeType);
+        string optionName = group.dropdown.options[group.dropdown.value].text;
+        ShowFeedback(success, group.skillType.ToString(), optionName);
         RefreshAll();
     }
 
     void RefreshAll()
     {
         UpdateScrollText();
-        UpdatePreviews();
+        foreach (var g in _groups)
+            UpdatePreview(g);
         UpdateButtonStates();
+    }
+
+    void UpdatePreview(SkillUIGroup group)
+    {
+        if (group.preview == null || group.dropdown == null) return;
+        var upgradeType = (SkillUpgradeManager.UpgradeType)group.dropdown.value;
+        group.preview.text = upgradeManager.GetUpgradePreview(group.skillType, upgradeType);
     }
 
     void UpdateScrollText()
@@ -94,48 +173,22 @@ public class SkillUpgradeUI : MonoBehaviour
             scrollCountText.text = $"🔷 Scroll: {scrollInventory.scrollCount}";
     }
 
-    void UpdatePreviews()
-    {
-        if (meleePreviewText != null)
-        {
-            var meleeUpgrade = (SkillUpgradeManager.UpgradeType)meleeDropdown.value;
-            meleePreviewText.text = upgradeManager.GetUpgradePreview(
-                SkillUpgradeManager.SkillType.Melee, meleeUpgrade);
-        }
-
-        if (rangePreviewText != null)
-        {
-            var rangeUpgrade = (SkillUpgradeManager.UpgradeType)rangeDropdown.value;
-            rangePreviewText.text = upgradeManager.GetUpgradePreview(
-                SkillUpgradeManager.SkillType.Range, rangeUpgrade);
-        }
-    }
-
     void UpdateButtonStates()
     {
         if (scrollInventory == null) return;
         bool hasScroll = scrollInventory.scrollCount > 0;
 
-        if (meleeUpgradeButton != null)
+        foreach (var g in _groups)
         {
-            meleeUpgradeButton.interactable = hasScroll;
-            // Hapus baris GetComponentInChildren jika tidak pakai warna
-        }
-
-        if (rangeUpgradeButton != null)
-        {
-            rangeUpgradeButton.interactable = hasScroll;
-            // Hapus baris GetComponentInChildren jika tidak pakai warna
+            if (g.button == null) continue;
+            g.button.interactable = hasScroll;
         }
     }
 
     void ShowFeedback(bool success, string skillName, string upgradeName)
     {
         if (feedbackText == null) return;
-
-        if (_feedbackCoroutine != null)
-            StopCoroutine(_feedbackCoroutine);
-
+        if (_feedbackCoroutine != null) StopCoroutine(_feedbackCoroutine);
         _feedbackCoroutine = StartCoroutine(FeedbackRoutine(success, skillName, upgradeName));
     }
 
@@ -146,9 +199,7 @@ public class SkillUpgradeUI : MonoBehaviour
             : "✗ Scroll tidak cukup!";
         feedbackText.color = success ? Color.green : Color.red;
         feedbackText.gameObject.SetActive(true);
-
         yield return new WaitForSeconds(2f);
-
         feedbackText.gameObject.SetActive(false);
     }
 

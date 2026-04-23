@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +7,7 @@ public class Skill2MeleeSO : SkillActionSO
 {
     public float slashDuration = 0.5f;
     public float spinRadius = 1.5f;
+    public SkillUpgradeData upgradeData; // ← assign di Inspector
 
     private GameObject _player;
     private PlayerStats _stats;
@@ -49,7 +50,8 @@ public class Skill2MeleeSO : SkillActionSO
                 BaseEnemy enemy = hit.GetComponent<BaseEnemy>();
                 if (enemy != null && !hitEnemies.Contains(enemy))
                 {
-                    enemy.TakeDamage(_stats.attackDamage, Vector2.zero, false);
+                    int damage = _stats.attackDamage + (upgradeData != null ? upgradeData.skill2MeleeDamageBonus : 0);
+                    enemy.TakeDamage(damage, Vector2.zero, false);
                     hitEnemies.Add(enemy);
                 }
             }
