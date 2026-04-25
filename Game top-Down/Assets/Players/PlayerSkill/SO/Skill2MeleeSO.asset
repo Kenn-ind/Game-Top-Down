@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slashDuration: 0.5
   spinRadius: 1.5
+  upgradeData: {fileID: 11400000, guid: 7cd0ed84511bb40408d43559ce73c90f, type: 2}
