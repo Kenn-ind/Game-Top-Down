@@ -119,9 +119,14 @@ public class SkillUpgradeUI : MonoBehaviour
         // Listener update preview saat pilihan berubah
         foreach (var g in _groups)
         {
-            var group = g; // capture untuk lambda
+            var group = g;
             if (group.dropdown != null)
-                group.dropdown.onValueChanged.AddListener(_ => UpdatePreview(group));
+            {
+                group.dropdown.onValueChanged.AddListener(_ => {
+                    UpdatePreview(group);
+                    UpdateButtonStates();
+                });
+            }
         }
     }
 
@@ -180,16 +185,36 @@ public class SkillUpgradeUI : MonoBehaviour
 
         foreach (var g in _groups)
         {
-            if (g.button == null) continue;
-            g.button.interactable = hasScroll;
+            if (g.button == null || g.dropdown == null) continue;
+
+            // Baca dropdown.value SEKARANG, bukan dari cache
+            var upgradeType = (SkillUpgradeManager.UpgradeType)g.dropdown.value;
+            bool canUpgrade = upgradeManager.CanUpgrade(g.skillType, upgradeType);
+
+            g.button.interactable = hasScroll && canUpgrade;
         }
     }
 
     void ShowFeedback(bool success, string skillName, string upgradeName)
     {
         if (feedbackText == null) return;
-        if (_feedbackCoroutine != null) StopCoroutine(_feedbackCoroutine);
-        _feedbackCoroutine = StartCoroutine(FeedbackRoutine(success, skillName, upgradeName));
+
+        // Stop coroutine lama jika masih berjalan
+        if (_feedbackCoroutine != null)
+        {
+            StopCoroutine(_feedbackCoroutine);
+            _feedbackCoroutine = null;
+        }
+
+        // Langsung ganti text tanpa tunggu coroutine lama selesai
+        feedbackText.text = success
+            ? $"✓ {skillName} — {upgradeName} berhasil!"
+            : "✗ Scroll tidak cukup!";
+        feedbackText.color = success ? Color.green : Color.red;
+        feedbackText.gameObject.SetActive(true);
+
+        // Mulai timer baru
+        _feedbackCoroutine = StartCoroutine(HideFeedbackAfterDelay());
     }
 
     IEnumerator FeedbackRoutine(bool success, string skillName, string upgradeName)
@@ -201,6 +226,14 @@ public class SkillUpgradeUI : MonoBehaviour
         feedbackText.gameObject.SetActive(true);
         yield return new WaitForSeconds(2f);
         feedbackText.gameObject.SetActive(false);
+    }
+
+    IEnumerator HideFeedbackAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        if (feedbackText != null)
+            feedbackText.gameObject.SetActive(false);
+        _feedbackCoroutine = null;
     }
 
     public void OnScrollChanged() => RefreshAll();

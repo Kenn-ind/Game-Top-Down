@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill2RangeSO
   m_EditorClassIdentifier: 
   shurikenPrefab: {fileID: 1775667784230767006, guid: 7491c8021254e1f44b0c3b34df74453d, type: 3}
-  shurikenAmount: 5
+  shurikenAmount: 6
   shurikenSpeed: 10
   shurikenLifetime: 2
   fireDelay: 0.1

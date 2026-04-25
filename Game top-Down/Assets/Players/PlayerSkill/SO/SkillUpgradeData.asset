@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 514c65c1405d4be4aa73d639a9b79261, type: 3}
+  m_Name: SkillUpgradeData
+  m_EditorClassIdentifier: 
+  maxDamageUpgrade: 5
+  maxCooldownUpgrade: 3
+  maxStaminaUpgrade: 3
+  maxUniqueUpgrade: 3
+  maxUnique2Upgrade: 3
+  meleeDamageBonus: 0
+  meleeDamageCount: 0
+  meleeDashCountBonus: 0
+  meleeDashCount: 0
+  meleeCooldownCount: 0
+  meleeStaminaCount: 0
+  rangeDamageBonus: 0
+  rangeDamageCount: 0
+  rangeShurikenBonus: 0
+  rangeShurikenCount: 0
+  rangeCooldownCount: 0
+  rangeStaminaCount: 0
+  skill2MeleeDamageBonus: 0
+  skill2MeleeDamageCount: 0
+  skill2MeleeCooldownCount: 0
+  skill2MeleeStaminaCount: 0
+  skill2RangeDamageBonus: 0
+  skill2RangeDamageCount: 0
+  skill2RangeShurikenBonus: 0
+  skill2RangeShurikenCount: 0
+  skill2RangeCooldownCount: 0
+  skill2RangeStaminaCount: 0
+  skill3ShurikenBonus: 0
+  skill3ShurikenCount: 0
+  skill3BerserkerDurationBonus: 0
+  skill3BerserkerCount: 0
+  skill3LifestealBonus: 0
+  skill3LifestealCount: 0
+  skill3CooldownCount: 0
+  skill3StaminaCount: 0
