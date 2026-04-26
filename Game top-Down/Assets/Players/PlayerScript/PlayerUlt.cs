@@ -7,24 +7,24 @@ public class PlayerUlt : MonoBehaviour
     public int killsRequired = 10;
     public int currentKills = 0;
 
-    public Sprite[] ultFrames;        
+    public Sprite[] ultFrames;
     public Image ultBarImage;
     private int _currentFrame = 0;
 
     public KeyCode ultKey = KeyCode.R;
     public float chargeTime = 3f;
     public float aoeRadius = 5f;
-    public int slashDamage = 3;     
-    public int slashCount = 3;     
-    public float slashDelay = 0.2f; 
+    public int slashDamage = 3;
+    public int slashCount = 3;
+    public float slashDelay = 0.2f;
 
-    public float refundPercent = 1f; 
+    public float refundPercent = 1f;
 
     private bool _isReady = false;
     private bool _isCharging = false;
     private bool _isCasting = false;
     private float _chargeTimer = 0f;
-    public float ultDashSpeed = 20f;       
+    public float ultDashSpeed = 20f;
     public float ultDashDuration = 0.15f;
     public float fadeDuration = 0.2f;
 
@@ -32,27 +32,28 @@ public class PlayerUlt : MonoBehaviour
     private PlayerHealth _health;
     private movement _movement;
     private SpriteRenderer _spriteRenderer;
+    private Animator _anim; // ← TAMBAHAN
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _health = GetComponent<PlayerHealth>(); 
+        _health = GetComponent<PlayerHealth>();
         _movement = GetComponent<movement>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _anim = GetComponent<Animator>(); // ← TAMBAHAN
 
         UpdateBar();
     }
 
     void Update()
     {
-        if (_isCasting) return; 
+        if (_isCasting) return;
 
         if (Input.GetKeyDown(ultKey) && _isReady && !_isCharging)
         {
             StartCoroutine(ChargeUlt());
         }
     }
-
 
     public void OnEnemyKilled()
     {
@@ -69,7 +70,6 @@ public class PlayerUlt : MonoBehaviour
         }
     }
 
-
     IEnumerator ChargeUlt()
     {
         _isCharging = true;
@@ -78,16 +78,25 @@ public class PlayerUlt : MonoBehaviour
         _rb.constraints = RigidbodyConstraints2D.FreezeAll;
         _movement?.SetMovementLocked(true);
 
+        if (_anim != null)
+            _anim.SetBool("IsChargingUlt", true);
+
         while (_chargeTimer < chargeTime)
         {
             _chargeTimer += Time.deltaTime;
             yield return null;
         }
 
+        // ← Matikan charge DAN langsung trigger cast di sini
+        if (_anim != null)
+        {
+            _anim.SetBool("IsChargingUlt", false);
+            _anim.SetTrigger("CastUlt"); // ← pindah ke sini
+        }
+
         _isCharging = false;
         StartCoroutine(ExecuteUlt());
     }
-
 
     public void CancelCharge()
     {
@@ -96,6 +105,10 @@ public class PlayerUlt : MonoBehaviour
         _isCharging = false;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         _movement?.SetMovementLocked(false);
+
+        // ← TAMBAHAN: matikan animasi charge saat cancel
+        if (_anim != null)
+            _anim.SetBool("IsChargingUlt", false);
 
         if (_spriteRenderer != null)
         {
@@ -115,14 +128,16 @@ public class PlayerUlt : MonoBehaviour
         _isReady = false;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        yield return StartCoroutine(UltDash());
+        // ← Hapus SetTrigger dari sini
 
-        yield return StartCoroutine(FadeSprite(1f, 0f, fadeDuration));
+        yield return StartCoroutine(UltDash());
 
         Vector2 castPosition = transform.position;
         _rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
         Debug.Log("JUDGEMENT CUT!");
+
+        yield return new WaitForSeconds(fadeDuration);
 
         for (int i = 0; i < slashCount; i++)
         {
@@ -130,7 +145,7 @@ public class PlayerUlt : MonoBehaviour
             yield return new WaitForSeconds(slashDelay);
         }
 
-        yield return StartCoroutine(FadeSprite(0f, 1f, fadeDuration));
+        yield return new WaitForSeconds(fadeDuration);
 
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         currentKills = 0;

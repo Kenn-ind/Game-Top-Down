@@ -217559,7 +217559,7 @@ MonoBehaviour:
   ultBarImage: {fileID: 836613763}
   ultKey: 114
   chargeTime: 1
-  aoeRadius: 5
+  aoeRadius: 4
   slashDamage: 3
   slashCount: 10
   slashDelay: 0.1
