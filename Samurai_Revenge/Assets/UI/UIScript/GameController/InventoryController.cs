@@ -3,8 +3,8 @@
 public class InventoryController : MonoBehaviour
 {
     [Header("Panels")]
-    public GameObject inventoryPanel;      // InventoryPages di Menu (normal)
-    public GameObject chestInventoryPanel; // InventoryPages di ChestPanel
+    public GameObject inventoryPanel;
+    public GameObject chestInventoryPanel;
 
     public GameObject slotPrefab;
     public int slotCount;
@@ -59,7 +59,6 @@ public class InventoryController : MonoBehaviour
 
     public bool AddItem(ItemData data, int count)
     {
-        // 1. Coba stack ke slot yang sudah ada dulu
         foreach (Slot slot in slots)
         {
             if (slot.currentItem == null) continue;
@@ -78,7 +77,6 @@ public class InventoryController : MonoBehaviour
             }
         }
 
-        // 2. Sisa count dipecah ke slot kosong sesuai maxStack
         while (count > 0)
         {
             Slot emptySlot = null;
@@ -141,6 +139,28 @@ public class InventoryController : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    public void ClearAllSlots()
+    {
+        foreach (Slot slot in slots)
+        {
+            if (slot.currentItem != null)
+            {
+                Destroy(slot.currentItem);
+                slot.currentItem = null;
+            }
+        }
+    }
+    public void AddItemToSlot(int slotIndex, ItemData data, int count)
+    {
+        if (slotIndex < 0 || slotIndex >= slots.Length) return;
+        if (slots[slotIndex].currentItem != null)
+        {
+            Destroy(slots[slotIndex].currentItem);
+            slots[slotIndex].currentItem = null;
+        }
+        SpawnItem(slots[slotIndex], data, count);
     }
 
     public Slot[] GetSlots() => slots;

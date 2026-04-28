@@ -23,5 +23,8 @@ public class TabController : MonoBehaviour
 
         if (tabNo == 3)
             QuestLogUI.Instance?.RefreshLog();
+
+        if (tabNo == 4)
+            SaveSlotUI.Instance?.RefreshSlotList();
     }
 }

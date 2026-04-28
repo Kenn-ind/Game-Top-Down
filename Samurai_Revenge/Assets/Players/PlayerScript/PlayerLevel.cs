@@ -6,7 +6,7 @@ public class PlayerLevel : MonoBehaviour
     public int baseXPRequired = 100;
     public float xpMultiplier = 1.5f;
     public int debugAddXP = 50;
-    public int maxLevel = 20; // ← LEVEL CAP
+    public int maxLevel = 20;
 
     private int _currentXP = 0;
     private int _xpRequired;
@@ -24,7 +24,6 @@ public class PlayerLevel : MonoBehaviour
 
     public void AddXP(int amount)
     {
-        // Sudah max level, tidak terima XP
         if (_stats.level >= maxLevel)
         {
             Debug.Log("Level sudah maksimal!");
@@ -45,7 +44,6 @@ public class PlayerLevel : MonoBehaviour
 
             Debug.Log($"Level up! Sekarang level {_stats.level}");
 
-            // Jika sudah capai max level, reset sisa XP
             if (_stats.level >= maxLevel)
             {
                 _currentXP = 0;
@@ -69,6 +67,13 @@ public class PlayerLevel : MonoBehaviour
     int CalculateXPRequired(int level)
     {
         return Mathf.RoundToInt(baseXPRequired * Mathf.Pow(xpMultiplier, level - 1));
+    }
+
+    public void LoadXP(int savedXP)
+    {
+        _currentXP = savedXP;
+        _xpRequired = CalculateXPRequired(_stats.level);
+        Debug.Log($"[Load] XP restored: {_currentXP}/{_xpRequired}");
     }
 
     public bool IsMaxLevel => _stats.level >= maxLevel;

@@ -37,4 +37,10 @@ public class CoinManager : MonoBehaviour
         currentCoins += amount;
         ShopUI.Instance?.UpdateCoinDisplay(currentCoins);
     }
+
+    public void LoadCoins(int amount)
+    {
+        currentCoins = amount;
+        ShopUI.Instance?.UpdateCoinDisplay(currentCoins);
+    }
 }

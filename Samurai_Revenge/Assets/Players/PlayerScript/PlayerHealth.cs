@@ -16,8 +16,9 @@ public class PlayerHealth : MonoBehaviour
     private PlayerStats _stats;
     private PlayerUlt _ult;
 
-    // ── Property baru: cek dari luar tanpa expose currentHealth langsung ─────────
     public bool IsFullHealth => currentHealth >= maxHealth;
+
+    public int CurrentHealth => currentHealth;
 
     void Start()
     {
@@ -64,6 +65,17 @@ public class PlayerHealth : MonoBehaviour
             healthImage.sprite = healthFrames[_currentFrame];
             yield return new WaitForSeconds(1f / 12f);
         }
+    }
+
+    public void LoadHealth(int value)
+    {
+        currentHealth = Mathf.Clamp(value, 0, maxHealth);
+        // Reset frame bar langsung tanpa animasi
+        if (_hpAnim != null) StopCoroutine(_hpAnim);
+        float ratio = 1f - ((float)currentHealth / maxHealth);
+        _currentFrame = Mathf.RoundToInt(ratio * (healthFrames.Length - 1));
+        if (healthImage != null && healthFrames.Length > 0)
+            healthImage.sprite = healthFrames[_currentFrame];
     }
 
     IEnumerator ApplyKnockback(Vector2 force)

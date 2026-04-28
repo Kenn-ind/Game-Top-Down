@@ -15,6 +15,9 @@ public class QuestManager : MonoBehaviour
     public HashSet<QuestData> GetTurnedInQuests() => turnedInQuests;
     public QuestData GetTrackedQuest() => trackedQuest;
 
+    public QuestData[] allQuestDataList;
+
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -153,5 +156,46 @@ public class QuestManager : MonoBehaviour
         QuestLogUI.Instance?.RefreshLog();
         Debug.Log($"Reward diberikan: {quest.questName}");
         return true;
+    }
+
+    public void LoadQuests(
+        List<QuestSaveData> savedActive,
+        List<string> savedCompleted,
+        List<string> savedTurnedIn,
+        string savedTrackedName)
+    {
+        activeQuests.Clear();
+        completedQuests.Clear();
+        turnedInQuests.Clear();
+        trackedQuest = null;
+
+        foreach (QuestSaveData qs in savedActive)
+        {
+            QuestData found = FindQuestByName(qs.questName);
+            if (found != null) activeQuests[found] = qs.progress;
+        }
+        foreach (string name in savedCompleted)
+        {
+            QuestData found = FindQuestByName(name);
+            if (found != null) completedQuests.Add(found);
+        }
+        foreach (string name in savedTurnedIn)
+        {
+            QuestData found = FindQuestByName(name);
+            if (found != null) turnedInQuests.Add(found);
+        }
+        if (!string.IsNullOrEmpty(savedTrackedName))
+            trackedQuest = FindQuestByName(savedTrackedName);
+
+        QuestUI.Instance?.RefreshTracker();
+        QuestLogUI.Instance?.RefreshLog();
+    }
+
+    QuestData FindQuestByName(string name)
+    {
+        foreach (QuestData q in allQuestDataList)
+            if (q != null && q.questName == name) return q;
+        Debug.LogWarning($"[QuestManager] QuestData '{name}' tidak ditemukan!");
+        return null;
     }
 }

@@ -15,7 +15,6 @@ public class PlayerStamina : MonoBehaviour
     private Coroutine _staminaAnim;
     private PlayerStats _stats;
 
-    // ── Property baru ─────────────────────────────────────────────────────────────
     public bool IsFullStamina => currentStamina >= maxStamina;
 
     void Awake()
@@ -64,10 +63,6 @@ public class PlayerStamina : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// Tambah stamina dari luar (misal: StaminaPotionItem).
-    /// Juga reset regen timer agar tidak tumpang tindih.
-    /// </summary>
     public void RestoreStamina(int amount)
     {
         currentStamina = Mathf.Min(currentStamina + amount, maxStamina);
@@ -99,5 +94,16 @@ public class PlayerStamina : MonoBehaviour
                 staminaImage.sprite = staminaFrames[_currentFrame];
             yield return new WaitForSeconds(1f / 12f);
         }
+    }
+
+    public void LoadStamina(float value)
+    {
+        currentStamina = Mathf.Clamp(value, 0f, maxStamina);
+        regenTimer = 0f;
+        if (_staminaAnim != null) StopCoroutine(_staminaAnim);
+        float ratio = 1f - (currentStamina / maxStamina);
+        _currentFrame = Mathf.RoundToInt(ratio * (staminaFrames.Length - 1));
+        if (staminaImage != null && staminaFrames.Length > 0)
+            staminaImage.sprite = staminaFrames[_currentFrame];
     }
 }

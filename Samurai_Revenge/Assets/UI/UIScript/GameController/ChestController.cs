@@ -31,6 +31,9 @@ public class ChestController : MonoBehaviour
 
     public static ChestController CurrentOpenChest { get; private set; }
 
+    private bool _permanentlyOpened = false;
+    public bool IsOpened => _permanentlyOpened;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -65,6 +68,7 @@ public class ChestController : MonoBehaviour
     void OpenChest()
     {
         isOpen = true;
+        _permanentlyOpened = true;
         CurrentOpenChest = this;
         animator.SetBool(ParamIsOpen, true);
         chestUI.Open(runtimeItems, this); 
@@ -81,12 +85,24 @@ public class ChestController : MonoBehaviour
         if (playerMovement != null) playerMovement.SetMovementLocked(false);
     }
 
-    // Dipanggil ChestUI saat item di-shift+click dari chest → inventory
     public void RemoveItemFromChest(Slot slot)
     {
         if (slot.currentItem == null) return;
         Destroy(slot.currentItem);
         slot.currentItem = null;
+    }
+
+    public void SetOpenedState(bool opened)
+    {
+        _permanentlyOpened = opened;
+        if (opened)
+        {
+            isOpen = true;
+            if (animator != null)
+                animator.SetBool(ParamIsOpen, true);
+            if (interactPrompt != null)
+                interactPrompt.SetActive(false);
+        }
     }
 
     void OnDrawGizmosSelected()
