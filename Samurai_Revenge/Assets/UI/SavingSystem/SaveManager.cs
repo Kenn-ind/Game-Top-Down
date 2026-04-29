@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cinemachine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -19,6 +21,7 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance;
 
+    [Header("Referensi — drag dari Inspector")]
     public PlayerStats playerStats;
     public PlayerHealth playerHealth;
     public PlayerStamina playerStamina;
@@ -29,14 +32,18 @@ public class SaveManager : MonoBehaviour
     public SkillUpgradeManager skillUpgradeManager;
     public ScrollInventory scrollInventory;
 
+    [Header("ItemData List (sama persis dengan InventoryController)")]
     public ItemData[] allItemDataList;
 
-    public ChestController[] allChests;
+    [Header("Settings")]
+    public int maxSlots = 5;
 
-    public int maxSlots = 10;
+    // Chest di-find otomatis saat runtime
+    private ChestController[] allChests;
 
     private string SaveFolder => Path.Combine(Application.persistentDataPath, "Saves");
 
+    // ── Singleton ────────────────────────────────────────────
     void Awake()
     {
         if (Instance == null)
@@ -47,32 +54,45 @@ public class SaveManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    void Start()
+    {
+        // Auto-find semua chest di scene
+        allChests = FindObjectsOfType<ChestController>();
+        Debug.Log($"[SaveManager] Ditemukan {allChests.Length} chest di scene.");
+    }
+
+    // ============================================================
     //  SAVE
+    // ============================================================
     public void Save(int slotIndex, string slotName = "")
     {
         SaveData data = new SaveData();
 
+        // ── Meta ────────────────────────────────────────────
         data.slotName = string.IsNullOrEmpty(slotName) ? $"Save {slotIndex + 1}" : slotName;
         data.saveDateTime = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
         data.currentScene = SceneManager.GetActiveScene().name;
 
+        // ── Player Stats ────────────────────────────────────
         data.level = playerStats.level;
         data.availablePoints = playerStats.availablePoints;
         data.maxHP = playerStats.maxHP;
         data.maxStamina = playerStats.maxStamina;
         data.armor = playerStats.armor;
         data.attackDamage = playerStats.attackDamage;
-
         data.currentHP = playerHealth.CurrentHealth;
         data.currentXP = playerLevel.CurrentXP;
 
+        // ── Player Position ─────────────────────────────────
         Vector3 pos = playerStats.transform.position;
         data.playerX = pos.x;
         data.playerY = pos.y;
 
+        // ── Economy ─────────────────────────────────────────
         data.coins = coinManager.CurrentCoins;
         data.scrollCount = scrollInventory.scrollCount;
 
+        // ── Inventory ───────────────────────────────────────
         data.inventoryItems.Clear();
         Slot[] slots = inventory.GetSlots();
         for (int i = 0; i < slots.Length; i++)
@@ -89,6 +109,7 @@ public class SaveManager : MonoBehaviour
             });
         }
 
+        // ── Quest ───────────────────────────────────────────
         data.activeQuests.Clear();
         foreach (var kv in questManager.GetActiveQuests())
             data.activeQuests.Add(new QuestSaveData
@@ -107,6 +128,7 @@ public class SaveManager : MonoBehaviour
 
         data.trackedQuestName = questManager.GetTrackedQuest()?.questName ?? "";
 
+        // ── Skill Upgrades ──────────────────────────────────
         SkillUpgradeData su = skillUpgradeManager.upgradeData;
         data.skillUpgrades = new SkillUpgradeSaveData
         {
@@ -142,16 +164,27 @@ public class SaveManager : MonoBehaviour
             skill3StaminaCount = su.skill3StaminaCount
         };
 
+        // ── Chest ───────────────────────────────────────────
         data.openedChestIDs.Clear();
         foreach (ChestController chest in allChests)
             if (chest != null && chest.IsOpened)
                 data.openedChestIDs.Add(chest.gameObject.name);
 
+        // ── Camera Boundary ─────────────────────────────────
+        // ⚠️ HARUS sebelum WriteToFile agar tersimpan ke JSON!
+        data.activeBoundaryName = MapTransisi.ActiveBoundary != null
+            ? MapTransisi.ActiveBoundary.gameObject.name
+            : "";
+
+        // ── Tulis ke file ───────────────────────────────────
         WriteToFile(slotIndex, data);
         Debug.Log($"[SaveManager] Saved ke slot {slotIndex}: {GetFilePath(slotIndex)}");
+        Debug.Log($"[SaveManager] Boundary tersimpan: '{data.activeBoundaryName}'");
     }
 
+    // ============================================================
     //  LOAD
+    // ============================================================
     public void Load(int slotIndex)
     {
         SaveData data = ReadFromFile(slotIndex);
@@ -161,6 +194,7 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
+        // ── Player Stats ────────────────────────────────────
         playerStats.level = data.level;
         playerStats.availablePoints = data.availablePoints;
         playerStats.maxHP = data.maxHP;
@@ -168,19 +202,23 @@ public class SaveManager : MonoBehaviour
         playerStats.armor = data.armor;
         playerStats.attackDamage = data.attackDamage;
 
+        // ── Health & Stamina ─────────────────────────────────
         playerHealth.maxHealth = data.maxHP;
         playerHealth.LoadHealth(data.currentHP);
-
         playerStamina.maxStamina = data.maxStamina;
         playerStamina.LoadStamina(data.maxStamina);
 
+        // ── XP ───────────────────────────────────────────────
         playerLevel.LoadXP(data.currentXP);
 
+        // ── Player Position ─────────────────────────────────
         playerStats.transform.position = new Vector3(data.playerX, data.playerY, 0f);
 
+        // ── Economy ─────────────────────────────────────────
         coinManager.LoadCoins(data.coins);
         scrollInventory.scrollCount = data.scrollCount;
 
+        // ── Inventory ───────────────────────────────────────
         inventory.ClearAllSlots();
         foreach (ItemSaveData item in data.inventoryItems)
         {
@@ -191,12 +229,13 @@ public class SaveManager : MonoBehaviour
                 Debug.LogWarning($"[SaveManager] ItemData ID '{item.itemID}' tidak ditemukan!");
         }
 
+        // ── Quest ───────────────────────────────────────────
         questManager.LoadQuests(data.activeQuests, data.completedQuests,
                                 data.turnedInQuests, data.trackedQuestName);
 
+        // ── Skill Upgrades ──────────────────────────────────
         SkillUpgradeSaveData su = data.skillUpgrades;
         SkillUpgradeData soData = skillUpgradeManager.upgradeData;
-
         soData.meleeDamageBonus = su.meleeDamageBonus;
         soData.meleeDamageCount = su.meleeDamageCount;
         soData.meleeDashCountBonus = su.meleeDashCountBonus;
@@ -228,6 +267,7 @@ public class SaveManager : MonoBehaviour
         soData.skill3CooldownCount = su.skill3CooldownCount;
         soData.skill3StaminaCount = su.skill3StaminaCount;
 
+        // ── Chest ───────────────────────────────────────────
         foreach (ChestController chest in allChests)
         {
             if (chest == null) continue;
@@ -235,10 +275,81 @@ public class SaveManager : MonoBehaviour
             chest.SetOpenedState(wasOpened);
         }
 
+        // ── Camera Boundary ─────────────────────────────────
+        StartCoroutine(LoadCameraBoundary(data));
+
         Debug.Log($"[SaveManager] Load dari slot {slotIndex} berhasil!");
     }
 
+    // ============================================================
+    //  CAMERA BOUNDARY COROUTINE
+    // ============================================================
+    IEnumerator LoadCameraBoundary(SaveData data)
+    {
+        yield return null;
+
+        if (string.IsNullOrEmpty(data.activeBoundaryName))
+        {
+            Debug.LogWarning("[SaveManager] activeBoundaryName kosong, skip camera boundary.");
+            yield break;
+        }
+
+        Debug.Log($"[SaveManager] Mencari boundary: '{data.activeBoundaryName}'");
+
+        PolygonCollider2D[] allBoundaries = FindObjectsOfType<PolygonCollider2D>();
+        foreach (PolygonCollider2D boundary in allBoundaries)
+        {
+            if (boundary.gameObject.name == data.activeBoundaryName)
+            {
+                CinemachineConfiner confiner = FindObjectOfType<CinemachineConfiner>();
+                CinemachineVirtualCamera vcam = FindObjectOfType<CinemachineVirtualCamera>();
+                CinemachineBrain brain = Camera.main?.GetComponent<CinemachineBrain>();
+
+                // 1. Matikan brain sementara
+                if (brain != null) brain.enabled = false;
+
+                // 2. Set boundary baru
+                if (confiner != null)
+                {
+                    confiner.m_Damping = 0f;
+                    confiner.m_BoundingShape2D = boundary;
+                    confiner.InvalidatePathCache();
+                }
+
+                // 3. Snap posisi kamera & vcam ke player
+                Vector3 targetPos = new Vector3(data.playerX, data.playerY,
+                    Camera.main != null ? Camera.main.transform.position.z : -10f);
+
+                if (Camera.main != null)
+                    Camera.main.transform.position = targetPos;
+
+                if (vcam != null)
+                {
+                    vcam.transform.position = targetPos;
+                    vcam.PreviousStateIsValid = false;
+                }
+
+                yield return null;
+                yield return null;
+
+                // 4. Nyalakan brain lagi
+                if (brain != null) brain.enabled = true;
+
+                // 5. Kembalikan damping
+                if (confiner != null)
+                    confiner.m_Damping = 0.5f;
+
+                Debug.Log($"[SaveManager] Camera boundary berhasil di-set ke: '{data.activeBoundaryName}'");
+                yield break;
+            }
+        }
+
+        Debug.LogWarning($"[SaveManager] Boundary '{data.activeBoundaryName}' tidak ditemukan di scene!");
+    }
+
+    // ============================================================
     //  DELETE SLOT
+    // ============================================================
     public void DeleteSlot(int slotIndex)
     {
         string path = GetFilePath(slotIndex);
@@ -249,13 +360,19 @@ public class SaveManager : MonoBehaviour
         }
     }
 
+    // ============================================================
     //  CEK APAKAH SLOT ADA
+    // ============================================================
     public bool SlotExists(int slotIndex) => File.Exists(GetFilePath(slotIndex));
 
-    //  BACA METADATA (untuk tampil di UI tanpa load penuh)
+    // ============================================================
+    //  BACA METADATA
+    // ============================================================
     public SaveData ReadSlotMeta(int slotIndex) => ReadFromFile(slotIndex);
 
+    // ============================================================
     //  HELPER — File I/O
+    // ============================================================
     string GetFilePath(int slotIndex)
     {
         if (!Directory.Exists(SaveFolder))

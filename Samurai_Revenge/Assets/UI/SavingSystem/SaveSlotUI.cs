@@ -64,9 +64,9 @@ public class SaveSlotUI : MonoBehaviour
             confirmPanel.SetActive(false);
             selectedSlotIndex = -1;
         });
+
     }
 
-    // ── Dipanggil TabController saat tab Save dibuka ────────
     public void RefreshSlotList()
     {
         confirmPanel.SetActive(false);

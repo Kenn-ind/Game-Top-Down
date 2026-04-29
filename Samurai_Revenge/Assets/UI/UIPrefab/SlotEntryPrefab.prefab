@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 620, y: 90}
+  m_SizeDelta: {x: 1657.305, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4079880322597349686
 CanvasRenderer:
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 1115425739232937597}
   - component: {fileID: 8717518461546168521}
   m_Layer: 5
-  m_Name: InformationText
+  m_Name: SlotInfoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 149.4, y: -0.00006485}
-  m_SizeDelta: {x: 298.8, y: 74.455}
+  m_AnchoredPosition: {x: 398.44412, y: -0.00006485}
+  m_SizeDelta: {x: 796.8882, y: 74.455}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1115425739232937597
 CanvasRenderer:
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 8120355311452179782}
   - component: {fileID: 2609560178661480859}
   m_Layer: 5
-  m_Name: NameText
+  m_Name: SlotNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -291,8 +291,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -149.39998, y: 18.613}
-  m_SizeDelta: {x: 298.8, y: 37.227}
+  m_AnchoredPosition: {x: -397.24997, y: 18.614}
+  m_SizeDelta: {x: 794.5, y: 37.227}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8120355311452179782
 CanvasRenderer:
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Title
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -403,7 +403,7 @@ GameObject:
   - component: {fileID: 1889440811149086330}
   - component: {fileID: 1461390470520196731}
   m_Layer: 5
-  m_Name: DateText
+  m_Name: SlotDateText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -425,8 +425,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -149.39998, y: -18.614008}
-  m_SizeDelta: {x: 298.8, y: 37.227}
+  m_AnchoredPosition: {x: -397.24997, y: -18.614}
+  m_SizeDelta: {x: 794.5, y: 37.227}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1889440811149086330
 CanvasRenderer:
@@ -456,7 +456,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10/10/2010
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

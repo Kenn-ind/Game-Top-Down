@@ -1,9 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using Cinemachine;
 using UnityEngine;
 
 public class MapTransisi : MonoBehaviour
 {
+    public static PolygonCollider2D ActiveBoundary { get; private set; }
     [SerializeField] PolygonCollider2D MapBoundry;
     [SerializeField] Direction direction;
     [SerializeField] Transform TeleportTarget;
@@ -19,6 +20,9 @@ public class MapTransisi : MonoBehaviour
     private void Awake()
     {
         Confiner = FindObjectOfType<CinemachineConfiner>();
+
+        if (ActiveBoundary == null && Confiner != null)
+            ActiveBoundary = Confiner.m_BoundingShape2D as PolygonCollider2D;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -40,6 +44,7 @@ public class MapTransisi : MonoBehaviour
 
         UpdatePlayerPosition(player);
         Confiner.m_BoundingShape2D = MapBoundry;
+        ActiveBoundary = MapBoundry;
         Confiner.InvalidatePathCache();
 
         yield return new WaitForSeconds(blackScreenDuration);
@@ -53,6 +58,7 @@ public class MapTransisi : MonoBehaviour
     private void DoTransitionDirect(GameObject player)
     {
         Confiner.m_BoundingShape2D = MapBoundry;
+        ActiveBoundary = MapBoundry;
         UpdatePlayerPosition(player);
     }
 

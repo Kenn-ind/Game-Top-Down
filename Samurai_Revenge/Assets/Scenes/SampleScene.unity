@@ -29511,8 +29511,8 @@ MonoBehaviour:
   pages:
   - {fileID: 573674068}
   - {fileID: 1752585750}
-  - {fileID: 1707562549}
   - {fileID: 1606383751}
+  - {fileID: 1707562549}
   statDisplay: {fileID: 2046371790}
 --- !u!1 &1452458021
 GameObject:

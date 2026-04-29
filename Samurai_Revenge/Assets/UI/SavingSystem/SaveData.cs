@@ -34,6 +34,7 @@ public class SaveData
     public float playerX;
     public float playerY;
     public string currentScene;
+    public string activeBoundaryName;
 }
 
 [Serializable]
