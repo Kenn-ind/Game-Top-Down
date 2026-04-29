@@ -267,7 +267,6 @@ public class SaveManager : MonoBehaviour
         soData.skill3CooldownCount = su.skill3CooldownCount;
         soData.skill3StaminaCount = su.skill3StaminaCount;
 
-        // ── Chest ───────────────────────────────────────────
         foreach (ChestController chest in allChests)
         {
             if (chest == null) continue;
@@ -275,15 +274,11 @@ public class SaveManager : MonoBehaviour
             chest.SetOpenedState(wasOpened);
         }
 
-        // ── Camera Boundary ─────────────────────────────────
         StartCoroutine(LoadCameraBoundary(data));
 
         Debug.Log($"[SaveManager] Load dari slot {slotIndex} berhasil!");
     }
 
-    // ============================================================
-    //  CAMERA BOUNDARY COROUTINE
-    // ============================================================
     IEnumerator LoadCameraBoundary(SaveData data)
     {
         yield return null;
