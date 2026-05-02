@@ -57,4 +57,23 @@ public class Skill1SO : SkillSO
         }
         return nearest;
     }
+
+    public void MobileTrigger()
+    {
+        if (Time.time < _nextSkillTime) return;
+        if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
+        if (_skillState.isUsingSkill) return;
+
+        GameObject target = FindNearestEnemy();
+        if (target == null) return;
+
+        _stamina.UseStamina(staminaCost);
+        float distance = Vector2.Distance(_player.transform.position, target.transform.position);
+        if (distance <= closeRange)
+            melee?.Execute();
+        else
+            range?.Execute();
+
+        _nextSkillTime = Time.time + cooldown;
+    }
 }

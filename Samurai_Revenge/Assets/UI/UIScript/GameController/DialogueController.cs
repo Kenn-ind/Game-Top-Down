@@ -13,6 +13,9 @@ public class DialogueController : MonoBehaviour
     public Image portraitImage;
     public Transform choiceContainer;
     public GameObject choiceButton;
+
+    public GameObject mobileUIPanel;
+
     void Awake()
     {
         if (Instance == null) Instance = this;
@@ -23,6 +26,9 @@ public class DialogueController : MonoBehaviour
     {
         dialoguePanel.SetActive(show);
         HotbarController.Instance.SetHotbarVisible(!show);
+
+        if (mobileUIPanel != null)
+            mobileUIPanel.SetActive(!show);
     }
 
     public void SetNPCInfo(string npcName, Sprite portrait)

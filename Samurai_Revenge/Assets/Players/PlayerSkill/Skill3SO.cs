@@ -123,4 +123,40 @@ public class Skill3SO : SkillSO
         int heal = Mathf.RoundToInt(damageDealt * lifestealPercent);
         if (heal > 0) playerHealth.Heal(heal);
     }
+
+    public void MobileTriggerTap()
+    {
+        if (Time.time < _nextSkillTime) return;
+        if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
+        if (_skillState.isUsingSkill) return;
+
+        _stamina.UseStamina(staminaCost);
+        _runner.StartCoroutine(ActivateRing());
+        _nextSkillTime = Time.time + cooldown;
+    }
+
+    public void MobileHoldStart()
+    {
+        _holdTimer = 0f;
+        _isHolding = true;
+    }
+
+    public void MobileHoldEnd()
+    {
+        if (!_isHolding) return;
+        _isHolding = false;
+
+        if (Time.time < _nextSkillTime) return;
+        if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
+        if (_skillState.isUsingSkill) return;
+
+        _stamina.UseStamina(staminaCost);
+
+        if (_holdTimer < holdThreshold)
+            _runner.StartCoroutine(ActivateRing());
+        else
+            TriggerBerserker();
+
+        _nextSkillTime = Time.time + cooldown;
+    }
 }

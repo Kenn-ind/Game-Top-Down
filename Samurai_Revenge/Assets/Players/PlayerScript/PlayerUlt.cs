@@ -32,7 +32,7 @@ public class PlayerUlt : MonoBehaviour
     private PlayerHealth _health;
     private movement _movement;
     private SpriteRenderer _spriteRenderer;
-    private Animator _anim; // ← TAMBAHAN
+    private Animator _anim;
 
     void Start()
     {
@@ -40,7 +40,7 @@ public class PlayerUlt : MonoBehaviour
         _health = GetComponent<PlayerHealth>();
         _movement = GetComponent<movement>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _anim = GetComponent<Animator>(); // ← TAMBAHAN
+        _anim = GetComponent<Animator>();
 
         UpdateBar();
     }
@@ -87,11 +87,10 @@ public class PlayerUlt : MonoBehaviour
             yield return null;
         }
 
-        // ← Matikan charge DAN langsung trigger cast di sini
         if (_anim != null)
         {
             _anim.SetBool("IsChargingUlt", false);
-            _anim.SetTrigger("CastUlt"); // ← pindah ke sini
+            _anim.SetTrigger("CastUlt");
         }
 
         _isCharging = false;
@@ -106,7 +105,6 @@ public class PlayerUlt : MonoBehaviour
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         _movement?.SetMovementLocked(false);
 
-        // ← TAMBAHAN: matikan animasi charge saat cancel
         if (_anim != null)
             _anim.SetBool("IsChargingUlt", false);
 
@@ -128,7 +126,6 @@ public class PlayerUlt : MonoBehaviour
         _isReady = false;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-        // ← Hapus SetTrigger dari sini
 
         yield return StartCoroutine(UltDash());
 
@@ -173,24 +170,6 @@ public class PlayerUlt : MonoBehaviour
         _rb.velocity = Vector2.zero;
     }
 
-    IEnumerator FadeSprite(float from, float to, float duration)
-    {
-        if (_spriteRenderer == null) yield break;
-
-        float timer = 0f;
-        Color color = _spriteRenderer.color;
-
-        while (timer < duration)
-        {
-            timer += Time.deltaTime;
-            float alpha = Mathf.Lerp(from, to, timer / duration);
-            _spriteRenderer.color = new Color(color.r, color.g, color.b, alpha);
-            yield return null;
-        }
-
-        _spriteRenderer.color = new Color(color.r, color.g, color.b, to);
-    }
-
     Vector2 GetDashDirection()
     {
         return _movement.LastDirection;
@@ -218,6 +197,16 @@ public class PlayerUlt : MonoBehaviour
 
         _currentFrame = target;
         ultBarImage.sprite = ultFrames[_currentFrame];
+
+        Button ultButton = ultBarImage.GetComponent<Button>();
+        if (ultButton != null)
+            ultButton.interactable = _isReady;
+    }
+
+    public void MobileUlt()
+    {
+        if (_isReady && !_isCharging && !_isCasting)
+            StartCoroutine(ChargeUlt());
     }
 
     void OnDrawGizmosSelected()

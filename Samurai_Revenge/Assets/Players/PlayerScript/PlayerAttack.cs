@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -19,10 +20,14 @@ public class PlayerAttack : MonoBehaviour
     private float nextAttackTime;
     private Animator animator;
     private movement playerMovement;
-    private Skill3SO _skill3;         // ganti dari skill3 ke Skill3SO
+    private Skill3SO _skill3;
     private PlayerSkillState _skillState;
     private PlayerHealth _playerHealth;
     private PlayerStats _stats;
+
+    public Image attackButtonImage;
+    public Sprite meleeSprite;
+    public Sprite rangeSprite;
 
     private Queue<GameObject> shurikenQueue = new Queue<GameObject>();
     private bool isAttacking = false;
@@ -38,13 +43,15 @@ public class PlayerAttack : MonoBehaviour
         _stats = GetComponent<PlayerStats>();
         _skillState = GetComponent<PlayerSkillState>();
 
-        // Ambil Skill3SO dari SkillController
         SkillController skillController = GetComponent<SkillController>();
         if (skillController != null)
             _skill3 = skillController.skill3 as Skill3SO;
 
         if (swordHitbox != null)
             swordHitbox.SetActive(false);
+
+        if (attackButtonImage != null && meleeSprite != null)
+            attackButtonImage.sprite = meleeSprite;
     }
 
     float GetAttackDelay()
@@ -56,7 +63,6 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        // Block attack biasa saat skill sedang digunakan
         if (_skillState != null && _skillState.isUsingSkill) return;
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time >= nextAttackTime && !isAttacking)
@@ -71,13 +77,19 @@ public class PlayerAttack : MonoBehaviour
         GameObject meleeTarget = FindNearestEnemyInRadius(meleeRadius);
         if (meleeTarget != null)
         {
+            if (attackButtonImage != null && meleeSprite != null)
+                attackButtonImage.sprite = meleeSprite;
             MeleeAttack(meleeTarget);
             return;
         }
 
         GameObject rangeTarget = FindNearestEnemyInRadius(rangeRadius);
         if (rangeTarget != null)
+        {
+            if (attackButtonImage != null && rangeSprite != null)
+                attackButtonImage.sprite = rangeSprite;
             RangeAttack(rangeTarget);
+        }
     }
 
     int GetFinalDamage(int baseDamage)
@@ -213,6 +225,15 @@ public class PlayerAttack : MonoBehaviour
             animator.SetTrigger(direction.x > 0 ? "ShuRight" : "ShuLeft");
         else
             animator.SetTrigger(direction.y > 0 ? "ShuUp" : "ShuDown");
+    }
+
+    public void MobileAttack()
+    {
+        if (_skillState != null && _skillState.isUsingSkill) return;
+        if (Time.time < nextAttackTime || isAttacking) return;
+
+        nextAttackTime = Time.time + GetAttackDelay();
+        HandleAttack();
     }
 
     private void OnDrawGizmos()

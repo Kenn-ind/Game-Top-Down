@@ -2,18 +2,17 @@ using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [Header("Interaction Settings")]
     public float interactRange = 2f;
     public KeyCode interactKey = KeyCode.E;
     public LayerMask interactableLayer;
 
     void Update()
     {
-        Debug.Log("Update berjalan"); // Cek apakah Update dipanggil
+        Debug.Log("Update berjalan");
 
         if (Input.GetKeyDown(interactKey))
         {
-            Debug.Log("Tombol E ditekan!"); // Cek apakah input terbaca
+            Debug.Log("Tombol E ditekan!");
             TryInteract();
         }
     }
@@ -26,7 +25,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log($"Nama: {hit.gameObject.name}");
 
-            // Coba cari di GameObject itu sendiri DAN parent/childnya
             IInteractable interactable = hit.GetComponent<IInteractable>();
             IInteractable interactableParent = hit.GetComponentInParent<IInteractable>();
             IInteractable interactableChild = hit.GetComponentInChildren<IInteractable>();
@@ -35,7 +33,6 @@ public class PlayerInteraction : MonoBehaviour
             Debug.Log($"GetComponentInParent: {interactableParent}");
             Debug.Log($"GetComponentInChildren: {interactableChild}");
 
-            // Coba ketiganya
             IInteractable found = interactable ?? interactableParent ?? interactableChild;
 
             if (found != null && found.CanInteract())
@@ -46,7 +43,11 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    // Visualisasi range di Editor
+    public void MobileInteract()
+    {
+        TryInteract();
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

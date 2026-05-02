@@ -213,4 +213,37 @@ public class movement : MonoBehaviour
         animator.SetFloat("LastInputX", lastDirection.x);
         animator.SetFloat("LastInputY", lastDirection.y);
     }
+
+    public void SetMobileInput(Vector2 input)
+    {
+        moveInput = input;
+
+        if (input != Vector2.zero)
+        {
+            if (Mathf.Abs(input.x) > Mathf.Abs(input.y))
+                lastDirection = new Vector2(Mathf.Sign(input.x), 0);
+            else
+                lastDirection = new Vector2(0, Mathf.Sign(input.y));
+
+            animator.SetFloat("LastInputX", lastDirection.x);
+            animator.SetFloat("LastInputY", lastDirection.y);
+        }
+
+        animator.SetFloat("InputX", input.x);
+        animator.SetFloat("InputY", input.y);
+    }
+
+    public void MobileDash()
+    {
+        if (!_canDash || _isDashing || _isLocked) return;
+
+        if (_stamina != null && !_stamina.UseStamina(dashStaminaCost))
+        {
+            Debug.Log("Stamina tidak cukup untuk dash!");
+            return;
+        }
+
+        AudioManager.PlaySFX(AudioManager.DashSfx);
+        StartCoroutine(DoDash());
+    }
 }
