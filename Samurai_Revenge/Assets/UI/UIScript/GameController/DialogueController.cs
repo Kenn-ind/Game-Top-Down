@@ -13,7 +13,6 @@ public class DialogueController : MonoBehaviour
     public Image portraitImage;
     public Transform choiceContainer;
     public GameObject choiceButton;
-
     public GameObject mobileUIPanel;
 
     void Awake()
@@ -29,6 +28,9 @@ public class DialogueController : MonoBehaviour
 
         if (mobileUIPanel != null)
             mobileUIPanel.SetActive(!show);
+
+        if (QuestUI.Instance?.trackerButton != null)
+            QuestUI.Instance.trackerButton.gameObject.SetActive(!show);
     }
 
     public void SetNPCInfo(string npcName, Sprite portrait)

@@ -70,6 +70,8 @@ public class PlayerAttack : MonoBehaviour
             nextAttackTime = Time.time + GetAttackDelay();
             HandleAttack();
         }
+
+        UpdateAttackButtonSprite();
     }
 
     void HandleAttack()
@@ -186,6 +188,26 @@ public class PlayerAttack : MonoBehaviour
             }
         }
         return nearestEnemy;
+    }
+
+    void UpdateAttackButtonSprite()
+    {
+        if (attackButtonImage == null) return;
+
+        GameObject meleeTarget = FindNearestEnemyInRadius(meleeRadius);
+        if (meleeTarget != null)
+        {
+            if (meleeSprite != null)
+                attackButtonImage.sprite = meleeSprite;
+            return;
+        }
+
+        GameObject rangeTarget = FindNearestEnemyInRadius(rangeRadius);
+        if (rangeTarget != null)
+        {
+            if (rangeSprite != null)
+                attackButtonImage.sprite = rangeSprite;
+        }
     }
 
     void PositionSwordHitbox(Vector2 direction)

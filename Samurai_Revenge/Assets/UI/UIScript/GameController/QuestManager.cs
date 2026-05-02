@@ -47,7 +47,7 @@ public class QuestManager : MonoBehaviour
             menu.menuCanvas.SetActive(true);
 
         TabController tab = FindObjectOfType<TabController>();
-        tab?.ActivateTab(3); // index 3 = QuestTab
+        tab?.ActivateTab(2);
     }
 
     public void AcceptQuest(QuestData quest, InventoryController inventory = null)

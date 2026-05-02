@@ -71,9 +71,11 @@ public class ChestController : MonoBehaviour
         _permanentlyOpened = true;
         CurrentOpenChest = this;
         animator.SetBool(ParamIsOpen, true);
-        chestUI.Open(runtimeItems, this); 
+        chestUI.Open(runtimeItems, this);
         playerInventory.MoveToChestPanel();
         if (playerMovement != null) playerMovement.SetMovementLocked(true);
+
+        MobileInput.Instance?.SetMobileUIVisible(false);
     }
 
     public void CloseUI()
@@ -83,6 +85,8 @@ public class ChestController : MonoBehaviour
         CurrentOpenChest = null;
         isOpen = false;
         if (playerMovement != null) playerMovement.SetMovementLocked(false);
+
+        MobileInput.Instance?.SetMobileUIVisible(true);
     }
 
     public void RemoveItemFromChest(Slot slot)

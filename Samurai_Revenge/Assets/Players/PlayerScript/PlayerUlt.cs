@@ -205,6 +205,7 @@ public class PlayerUlt : MonoBehaviour
 
     public void MobileUlt()
     {
+        Debug.Log($"MobileUlt dipanggil! isReady: {_isReady}, isCharging: {_isCharging}, isCasting: {_isCasting}");
         if (_isReady && !_isCharging && !_isCasting)
             StartCoroutine(ChargeUlt());
     }

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,8 +25,15 @@ public class Skill3SO : SkillSO
     private MonoBehaviour _runner;
 
     private float _nextSkillTime;
+
+    // ── Keyboard hold ────────────────────────────────────────
     private float _holdTimer;
     private bool _isHolding;
+
+    // ── Mobile hold ──────────────────────────────────────────
+    private float _mobileHoldTimer = 0f;
+    private bool _mobileIsHolding = false;
+
     private bool _berserkerActive;
     private List<GameObject> _shurikens = new List<GameObject>();
 
@@ -44,9 +51,14 @@ public class Skill3SO : SkillSO
         _berserkerActive = false;
         _holdTimer = 0f;
         _isHolding = false;
+        _mobileHoldTimer = 0f;
+        _mobileIsHolding = false;
         _shurikens = new List<GameObject>();
     }
 
+    // ============================================================
+    //  KEYBOARD INPUT
+    // ============================================================
     public override void OnUpdate()
     {
         if (Input.GetKeyDown(keyBind)) { _holdTimer = 0f; _isHolding = true; }
@@ -68,6 +80,54 @@ public class Skill3SO : SkillSO
 
             _nextSkillTime = Time.time + cooldown;
         }
+    }
+
+    // ============================================================
+    //  MOBILE INPUT
+    // ============================================================
+
+    // ── Dipanggil saat jari mulai menyentuh tombol ───────────
+    public void MobileHoldStart()
+    {
+        _mobileHoldTimer = 0f;
+        _mobileIsHolding = true;
+    }
+
+    // ── Dipanggil setiap frame dari MobileInput.Update() ─────
+    public void MobileHoldUpdate()
+    {
+        if (_mobileIsHolding)
+            _mobileHoldTimer += Time.deltaTime;
+    }
+
+    public void MobileHoldEnd()
+    {
+        if (!_mobileIsHolding) return;
+        _mobileIsHolding = false;
+
+        if (Time.time < _nextSkillTime) return;
+        if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
+        if (_skillState.isUsingSkill) return;
+
+        _stamina.UseStamina(staminaCost);
+
+        if (_mobileHoldTimer < holdThreshold)
+            _runner.StartCoroutine(ActivateRing());
+        else
+            TriggerBerserker();
+
+        _nextSkillTime = Time.time + cooldown;
+    }
+    
+    public void MobileTriggerTap()
+    {
+        if (Time.time < _nextSkillTime) return;
+        if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
+        if (_skillState.isUsingSkill) return;
+
+        _stamina.UseStamina(staminaCost);
+        _runner.StartCoroutine(ActivateRing());
+        _nextSkillTime = Time.time + cooldown;
     }
 
     IEnumerator ActivateRing()
@@ -122,41 +182,5 @@ public class Skill3SO : SkillSO
         if (!_berserkerActive) return;
         int heal = Mathf.RoundToInt(damageDealt * lifestealPercent);
         if (heal > 0) playerHealth.Heal(heal);
-    }
-
-    public void MobileTriggerTap()
-    {
-        if (Time.time < _nextSkillTime) return;
-        if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
-        if (_skillState.isUsingSkill) return;
-
-        _stamina.UseStamina(staminaCost);
-        _runner.StartCoroutine(ActivateRing());
-        _nextSkillTime = Time.time + cooldown;
-    }
-
-    public void MobileHoldStart()
-    {
-        _holdTimer = 0f;
-        _isHolding = true;
-    }
-
-    public void MobileHoldEnd()
-    {
-        if (!_isHolding) return;
-        _isHolding = false;
-
-        if (Time.time < _nextSkillTime) return;
-        if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
-        if (_skillState.isUsingSkill) return;
-
-        _stamina.UseStamina(staminaCost);
-
-        if (_holdTimer < holdThreshold)
-            _runner.StartCoroutine(ActivateRing());
-        else
-            TriggerBerserker();
-
-        _nextSkillTime = Time.time + cooldown;
     }
 }

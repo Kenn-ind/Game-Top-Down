@@ -22,6 +22,7 @@ public class MenuController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             menuCanvas.SetActive(!menuCanvas.activeSelf);
+            MobileInput.Instance?.SetMobileUIVisible(!menuCanvas.activeSelf);
         }
     }
 }

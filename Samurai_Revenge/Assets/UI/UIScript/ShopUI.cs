@@ -63,6 +63,7 @@ public class ShopUI : MonoBehaviour
         Debug.Log($"shopItemSlotPrefab: {shopItemSlotPrefab != null}");
 
         shopPanel.SetActive(true);
+        MobileInput.Instance?.SetMobileUIVisible(false);
         shopNameText.text = shop.shopName;
         UpdateCoinDisplay(CoinManager.Instance.CurrentCoins);
         RefreshBuyList();
@@ -72,6 +73,7 @@ public class ShopUI : MonoBehaviour
     public void CloseShop()
     {
         shopPanel.SetActive(false);
+        MobileInput.Instance?.SetMobileUIVisible(true);
         confirmPanel.SetActive(false);
     }
 
@@ -144,7 +146,6 @@ public class ShopUI : MonoBehaviour
 
     void OnClickBuy(ShopItem shopItem)
     {
-        // Buy tidak pakai quantity row
         quantityRow?.SetActive(false);
         quantityPriceText?.gameObject.SetActive(false);
 
@@ -161,7 +162,6 @@ public class ShopUI : MonoBehaviour
         currentSellSlot = slot;
         currentSellAmount = 1;
 
-        // Sell pakai quantity row
         quantityRow?.SetActive(true);
         quantityPriceText?.gameObject.SetActive(true);
         quantityAmountText.text = "1";

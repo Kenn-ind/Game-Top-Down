@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "Skill1SO", menuName = "Skills/Skill1/Skill1SO")]
 public class Skill1SO : SkillSO
@@ -63,17 +63,17 @@ public class Skill1SO : SkillSO
         if (Time.time < _nextSkillTime) return;
         if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
         if (_skillState.isUsingSkill) return;
-
+ 
         GameObject target = FindNearestEnemy();
         if (target == null) return;
-
+ 
         _stamina.UseStamina(staminaCost);
         float distance = Vector2.Distance(_player.transform.position, target.transform.position);
         if (distance <= closeRange)
             melee?.Execute();
         else
             range?.Execute();
-
+ 
         _nextSkillTime = Time.time + cooldown;
     }
 }
