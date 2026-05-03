@@ -11,6 +11,9 @@ public class PlayerUlt : MonoBehaviour
     public Image ultBarImage;
     private int _currentFrame = 0;
 
+    [Header("Mobile")]
+    public Button ultMobileButton; // drag BtnUlt dari Inspector
+
     public KeyCode ultKey = KeyCode.R;
     public float chargeTime = 3f;
     public float aoeRadius = 5f;
@@ -50,9 +53,7 @@ public class PlayerUlt : MonoBehaviour
         if (_isCasting) return;
 
         if (Input.GetKeyDown(ultKey) && _isReady && !_isCharging)
-        {
             StartCoroutine(ChargeUlt());
-        }
     }
 
     public void OnEnemyKilled()
@@ -61,13 +62,13 @@ public class PlayerUlt : MonoBehaviour
 
         currentKills++;
         currentKills = Mathf.Min(currentKills, killsRequired);
-        UpdateBar();
 
         if (currentKills >= killsRequired)
-        {
             _isReady = true;
+            UpdateBar();
+
+        if (_isReady)
             Debug.Log("ULT SIAP!");
-        }
     }
 
     IEnumerator ChargeUlt()
@@ -126,7 +127,6 @@ public class PlayerUlt : MonoBehaviour
         _isReady = false;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
-
         yield return StartCoroutine(UltDash());
 
         Vector2 castPosition = transform.position;
@@ -156,7 +156,6 @@ public class PlayerUlt : MonoBehaviour
     IEnumerator UltDash()
     {
         Vector2 dashDir = _movement != null ? GetDashDirection() : Vector2.up;
-
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         float timer = 0f;
@@ -198,16 +197,29 @@ public class PlayerUlt : MonoBehaviour
         _currentFrame = target;
         ultBarImage.sprite = ultFrames[_currentFrame];
 
-        Button ultButton = ultBarImage.GetComponent<Button>();
-        if (ultButton != null)
-            ultButton.interactable = _isReady;
+        // ── TAMBAH LOG INI ───────────────────────────────────────
+        Debug.Log($"UpdateBar: isReady={_isReady}, ultMobileButton={ultMobileButton}, interactable={_isReady}");
+        // ────────────────────────────────────────────────────────
+
+        if (ultMobileButton != null)
+            ultMobileButton.interactable = _isReady;
     }
 
+    // ── MOBILE ───────────────────────────────────────────────
     public void MobileUlt()
     {
         Debug.Log($"MobileUlt dipanggil! isReady: {_isReady}, isCharging: {_isCharging}, isCasting: {_isCasting}");
         if (_isReady && !_isCharging && !_isCasting)
             StartCoroutine(ChargeUlt());
+    }
+
+    [ContextMenu("Force Ult Ready")]
+    public void ForceUltReady()
+    {
+        currentKills = killsRequired;
+        _isReady = true;
+        UpdateBar();
+        Debug.Log("Ult di-force ready!");
     }
 
     void OnDrawGizmosSelected()
