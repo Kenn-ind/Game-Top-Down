@@ -98,7 +98,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639133520386893739
+  platformSettingsDirtyTick: 639134802918725040
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -133,7 +133,7 @@ ScriptedImporter:
       y: 4
       width: 96
       height: 117
-    spriteID: dbb6a5ebd816b6d40914b222e36a7472
+    spriteID: edfa9ae66f47d334080fdd69e9324dd3
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -154,7 +154,7 @@ ScriptedImporter:
       y: 105
       width: 16
       height: 16
-    spriteID: 94471c97147824043aa708fa00b0fa8a
+    spriteID: 1ac54353c69245046832c14b67728856
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -174,7 +174,7 @@ ScriptedImporter:
       y: 105
       width: 16
       height: 16
-    spriteID: 00cccf6d915e30a43b9f7306e12f5e19
+    spriteID: 205b2f9682dd5294ea67f19c33f189f2
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -194,7 +194,7 @@ ScriptedImporter:
       y: 93
       width: 16
       height: 16
-    spriteID: 314be920737f90a43a2d96838f371b1f
+    spriteID: d9774bb7ff5c28b4dafda76bfe2e294e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -214,7 +214,7 @@ ScriptedImporter:
       y: 55
       width: 38
       height: 38
-    spriteID: 14cb31ecc32b13e4d8742715785c8f50
+    spriteID: 8f9c33da60f3de849a6e7407044e94b5
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -234,7 +234,7 @@ ScriptedImporter:
       y: 61
       width: 16
       height: 16
-    spriteID: 50190eb0e8073054ea624135bbcdc054
+    spriteID: 36002caa62d88e84799bd67bd48b6ae3
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -254,7 +254,7 @@ ScriptedImporter:
       y: 4
       width: 38
       height: 38
-    spriteID: 670d254fa922e1c4b805282cce0ea1b4
+    spriteID: 49437ca4ee958b64fb4ede6855c9641e
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -274,7 +274,7 @@ ScriptedImporter:
       y: 29
       width: 16
       height: 16
-    spriteID: f74e09fc5452f574585521d1567ccd35
+    spriteID: 2c657a57f506962478e531db1f1d0f2c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -304,7 +304,7 @@ ScriptedImporter:
         y: 7
         width: 96
         height: 117
-      spriteId: bd22612db5e973b498779b79b8c49b92
+      spriteId: 86173b623aa039c4eb2376e4e5c15ab0
     linkedCells: []
     parentIndex: -1
   platformSettings:
