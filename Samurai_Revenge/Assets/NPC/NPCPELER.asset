@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7d58335418bfc49a8cd0a7be883a14, type: 3}
   m_Name: NPCPELER
   m_EditorClassIdentifier: 
-  npcName: PELER
+  npcName: HIDENG
   npcPortrait: {fileID: 21300000, guid: 76681097c8a12814bbbfcf0c3a893566, type: 3}
   dialogueLines:
   - hey

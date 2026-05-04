@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7d58335418bfc49a8cd0a7be883a14, type: 3}
   m_Name: NPCMaster
   m_EditorClassIdentifier: 
-  npcName: Shifu
+  npcName: SHIFU
   npcPortrait: {fileID: 21300000, guid: 621db5e3ae67a35499a93406681b25d3, type: 3}
   dialogueLines:
   - oi

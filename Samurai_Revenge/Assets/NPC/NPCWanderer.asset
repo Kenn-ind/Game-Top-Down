@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b7d58335418bfc49a8cd0a7be883a14, type: 3}
   m_Name: NPCWanderer
   m_EditorClassIdentifier: 
-  npcName: Wanderer
+  npcName: WANDERER
   npcPortrait: {fileID: 21300000, guid: 28a2aa8a680ff1b4bbab58643b95b069, type: 3}
   dialogueLines:
   - halloo
