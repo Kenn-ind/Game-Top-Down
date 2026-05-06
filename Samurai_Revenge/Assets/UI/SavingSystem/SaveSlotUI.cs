@@ -137,9 +137,11 @@ public class SaveSlotUI : MonoBehaviour
         SaveManager.Instance.Load(selectedSlotIndex);
         confirmPanel.SetActive(false);
 
-        // Tutup menu setelah load
         MenuController menu = FindObjectOfType<MenuController>();
         if (menu != null) menu.menuCanvas.SetActive(false);
+
+        MobileInput.Instance?.SetMobileUIVisible(true);
+
     }
 
     void OnClickOverwrite()
