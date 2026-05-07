@@ -19,8 +19,12 @@ public class MenuScene : MonoBehaviour
     // ──────────────────────────────────────────────────────────
     public void OnClickPlay()
     {
-        Debug.Log("[Menu] PLAY diklik → pindah ke: " + continueSceneName);
-        SceneManager.LoadScene(continueSceneName);
+        Debug.Log("[Menu] PLAY diklik");
+
+        if (MenuExitTrigger.Instance != null)
+            MenuExitTrigger.Instance.TriggerExit(continueSceneName);
+        else
+            SceneManager.LoadScene(continueSceneName);
     }
 
     // ──────────────────────────────────────────────────────────
@@ -28,13 +32,14 @@ public class MenuScene : MonoBehaviour
     // ──────────────────────────────────────────────────────────
     public void OnClickNewGame()
     {
-        Debug.Log("[Menu] NEW GAME diklik → reset & pindah ke: " + newGameSceneName);
-
-        // Hapus data save jika pakai PlayerPrefs
+        Debug.Log("[Menu] NEW GAME diklik");
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
 
-        SceneManager.LoadScene(newGameSceneName);
+        if (MenuExitTrigger.Instance != null)
+            MenuExitTrigger.Instance.TriggerExit(newGameSceneName);
+        else
+            SceneManager.LoadScene(newGameSceneName); // Fallback
     }
 
     // ──────────────────────────────────────────────────────────
