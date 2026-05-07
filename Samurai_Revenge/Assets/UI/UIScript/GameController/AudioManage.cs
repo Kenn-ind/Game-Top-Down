@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManage : MonoBehaviour
 {
@@ -44,7 +45,37 @@ public class AudioManage : MonoBehaviour
     private void Start()
     {
         musicSource.volume = targetVolume;
-        PlayMusic(backsoundGame);
+        PlayMusicForCurrentScene();
+    }
+
+    private void PlayMusicForCurrentScene()
+    {
+        // Ambil nama scene yang sedang aktif
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        switch (currentScene)
+        {
+            case "Menu":
+                PlayMusic(backsoundMenu);
+                break;
+
+            case "SampleScene":
+                PlayMusic(backsoundGame);
+                break;
+
+            //case "BossStage":
+            //    PlayMusic(backsoundBoss);
+            //    break;
+
+            //case "Ending":
+            //    PlayMusic(backsoundEnding);
+            //    break;
+
+            default:
+                Debug.LogWarning($"[MusicManager] Scene '{currentScene}' tidak punya backsound.");
+                musicSource.Stop();
+                break;
+        }
     }
 
     // ─── SFX ──────────────────────────────────────────────────────
@@ -57,6 +88,8 @@ public class AudioManage : MonoBehaviour
     public void PlayMusic(AudioClip clip)
     {
         if (clip == null || musicSource.clip == clip) return;
+
+        if (musicSource.clip == clip && musicSource.isPlaying) return;
 
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
         fadeCoroutine = StartCoroutine(FadeToMusic(clip));
