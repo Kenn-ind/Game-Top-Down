@@ -24,6 +24,7 @@ public class SkillUpgradeManager : MonoBehaviour
     void Awake()
     {
         _scrollInventory = GetComponent<ScrollInventory>();
+        upgradeData = Instantiate(upgradeData);
     }
 
     // ─── Ambil count langsung dari SO ─────────────────────────
