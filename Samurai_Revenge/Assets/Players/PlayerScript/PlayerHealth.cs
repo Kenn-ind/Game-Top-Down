@@ -90,6 +90,15 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Player mati");
-        Destroy(gameObject);
+        RespawnManager.Instance.HandlePlayerDeath();
+        currentHealth = maxHealth;
+    }
+
+    public void OnRespawn()
+    {
+        currentHealth = maxHealth;
+        isKnockback = false;
+        rb.velocity = Vector2.zero;
+        UpdateHealthBar();
     }
 }
