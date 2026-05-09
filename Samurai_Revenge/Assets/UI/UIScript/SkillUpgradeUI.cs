@@ -41,7 +41,6 @@ public class SkillUpgradeUI : MonoBehaviour
 
     private Coroutine _feedbackCoroutine;
 
-    // Pasangan dropdown + button + preview + skillType
     private struct SkillUIGroup
     {
         public TMP_Dropdown dropdown;
@@ -62,6 +61,9 @@ public class SkillUpgradeUI : MonoBehaviour
             new SkillUIGroup { dropdown = skill2RangeDropdown, button = skill2RangeButton, preview = skill2RangePreview, skillType = SkillUpgradeManager.SkillType.Skill2Range },
             new SkillUIGroup { dropdown = skill3Dropdown,      button = skill3Button,      preview = skill3Preview,      skillType = SkillUpgradeManager.SkillType.Skill3 },
         };
+
+        if (scrollInventory != null)
+            scrollInventory.OnScrollChanged += RefreshAll;
 
         SetupDropdowns();
         SetupButtons();
@@ -157,8 +159,52 @@ public class SkillUpgradeUI : MonoBehaviour
         RefreshAll();
     }
 
-    void RefreshAll()
+    public void RefreshAll()
     {
+        if (feedbackText != null) feedbackText.text = "";
+        if (_feedbackCoroutine != null)
+        {
+            StopCoroutine(_feedbackCoroutine);
+            _feedbackCoroutine = null;
+        }
+
+        UpdateScrollText();
+        foreach (var g in _groups)
+            UpdatePreview(g);
+        UpdateButtonStates();
+    }
+
+    public void ForceRefresh()
+    {
+        if (_groups == null || _groups.Count == 0)
+        {
+            _groups = new List<SkillUIGroup>
+        {
+            new SkillUIGroup { dropdown = skill1MeleeDropdown, button = skill1MeleeButton, preview = skill1MeleePreview, skillType = SkillUpgradeManager.SkillType.Skill1Melee },
+            new SkillUIGroup { dropdown = skill1RangeDropdown, button = skill1RangeButton, preview = skill1RangePreview, skillType = SkillUpgradeManager.SkillType.Skill1Range },
+            new SkillUIGroup { dropdown = skill2MeleeDropdown, button = skill2MeleeButton, preview = skill2MeleePreview, skillType = SkillUpgradeManager.SkillType.Skill2Melee },
+            new SkillUIGroup { dropdown = skill2RangeDropdown, button = skill2RangeButton, preview = skill2RangePreview, skillType = SkillUpgradeManager.SkillType.Skill2Range },
+            new SkillUIGroup { dropdown = skill3Dropdown,      button = skill3Button,      preview = skill3Preview,      skillType = SkillUpgradeManager.SkillType.Skill3 },
+        };
+        }
+
+        if (feedbackText != null) feedbackText.text = "";
+        if (_feedbackCoroutine != null)
+        {
+            StopCoroutine(_feedbackCoroutine);
+            _feedbackCoroutine = null;
+        }
+
+        foreach (var g in _groups)
+        {
+            if (g.dropdown != null)
+            {
+                int current = g.dropdown.value;
+                g.dropdown.value = current == 0 ? 1 : 0;
+                g.dropdown.value = current;
+            }
+        }
+
         UpdateScrollText();
         foreach (var g in _groups)
             UpdatePreview(g);
@@ -217,23 +263,18 @@ public class SkillUpgradeUI : MonoBehaviour
         _feedbackCoroutine = StartCoroutine(HideFeedbackAfterDelay());
     }
 
-    IEnumerator FeedbackRoutine(bool success, string skillName, string upgradeName)
-    {
-        feedbackText.text = success
-            ? $"✓ {skillName} — {upgradeName} berhasil!"
-            : "✗ Scroll tidak cukup!";
-        feedbackText.color = success ? Color.green : Color.red;
-        feedbackText.gameObject.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        feedbackText.gameObject.SetActive(false);
-    }
-
     IEnumerator HideFeedbackAfterDelay()
     {
         yield return new WaitForSeconds(2f);
         if (feedbackText != null)
             feedbackText.gameObject.SetActive(false);
         _feedbackCoroutine = null;
+    }
+
+    void OnDestroy()
+    {
+        if (scrollInventory != null)
+            scrollInventory.OnScrollChanged -= RefreshAll;
     }
 
     public void OnScrollChanged() => RefreshAll();

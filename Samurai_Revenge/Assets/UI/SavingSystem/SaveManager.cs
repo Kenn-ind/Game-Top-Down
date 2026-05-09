@@ -274,8 +274,10 @@ public class SaveManager : MonoBehaviour
             chest.SetOpenedState(wasOpened);
         }
 
-        StartCoroutine(LoadCameraBoundary(data));
+        skillUpgradeManager.ReApplyUpgrades();
+        StartCoroutine(RefreshSkillUINextFrame());
 
+        StartCoroutine(LoadCameraBoundary(data));
         Debug.Log($"[SaveManager] Load dari slot {slotIndex} berhasil!");
     }
 
@@ -340,6 +342,24 @@ public class SaveManager : MonoBehaviour
         }
 
         Debug.LogWarning($"[SaveManager] Boundary '{data.activeBoundaryName}' tidak ditemukan di scene!");
+    }
+
+    IEnumerator RefreshSkillUINextFrame()
+    {
+        yield return null; // tunggu 1 frame
+
+        SkillUpgradeUI skillUpgradeUI = FindObjectOfType<SkillUpgradeUI>(true); // true = cari yang inactive juga
+        if (skillUpgradeUI != null)
+        {
+            skillUpgradeUI.gameObject.SetActive(true); // aktifkan sementara
+            skillUpgradeUI.ForceRefresh();
+            skillUpgradeUI.gameObject.SetActive(false); // matikan lagi
+            Debug.Log("[SaveManager] SkillUpgradeUI refreshed!");
+        }
+        else
+        {
+            Debug.LogWarning("[SaveManager] SkillUpgradeUI tidak ditemukan!");
+        }
     }
 
     // ============================================================

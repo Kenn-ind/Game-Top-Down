@@ -315,4 +315,29 @@ public class SkillUpgradeManager : MonoBehaviour
         }
         return "";
     }
+
+    public void ReApplyUpgrades()
+    {
+        // Re-initialize semua skill SO agar bonus teraplikasi ulang
+        skill1SO?.Initialize(gameObject);
+        skill2SO?.Initialize(gameObject);
+        skill3SO?.Initialize(gameObject);
+
+        // Apply semua bonus dari upgradeData ke SO
+        SkillUpgradeData su = upgradeData;
+
+        // Skill1
+        skill1SO.melee.dashCount = su.meleeDashCountBonus;
+        skill1SO.range.shurikenAmount += su.rangeShurikenBonus;
+
+        // Skill2
+        skill2SO.range.shurikenAmount += su.skill2RangeShurikenBonus;
+
+        // Skill3
+        skill3SO.shurikenAmount += su.skill3ShurikenBonus;
+        skill3SO.berserkerDuration += su.skill3BerserkerDurationBonus;
+        skill3SO.lifestealPercent = Mathf.Min(0.8f, skill3SO.lifestealPercent + su.skill3LifestealBonus);
+
+        Debug.Log("[SkillUpgradeManager] Upgrades re-applied!");
+    }
 }
