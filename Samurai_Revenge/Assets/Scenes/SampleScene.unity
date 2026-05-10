@@ -22016,6 +22016,7 @@ GameObject:
   - component: {fileID: 736560709}
   - component: {fileID: 736560708}
   - component: {fileID: 736560707}
+  - component: {fileID: 736560710}
   m_Layer: 5
   m_Name: JoystickBackground
   m_TagString: Untagged
@@ -22034,14 +22035,15 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1281767896}
   m_Father: {fileID: 930351548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -174.99963, y: -175.00046}
+  m_AnchoredPosition: {x: 0.00030517578, y: -0.00048828125}
   m_SizeDelta: {x: 350, y: 350}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &736560707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22100,7 +22102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.49019608}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -22124,6 +22126,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736560705}
   m_CullTransparentMesh: 1
+--- !u!114 &736560710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736560705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e3ca5e987d127545a27bf8a82745d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystickHandle: {fileID: 1281767896}
+  joystickRange: 150
 --- !u!1 &737060309
 GameObject:
   m_ObjectHideFlags: 0
@@ -25815,14 +25831,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 736560706}
-  - {fileID: 1281767896}
   m_Father: {fileID: 1756112859}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 35, y: 24}
+  m_AnchoredPosition: {x: 210, y: 199}
   m_SizeDelta: {x: 350, y: 350}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &937551805
 GameObject:
   m_ObjectHideFlags: 0
@@ -32452,7 +32467,6 @@ GameObject:
   - component: {fileID: 1281767899}
   - component: {fileID: 1281767898}
   - component: {fileID: 1281767897}
-  - component: {fileID: 1281767900}
   m_Layer: 5
   m_Name: JoystickHandle
   m_TagString: Untagged
@@ -32467,16 +32481,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281767895}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 930351548}
+  m_Father: {fileID: 736560706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.00038146973, y: 0.00047302246}
   m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1281767897
@@ -32561,20 +32575,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281767895}
   m_CullTransparentMesh: 1
---- !u!114 &1281767900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1281767895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e3ca5e987d127545a27bf8a82745d9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  background: {fileID: 736560706}
-  joystickRange: 125
 --- !u!1 &1297428164
 GameObject:
   m_ObjectHideFlags: 0
@@ -233050,7 +233050,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1756112859
 RectTransform:
   m_ObjectHideFlags: 0
