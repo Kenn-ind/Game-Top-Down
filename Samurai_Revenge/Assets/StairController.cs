@@ -28,6 +28,8 @@ public class StairController : MonoBehaviour
     [Tooltip("Posisi world dari tile tangga. Bisa di-drag dari scene view.")]
     [SerializeField] private Vector3 stairWorldPosition;
 
+    public GameObject WPBoss;
+
     private Vector3Int tilePosition;
 
     private void Awake()
@@ -54,6 +56,7 @@ public class StairController : MonoBehaviour
     {
         tilemap.SetTile(tilePosition, stairTile);
         Debug.Log("[StairController] Tangga terbuka!");
+        WPBoss.SetActive(true);
     }
 
     /// <summary>
@@ -63,6 +66,7 @@ public class StairController : MonoBehaviour
     {
         tilemap.SetTile(tilePosition, coverTile);
         Debug.Log("[StairController] Tangga tertutup kembali.");
+        WPBoss.SetActive(false);
     }
 
     // Helper: klik kanan GameObject di Inspector → "Copy Stair Position from Transform"
