@@ -29600,7 +29600,7 @@ Tilemap:
       - {fileID: -705554376, guid: df21ba6b439bc9446be1cb50097065ec, type: 3}
       - {fileID: 1993130794, guid: df21ba6b439bc9446be1cb50097065ec, type: 3}
       - {fileID: 1718821933, guid: df21ba6b439bc9446be1cb50097065ec, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -30, y: -21, z: 0}
@@ -235862,11 +235862,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67e6de8bed48ed5468f056707676c45e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 50
   enemyID: Trainer1
   knockbackForce: 11
   knockbackTime: 0.15
-  xpReward: 10000
+  xpReward: 10
   deathDelay: 1.2
   flashTime: 0.2
 --- !u!61 &1848478183
