@@ -3159,7 +3159,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -182.09998, y: 183.70001}
+  m_AnchoredPosition: {x: -196, y: 198}
   m_SizeDelta: {x: 155, y: 155}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &120181308
@@ -4134,7 +4134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 100.51, y: -0.12109375}
+  m_AnchoredPosition: {x: 100.51, y: 7}
   m_SizeDelta: {x: 155, y: 155}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &178381897
@@ -6130,7 +6130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.2000122, y: -5.299988}
+  m_AnchoredPosition: {x: -0.0000066757, y: 11}
   m_SizeDelta: {x: 155, y: 155}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &230037339
@@ -29600,7 +29600,7 @@ Tilemap:
       - {fileID: -705554376, guid: df21ba6b439bc9446be1cb50097065ec, type: 3}
       - {fileID: 1993130794, guid: df21ba6b439bc9446be1cb50097065ec, type: 3}
       - {fileID: 1718821933, guid: df21ba6b439bc9446be1cb50097065ec, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -30, y: -21, z: 0}
@@ -34879,7 +34879,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -168.90002, y: 1.8999634}
+  m_AnchoredPosition: {x: -185.96, y: 0.0000014305}
   m_SizeDelta: {x: 155, y: 155}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1380992629
@@ -239549,7 +239549,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -99, y: 2}
+  m_AnchoredPosition: {x: -107, y: 0.0000029802}
   m_SizeDelta: {x: 155, y: 155}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2033016292
