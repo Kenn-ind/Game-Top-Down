@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
-/// <summary>
-/// Mengontrol hotbar: spawn slot, highlight, tambah/hapus item.
-/// PERUBAHAN dari versi lama:
-/// - Tidak ada perubahan logika — ItemUser yang menangani pemakaian item.
-/// - RemoveFromSelectedSlot() ditambah agar ItemUser bisa hapus item dengan mudah.
-/// </summary>
 public class HotbarController : MonoBehaviour
 {
+    [Header("References")]
     public GameObject hotbarPanel;
     public GameObject hotbarSlotPrefab;
-    public int slotCount = 4;
     public GameObject itemPrefab;
+
+    [Header("Settings")]
+    public int slotCount = 4;
+    public float doubleTapThreshold = 0.35f;
 
     private HotbarSlot[] slots;
     private int selectedIndex = 0;
+
+    // Double tap tracking
+    private int lastTappedIndex = -1;
+    private float lastTapTime = 0f;
 
     public static HotbarController Instance;
 
@@ -26,16 +29,33 @@ public class HotbarController : MonoBehaviour
     void Start()
     {
         slots = new HotbarSlot[slotCount];
+
         for (int i = 0; i < slotCount; i++)
         {
             GameObject slotObj = Instantiate(hotbarSlotPrefab, hotbarPanel.transform);
             slots[i] = slotObj.GetComponent<HotbarSlot>();
+
+            int index = i;
+
+            // Coba ambil Button yang ada di slot
+            Button btn = slotObj.GetComponent<Button>();
+
+            // Kalau tidak ada, tambahkan otomatis
+            if (btn == null)
+                btn = slotObj.AddComponent<Button>();
+
+            // Pastikan transition none agar tidak mengubah tampilan
+            btn.transition = Selectable.Transition.None;
+
+            btn.onClick.AddListener(() => OnSlotTapped(index));
         }
+
         UpdateHighlight();
     }
 
     void Update()
     {
+        // Keyboard: tombol 1-4
         for (int i = 0; i < slotCount; i++)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1 + i))
@@ -46,10 +66,50 @@ public class HotbarController : MonoBehaviour
         }
     }
 
+    // ─── Mobile Tap Logic ────────────────────────────────────────────────────────
+
+    public void OnSlotTapped(int index)
+    {
+        Debug.Log($"[Hotbar] OnSlotTapped index={index}");
+
+        float now = Time.unscaledTime;
+
+        bool isDoubleTap = (index == lastTappedIndex)
+                        && (index == selectedIndex)
+                        && (now - lastTapTime <= doubleTapThreshold);
+
+        if (isDoubleTap)
+        {
+            UseSelectedItem();
+            lastTappedIndex = -1;
+            lastTapTime = 0f;
+        }
+        else
+        {
+            selectedIndex = index;
+            UpdateHighlight();
+            lastTappedIndex = index;
+            lastTapTime = now;
+        }
+    }
+
+    void UseSelectedItem()
+    {
+        ItemPlayer itemPlayer = FindObjectOfType<ItemPlayer>();
+        if (itemPlayer != null)
+            itemPlayer.UseSelectedItem();
+        else
+            Debug.LogWarning("[HotbarController] ItemPlayer tidak ditemukan di scene!");
+    }
+
+    // ─── Visibility ──────────────────────────────────────────────────────────────
+
     public void SetHotbarVisible(bool visible)
     {
         hotbarPanel.SetActive(visible);
     }
+
+    // ─── Highlight ───────────────────────────────────────────────────────────────
 
     void UpdateHighlight()
     {
@@ -57,11 +117,11 @@ public class HotbarController : MonoBehaviour
             slots[i].SetHighlight(i == selectedIndex);
     }
 
-    // ─── Tambah Item ────────────────────────────────────────────────────────────
+    // ─── Tambah Item ─────────────────────────────────────────────────────────────
 
     public bool AddItem(ItemData data, int count)
     {
-        // 1. Coba stack ke slot yang sudah ada
+        // 1. Stack ke slot yang sudah ada
         foreach (HotbarSlot slot in slots)
         {
             if (slot.currentItem == null) continue;
@@ -80,22 +140,18 @@ public class HotbarController : MonoBehaviour
             }
         }
 
-        // 2. Sisa count dipecah ke slot kosong sesuai maxStack
+        // 2. Sisa ke slot kosong
         while (count > 0)
         {
             HotbarSlot emptySlot = null;
             foreach (HotbarSlot slot in slots)
             {
-                if (slot.currentItem == null)
-                {
-                    emptySlot = slot;
-                    break;
-                }
+                if (slot.currentItem == null) { emptySlot = slot; break; }
             }
 
             if (emptySlot == null)
             {
-                Debug.Log("Hotbar penuh!");
+                Debug.Log("[HotbarController] Hotbar penuh!");
                 return false;
             }
 
@@ -118,7 +174,7 @@ public class HotbarController : MonoBehaviour
         slot.currentItem = item;
     }
 
-    // ─── Akses Slot ─────────────────────────────────────────────────────────────
+    // ─── Akses Slot ──────────────────────────────────────────────────────────────
 
     public HotbarSlot GetSelectedSlot() => slots[selectedIndex];
 
@@ -129,15 +185,12 @@ public class HotbarController : MonoBehaviour
         return slot.currentItem.GetComponent<ItemUI>();
     }
 
-    /// <summary>
-    /// Hapus item dari slot yang sedang dipilih (dipanggil oleh ItemUser setelah pakai).
-    /// </summary>
     public void RemoveFromSelectedSlot()
     {
         HotbarSlot slot = GetSelectedSlot();
         if (slot.currentItem != null)
         {
-            Object.Destroy(slot.currentItem);
+            Destroy(slot.currentItem);
             slot.currentItem = null;
         }
     }

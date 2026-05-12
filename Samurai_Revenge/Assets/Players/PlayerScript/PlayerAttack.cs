@@ -249,6 +249,15 @@ public class PlayerAttack : MonoBehaviour
             animator.SetTrigger(direction.y > 0 ? "ShuUp" : "ShuDown");
     }
 
+    public void ResetAttackState()
+    {
+        StopAllCoroutines();
+        isAttacking = false;
+
+        if (swordHitbox != null)
+            swordHitbox.SetActive(false);
+    }
+
     public void MobileAttack()
     {
         if (_skillState != null && _skillState.isUsingSkill) return;

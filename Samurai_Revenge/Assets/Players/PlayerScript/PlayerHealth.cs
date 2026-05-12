@@ -92,6 +92,14 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log("Player mati");
         RespawnManager.Instance.HandlePlayerDeath();
         currentHealth = maxHealth;
+        GetComponent<PlayerAttack>()?.ResetAttackState();
+
+        SkillController skillController = GetComponent<SkillController>();
+        if (skillController != null)
+        {
+            Skill3SO skill3 = skillController.skill3 as Skill3SO;
+            skill3?.ResetSkillState();
+        }
     }
 
     public void OnRespawn()
@@ -100,5 +108,13 @@ public class PlayerHealth : MonoBehaviour
         isKnockback = false;
         rb.velocity = Vector2.zero;
         UpdateHealthBar();
+        GetComponent<PlayerAttack>()?.ResetAttackState();
+
+        SkillController skillController = GetComponent<SkillController>();
+        if (skillController != null)
+        {
+            Skill3SO skill3 = skillController.skill3 as Skill3SO;
+            skill3?.ResetSkillState();
+        }
     }
 }

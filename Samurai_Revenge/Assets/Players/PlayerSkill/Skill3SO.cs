@@ -177,6 +177,27 @@ public class Skill3SO : SkillSO
         _player.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
+    public void ResetSkillState()
+    {
+        _runner.StopAllCoroutines();
+
+        _berserkerActive = false;
+        if (_player != null)
+            _player.GetComponent<SpriteRenderer>().color = Color.white;
+
+        foreach (GameObject s in _shurikens)
+            if (s != null) Object.Destroy(s);
+        _shurikens.Clear();
+
+        if (_skillState != null)
+            _skillState.isUsingSkill = false;
+
+        _isHolding = false;
+        _mobileIsHolding = false;
+        _holdTimer = 0f;
+        _mobileHoldTimer = 0f;
+    }
+
     public void OnDamageDealt(int damageDealt, PlayerHealth playerHealth)
     {
         if (!_berserkerActive) return;
