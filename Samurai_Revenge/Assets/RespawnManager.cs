@@ -12,7 +12,7 @@ using Cinemachine;
 public class RespawnManager : MonoBehaviour
 {
     public static RespawnManager Instance { get; private set; }
-
+    AudioManage AudioManager;
     [Header("References")]
     [Tooltip("Empty GameObject sebagai titik spawn player")]
     [SerializeField] private Transform spawnPoint;
@@ -30,6 +30,7 @@ public class RespawnManager : MonoBehaviour
 
     private void Awake()
     {
+        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
@@ -60,6 +61,8 @@ public class RespawnManager : MonoBehaviour
     {
         // 1. Reset puzzle
         PuzzleManager.Instance.ResetPuzzle();
+
+        AudioManager.PlaySFX(AudioManager.RespawnSfx);
 
         // 2. Pindahkan player ke spawn point
         player.transform.position = spawnPoint.position;

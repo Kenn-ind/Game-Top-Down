@@ -12,6 +12,7 @@ using UnityEngine.Tilemaps;
 /// </summary>
 public class PressurePlate : MonoBehaviour
 {
+    AudioManage AudioManager;
     [Header("Tile References")]
     [Tooltip("Tilemap tempat tile tombol berada")]
     [SerializeField] private Tilemap tilemap;
@@ -27,6 +28,7 @@ public class PressurePlate : MonoBehaviour
 
     private void Awake()
     {
+        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         // Hitung posisi tile berdasarkan posisi world GameObject ini
         tilePosition = tilemap.WorldToCell(transform.position);
     }
@@ -53,7 +55,7 @@ public class PressurePlate : MonoBehaviour
     private void ActivatePlate()
     {
         isPressed = true;
-
+        AudioManager.PlaySFX(AudioManager.ButtonSfx);
         // Swap tile ke sprite "sudah ditekan"
         tilemap.SetTile(tilePosition, pressedTile);
 

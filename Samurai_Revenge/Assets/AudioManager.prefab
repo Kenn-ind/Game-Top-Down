@@ -65,8 +65,11 @@ MonoBehaviour:
   enemyDie: {fileID: 8300000, guid: b94cf564d10596146bfb0c9b2b0359fd, type: 3}
   DashSfx: {fileID: 8300000, guid: 7c069a4b7c1b3b54c8e7f9812eb6a253, type: 3}
   DialogSfx: {fileID: 0}
+  ButtonSfx: {fileID: 8300000, guid: 5cf3fa510fb6d64458b349f6c4133ff6, type: 3}
+  DoorSfx: {fileID: 8300000, guid: 4bed3aba2db2d4d4cb9cfd6df7b5df9e, type: 3}
+  RespawnSfx: {fileID: 8300000, guid: 33b133dbbb4f27f45b58e463353debb0, type: 3}
   fadeDuration: 1.2
-  targetVolume: 0.55
+  targetVolume: 0.3
 --- !u!1 &7489530216641292100
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +242,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.55
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0

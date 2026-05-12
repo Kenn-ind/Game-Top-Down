@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
+using System.Collections;
 
 /// <summary>
 /// Taruh script ini di GameObject bernama "StairController" di scene.
@@ -14,6 +16,7 @@ using UnityEngine.Tilemaps;
 /// </summary>
 public class StairController : MonoBehaviour
 {
+    AudioManage AudioManager;
     [Header("Tile References")]
     [Tooltip("Tilemap tempat tile tangga berada")]
     [SerializeField] private Tilemap tilemap;
@@ -28,12 +31,18 @@ public class StairController : MonoBehaviour
     [Tooltip("Posisi world dari tile tangga. Bisa di-drag dari scene view.")]
     [SerializeField] private Vector3 stairWorldPosition;
 
+    [Header("Notification")]
+    [SerializeField] private TextMeshProUGUI notifText;
+    [SerializeField] private float displayDuration = 2f;
+    [SerializeField] private float fadeDuration = 0.4f;
+
     public GameObject WPBoss;
 
     private Vector3Int tilePosition;
 
     private void Awake()
     {
+        AudioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManage>();
         tilePosition = tilemap.WorldToCell(stairWorldPosition);
     }
 
@@ -54,8 +63,11 @@ public class StairController : MonoBehaviour
     /// </summary>
     private void OpenStairs()
     {
+        AudioManager.PlaySFX(AudioManager.DoorSfx);
         tilemap.SetTile(tilePosition, stairTile);
         Debug.Log("[StairController] Tangga terbuka!");
+        if (notifText != null)
+            StartCoroutine(ShowNotification());
         WPBoss.SetActive(true);
     }
 
@@ -76,5 +88,39 @@ public class StairController : MonoBehaviour
     {
         stairWorldPosition = transform.position;
         Debug.Log($"[StairController] Stair position set to {stairWorldPosition}");
+    }
+
+    private IEnumerator ShowNotification()
+    {
+        // Reset
+        notifText.gameObject.SetActive(true);
+        Color c = notifText.color;
+
+        // Fade in
+        c.a = 0f;
+        notifText.color = c;
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            c.a = Mathf.Clamp01(t / fadeDuration);
+            notifText.color = c;
+            yield return null;
+        }
+
+        // Tahan
+        yield return new WaitForSeconds(displayDuration);
+
+        // Fade out
+        t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            c.a = Mathf.Clamp01(1f - (t / fadeDuration));
+            notifText.color = c;
+            yield return null;
+        }
+
+        notifText.gameObject.SetActive(false);
     }
 }

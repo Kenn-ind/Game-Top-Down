@@ -3293,6 +3293,140 @@ Transform:
   - {fileID: 473250625}
   m_Father: {fileID: 961452818}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &139270097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 139270100}
+  - component: {fileID: 139270099}
+  - component: {fileID: 139270098}
+  m_Layer: 5
+  m_Name: Stair Opened
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &139270098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139270097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Kau Telah Membuka Yang Seharusnya Tertutup...
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 4e9f85ce85dbf7a4bb8f882587ea5ae3, type: 2}
+  m_sharedMaterial: {fileID: -6768007399090940229, guid: 4e9f85ce85dbf7a4bb8f882587ea5ae3, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: 97690656
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 46
+  m_fontSizeBase: 46
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: -0.8026123, w: -4.6747437}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &139270099
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139270097}
+  m_CullTransparentMesh: 1
+--- !u!224 &139270100
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139270097}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 195870914}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 931.6064, y: 155.183}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &141233555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4157,7 +4291,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1600838141629489411, guid: ff50a8dae9e6f4747a4669ae99ae5faa, type: 3}
+  m_Sprite: {fileID: -6911510332184498904, guid: e4ac21b4bc2662e44b8f8642d6e43b1e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4894,6 +5028,7 @@ RectTransform:
   - {fileID: 617016841}
   - {fileID: 86395589}
   - {fileID: 1047978963}
+  - {fileID: 139270100}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -15719,7 +15854,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8706240725274405888, guid: ff50a8dae9e6f4747a4669ae99ae5faa, type: 3}
+  m_Sprite: {fileID: -8123024395321160267, guid: e4ac21b4bc2662e44b8f8642d6e43b1e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -27238,7 +27373,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1495553234669916655, guid: ff50a8dae9e6f4747a4669ae99ae5faa, type: 3}
+  m_Sprite: {fileID: -4587087354583066601, guid: e4ac21b4bc2662e44b8f8642d6e43b1e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -234974,6 +235109,9 @@ MonoBehaviour:
   coverTile: {fileID: 11400000, guid: 6ff86a39ad3843b43b2855afa93b96d5, type: 2}
   stairTile: {fileID: 11400000, guid: 489fbbdb3e39107488dd5356b48006d8, type: 2}
   stairWorldPosition: {x: -42.56, y: -0.621, z: -0.012210474}
+  notifText: {fileID: 139270098}
+  displayDuration: 2
+  fadeDuration: 0.4
   WPBoss: {fileID: 629680570}
 --- !u!4 &1781282919
 Transform:
@@ -241757,6 +241895,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1829524997}
     m_Modifications:
+    - target: {fileID: 403191947829764604, guid: be14d7a74e23765428d70e6d73dae63b, type: 3}
+      propertyPath: DoorSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 4bed3aba2db2d4d4cb9cfd6df7b5df9e, type: 3}
+    - target: {fileID: 403191947829764604, guid: be14d7a74e23765428d70e6d73dae63b, type: 3}
+      propertyPath: ButtonSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 5cf3fa510fb6d64458b349f6c4133ff6, type: 3}
+    - target: {fileID: 403191947829764604, guid: be14d7a74e23765428d70e6d73dae63b, type: 3}
+      propertyPath: targetVolume
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2932187168174650021, guid: be14d7a74e23765428d70e6d73dae63b, type: 3}
       propertyPath: m_Name
       value: AudioManager
