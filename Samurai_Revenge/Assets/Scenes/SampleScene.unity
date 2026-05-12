@@ -390,10 +390,15 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 28.160799, y: 3.3068218}
-      - {x: -33.946754, y: 14.629485}
-      - {x: -33.949474, y: -20.333174}
-      - {x: 28.130201, y: -20.435219}
+    - - {x: 76.486496, y: 3.3925}
+      - {x: -8.075844, y: 3.6867447}
+      - {x: -8.041865, y: 8.700678}
+      - {x: -34.99472, y: 9.337518}
+      - {x: -35.02267, y: -6.43569}
+      - {x: -17.669842, y: -20.36464}
+      - {x: 23.757812, y: -20.451256}
+      - {x: 35.914062, y: -46.094658}
+      - {x: 76.55223, y: -46.578182}
   m_UseDelaunayMesh: 0
 --- !u!114 &14686003
 MonoBehaviour:
@@ -870,7 +875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   enemyID: Skeletons
-  knockbackForce: 10
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 1.2
@@ -2962,6 +2967,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1274084380}
   - {fileID: 1603603826}
   - {fileID: 513105746}
   - {fileID: 1219094336}
@@ -14396,8 +14402,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 5
-  enemyID: 
-  knockbackForce: 10
+  enemyID: Bandits
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 0.5
@@ -14791,7 +14797,6 @@ Transform:
   m_Children:
   - {fileID: 1933726418}
   - {fileID: 308107029}
-  - {fileID: 1848478181}
   - {fileID: 108270387}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14833,12 +14838,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414886152}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4.5164065, y: 0.44684553, z: -0.07067281}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1829524997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &422390663
 GameObject:
@@ -16991,7 +16996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   enemyID: Skeletons
-  knockbackForce: 10
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 1.2
@@ -17858,8 +17863,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hotbarPanel: {fileID: 596530279}
   hotbarSlotPrefab: {fileID: 2187085738373948963, guid: 9597ffb10278c914495645e95491a603, type: 3}
-  slotCount: 4
   itemPrefab: {fileID: 9216480461104092925, guid: 04ea1a4426402e246ba25e62ac47517e, type: 3}
+  slotCount: 4
+  doubleTapThreshold: 0.35
 --- !u!114 &596530282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22243,7 +22249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   enemyID: NyetRed
-  knockbackForce: 10
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 1.2
@@ -27373,7 +27379,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -4587087354583066601, guid: e4ac21b4bc2662e44b8f8642d6e43b1e, type: 3}
+  m_Sprite: {fileID: 3093066506875188502, guid: e4ac21b4bc2662e44b8f8642d6e43b1e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -28364,7 +28370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   enemyID: NyetRed
-  knockbackForce: 10
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 1.2
@@ -33532,6 +33538,88 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1594118075}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1274084379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1274084380}
+  - component: {fileID: 1274084381}
+  m_Layer: 0
+  m_Name: Training
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1274084380
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274084379}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2, y: -19.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1848478181}
+  m_Father: {fileID: 108270387}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &1274084381
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274084379}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 13.143369, y: 4.934639}
+      - {x: -10.160609, y: 5.0510645}
+      - {x: -10.146752, y: -3.4296212}
+      - {x: 13.1451435, y: -3.508849}
+  m_UseDelaunayMesh: 0
 --- !u!1 &1281767895
 GameObject:
   m_ObjectHideFlags: 0
@@ -35281,7 +35369,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   enemyID: Skeletons
-  knockbackForce: 10
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 1.2
@@ -99853,12 +99941,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1653151132}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4.5164065, y: 0.44684553, z: -0.07067281}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1829524997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1653514492
 GameObject:
@@ -234038,10 +234126,10 @@ MonoBehaviour:
   swordHitbox: {fileID: 542895140}
   meleeRadius: 1.9
   meleeDuration: 0.4
-  attackDelay: 0.5
+  attackDelay: 0.4
   attackButtonImage: {fileID: 983497298}
-  meleeSprite: {fileID: -574974436228182286, guid: 680482e6cea50dd4285c4d1499a9481e, type: 3}
-  rangeSprite: {fileID: -7741236904426257302, guid: 680482e6cea50dd4285c4d1499a9481e, type: 3}
+  meleeSprite: {fileID: -4587087354583066601, guid: e4ac21b4bc2662e44b8f8642d6e43b1e, type: 3}
+  rangeSprite: {fileID: 3093066506875188502, guid: e4ac21b4bc2662e44b8f8642d6e43b1e, type: 3}
 --- !u!114 &1750446670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235712,6 +235800,8 @@ Transform:
   - {fileID: 1802358682}
   - {fileID: 1038050935}
   - {fileID: 1398574222}
+  - {fileID: 414886154}
+  - {fileID: 1653151134}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1839944386
@@ -235982,11 +236072,11 @@ Transform:
   m_GameObject: {fileID: 1848478179}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.1902394, y: -18.825756, z: 0.045792483}
+  m_LocalPosition: {x: 9.190239, y: 0.7742443, z: 0.045792483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 414346362}
+  m_Father: {fileID: 1274084380}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1848478182
 MonoBehaviour:
@@ -236002,7 +236092,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   enemyID: Trainer1
-  knockbackForce: 11
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 10
   deathDelay: 1.2
@@ -236112,7 +236202,7 @@ MonoBehaviour:
   steeringProbeRadius: 0.25
   directionSmoothSpeed: 0.15
   attackAnimDuration: 0.3
-  chaseZone: {fileID: 0}
+  chaseZone: {fileID: 1274084381}
 --- !u!95 &1848478186
 Animator:
   serializedVersion: 5
@@ -236271,7 +236361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   enemyID: Skeletons
-  knockbackForce: 10
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 1.2
@@ -237420,7 +237510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   enemyID: 
-  knockbackForce: 10
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 0.5
@@ -241173,7 +241263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   enemyID: 
-  knockbackForce: 10
+  knockbackForce: 20
   knockbackTime: 0.15
   xpReward: 30
   deathDelay: 0.5
@@ -241972,8 +242062,6 @@ SceneRoots:
   - {fileID: 1829524997}
   - {fileID: 218497891}
   - {fileID: 961452818}
-  - {fileID: 414886154}
-  - {fileID: 1653151134}
   - {fileID: 1768814533}
   - {fileID: 1423349862}
   - {fileID: 1518602671}
