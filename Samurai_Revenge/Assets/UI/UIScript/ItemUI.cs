@@ -23,4 +23,12 @@ public class ItemUI : MonoBehaviour
         if (stackText != null)
             stackText.text = (stackCount > 1) ? stackCount.ToString() : "";
     }
+
+    public void SetRaycast(bool enabled)
+    {
+        foreach (Graphic g in GetComponentsInChildren<Graphic>(true))
+        {
+            g.raycastTarget = enabled;
+        }
+    }
 }

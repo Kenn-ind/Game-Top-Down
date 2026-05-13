@@ -49,11 +49,18 @@ public class InventoryController : MonoBehaviour
     void SpawnItem(Slot slot, ItemData data, int count)
     {
         GameObject item = Instantiate(itemPrefab, slot.transform);
+
         item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
         ItemUI itemUI = item.GetComponent<ItemUI>();
+
         itemUI.itemData = data;
         itemUI.stackCount = count;
         itemUI.UpdateUI();
+
+        // Inventory = raycast nyala
+        itemUI.SetRaycast(true);
+
         slot.currentItem = item;
     }
 

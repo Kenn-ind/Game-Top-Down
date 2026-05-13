@@ -33,6 +33,7 @@ public class HotbarController : MonoBehaviour
         for (int i = 0; i < slotCount; i++)
         {
             GameObject slotObj = Instantiate(hotbarSlotPrefab, hotbarPanel.transform);
+
             slots[i] = slotObj.GetComponent<HotbarSlot>();
 
             int index = i;
@@ -66,7 +67,7 @@ public class HotbarController : MonoBehaviour
         }
     }
 
-    // ─── Mobile Tap Logic ────────────────────────────────────────────────────────
+    // ─── Mobile Tap Logic ─────────────────────────────────────────────────────
 
     public void OnSlotTapped(int index)
     {
@@ -74,20 +75,24 @@ public class HotbarController : MonoBehaviour
 
         float now = Time.unscaledTime;
 
-        bool isDoubleTap = (index == lastTappedIndex)
-                        && (index == selectedIndex)
-                        && (now - lastTapTime <= doubleTapThreshold);
+        bool isDoubleTap =
+            (index == lastTappedIndex)
+            && (index == selectedIndex)
+            && (now - lastTapTime <= doubleTapThreshold);
 
         if (isDoubleTap)
         {
             UseSelectedItem();
+
             lastTappedIndex = -1;
             lastTapTime = 0f;
         }
         else
         {
             selectedIndex = index;
+
             UpdateHighlight();
+
             lastTappedIndex = index;
             lastTapTime = now;
         }
@@ -96,28 +101,33 @@ public class HotbarController : MonoBehaviour
     void UseSelectedItem()
     {
         ItemPlayer itemPlayer = FindObjectOfType<ItemPlayer>();
+
         if (itemPlayer != null)
             itemPlayer.UseSelectedItem();
         else
             Debug.LogWarning("[HotbarController] ItemPlayer tidak ditemukan di scene!");
     }
 
-    // ─── Visibility ──────────────────────────────────────────────────────────────
+    // ─── Visibility ──────────────────────────────────────────────────────────
 
     public void SetHotbarVisible(bool visible)
     {
         hotbarPanel.SetActive(visible);
     }
 
-    // ─── Highlight ───────────────────────────────────────────────────────────────
+    // ─── Highlight ───────────────────────────────────────────────────────────
 
     void UpdateHighlight()
     {
         for (int i = 0; i < slots.Length; i++)
+        {
             slots[i].SetHighlight(i == selectedIndex);
+
+            Debug.Log($"[Hotbar] Slot {i}: highlight={i == selectedIndex}, selectedIndex={selectedIndex}");
+        }
     }
 
-    // ─── Tambah Item ─────────────────────────────────────────────────────────────
+    // ─── Tambah Item ─────────────────────────────────────────────────────────
 
     public bool AddItem(ItemData data, int count)
     {
@@ -125,17 +135,24 @@ public class HotbarController : MonoBehaviour
         foreach (HotbarSlot slot in slots)
         {
             if (slot.currentItem == null) continue;
+
             ItemUI itemUI = slot.currentItem.GetComponent<ItemUI>();
+
             if (itemUI != null && itemUI.itemData == data)
             {
                 int space = data.maxStack - itemUI.stackCount;
+
                 if (space > 0)
                 {
                     int add = Mathf.Min(space, count);
+
                     itemUI.stackCount += add;
                     itemUI.UpdateUI();
+
                     count -= add;
-                    if (count <= 0) return true;
+
+                    if (count <= 0)
+                        return true;
                 }
             }
         }
@@ -144,9 +161,14 @@ public class HotbarController : MonoBehaviour
         while (count > 0)
         {
             HotbarSlot emptySlot = null;
+
             foreach (HotbarSlot slot in slots)
             {
-                if (slot.currentItem == null) { emptySlot = slot; break; }
+                if (slot.currentItem == null)
+                {
+                    emptySlot = slot;
+                    break;
+                }
             }
 
             if (emptySlot == null)
@@ -156,7 +178,9 @@ public class HotbarController : MonoBehaviour
             }
 
             int spawnCount = Mathf.Min(count, data.maxStack);
+
             SpawnItem(emptySlot, data, spawnCount);
+
             count -= spawnCount;
         }
 
@@ -166,28 +190,56 @@ public class HotbarController : MonoBehaviour
     void SpawnItem(HotbarSlot slot, ItemData data, int count)
     {
         GameObject item = Instantiate(itemPrefab, slot.transform);
+
         item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+        // Item jadi child pertama
+        item.transform.SetAsFirstSibling();
+
         ItemUI itemUI = item.GetComponent<ItemUI>();
+
         itemUI.itemData = data;
         itemUI.stackCount = count;
+
         itemUI.UpdateUI();
+
+        // Hotbar = raycast mati
+        itemUI.SetRaycast(false);
+
         slot.currentItem = item;
+
+        Debug.Log($"[Hotbar] SpawnItem selesai: slot={slot.name}, currentItem={slot.currentItem?.name ?? "NULL"}, itemData={data.itemName}");
     }
 
-    // ─── Akses Slot ──────────────────────────────────────────────────────────────
-
-    public HotbarSlot GetSelectedSlot() => slots[selectedIndex];
+    public HotbarSlot GetSelectedSlot()
+    {
+        return slots[selectedIndex];
+    }
 
     public ItemUI GetSelectedItem()
     {
         HotbarSlot slot = GetSelectedSlot();
-        if (slot.currentItem == null) return null;
+
+        if (slot == null)
+            return null;
+
+        // Cek missing reference
+        if (slot.currentItem != null && !slot.currentItem)
+        {
+            slot.currentItem = null;
+            return null;
+        }
+
+        if (slot.currentItem == null)
+            return null;
+
         return slot.currentItem.GetComponent<ItemUI>();
     }
 
     public void RemoveFromSelectedSlot()
     {
         HotbarSlot slot = GetSelectedSlot();
+
         if (slot.currentItem != null)
         {
             Destroy(slot.currentItem);
@@ -195,5 +247,8 @@ public class HotbarController : MonoBehaviour
         }
     }
 
-    public HotbarSlot[] GetSlots() => slots;
+    public HotbarSlot[] GetSlots()
+    {
+        return slots;
+    }
 }

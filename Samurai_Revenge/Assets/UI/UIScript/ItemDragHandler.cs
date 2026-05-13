@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
@@ -9,8 +10,11 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     void Start()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+
         if (canvasGroup == null)
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+        canvasGroup.blocksRaycasts = true;
     }
 
     // ─── Shift + Click ────────────────────────────────────────────────────────
@@ -47,12 +51,14 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             if (itemUI == null || itemUI.itemData == null) return;
 
             bool added = HotbarController.Instance.AddItem(itemUI.itemData, itemUI.stackCount);
+
             if (added)
             {
                 Slot slot = transform.parent.GetComponent<Slot>();
+
                 if (slot != null)
                 {
-                    Object.Destroy(slot.currentItem);
+                    Destroy(slot.currentItem);
                     slot.currentItem = null;
                 }
             }
@@ -63,12 +69,14 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
     }
 
-    // ─── Drag & Drop (tidak berubah dari versi kamu) ──────────────────────────
+    // ─── Drag & Drop ──────────────────────────────────────────────────────────
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         originalParent = transform.parent;
+
         transform.SetParent(transform.root);
+
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.6f;
     }
@@ -84,9 +92,11 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         canvasGroup.alpha = 1f;
 
         Slot dropSlot = null;
+
         if (eventData.pointerEnter != null)
         {
             dropSlot = eventData.pointerEnter.GetComponent<Slot>();
+
             if (dropSlot == null)
                 dropSlot = eventData.pointerEnter.GetComponentInParent<Slot>();
         }
@@ -97,6 +107,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (dropSlot != null && draggedItemUI != null)
         {
             ItemUI targetItemUI = dropSlot.GetItemUI();
+
             bool sameItem = targetItemUI != null
                             && targetItemUI.itemData == draggedItemUI.itemData;
 
@@ -104,43 +115,82 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             {
                 int space = targetItemUI.itemData.maxStack - targetItemUI.stackCount;
                 int transfer = Mathf.Min(space, draggedItemUI.stackCount);
+
                 targetItemUI.stackCount += transfer;
                 targetItemUI.UpdateUI();
+
                 draggedItemUI.stackCount -= transfer;
 
                 if (draggedItemUI.stackCount <= 0)
                 {
-                    if (originalSlot != null) originalSlot.currentItem = null;
+                    if (originalSlot != null)
+                        originalSlot.currentItem = null;
+
                     Destroy(gameObject);
                     return;
                 }
                 else
                 {
                     transform.SetParent(originalParent);
+                    GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                    transform.SetAsFirstSibling();
+
                     draggedItemUI.UpdateUI();
                 }
             }
             else if (targetItemUI != null && originalSlot != null)
             {
+                // ─── Swap ─────────────────────────────────────────────
+
                 GameObject swappedItem = dropSlot.currentItem;
+
                 swappedItem.transform.SetParent(originalSlot.transform);
                 swappedItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                swappedItem.transform.SetAsFirstSibling();
+
                 originalSlot.currentItem = swappedItem;
+
                 transform.SetParent(dropSlot.transform);
+                GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                transform.SetAsFirstSibling();
+
                 dropSlot.currentItem = gameObject;
+
+                // ─── Update Raycast ─────────────────────────────────
+
+                draggedItemUI.SetRaycast(!(dropSlot is HotbarSlot));
+                targetItemUI.SetRaycast(!(originalSlot is HotbarSlot));
             }
             else
             {
-                if (originalSlot != null) originalSlot.currentItem = null;
+                // ─── Pindah biasa ───────────────────────────────────
+
+                if (originalSlot != null)
+                    originalSlot.currentItem = null;
+
                 transform.SetParent(dropSlot.transform);
+                GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                transform.SetAsFirstSibling();
+
                 dropSlot.currentItem = gameObject;
+
+                // ─── Update Raycast ─────────────────────────────────
+
+                draggedItemUI.SetRaycast(!(dropSlot is HotbarSlot));
             }
         }
         else
         {
-            transform.SetParent(originalParent);
-        }
+            // ─── Drop di luar slot ─────────────────────────────────
 
-        GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            transform.SetParent(originalParent);
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+            transform.SetAsFirstSibling();
+        }
     }
 }
