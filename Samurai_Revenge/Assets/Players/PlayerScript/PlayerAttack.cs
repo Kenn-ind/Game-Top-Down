@@ -104,8 +104,8 @@ public class PlayerAttack : MonoBehaviour
     void MeleeAttack(GameObject target)
     {
         isAttacking = true;
-        AudioManager.PlaySFX(AudioManager.sword);
 
+        AudioManager.PlaySFXExclusive(AudioManager.sword);
         Vector2 direction = (target.transform.position - transform.position).normalized;
         TriggerAttackMeleeAnimation(direction);
         PositionSwordHitbox(direction);
@@ -142,7 +142,7 @@ public class PlayerAttack : MonoBehaviour
     void RangeAttack(GameObject target)
     {
         isAttacking = true;
-        AudioManager.PlaySFX(AudioManager.shuriken);
+        AudioManager.PlaySFXExclusive(AudioManager.shuriken);
 
         Vector2 direction = (target.transform.position - transform.position).normalized;
         TriggerAttackRangeAnimation(direction);

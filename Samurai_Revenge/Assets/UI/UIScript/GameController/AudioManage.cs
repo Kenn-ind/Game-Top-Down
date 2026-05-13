@@ -82,9 +82,19 @@ public class AudioManage : MonoBehaviour
     }
 
     // ─── SFX ──────────────────────────────────────────────────────
+    // SFX boleh bertumpuk (musuh mati, hit, dll)
     public void PlaySFX(AudioClip clip)
     {
         SFXSource.PlayOneShot(clip);
+    }
+
+    // SFX TIDAK boleh bertumpuk (serangan player, dash, dll)
+    public void PlaySFXExclusive(AudioClip clip)
+    {
+        if (clip == null) return;
+        SFXSource.Stop();
+        SFXSource.clip = clip;
+        SFXSource.Play();
     }
 
     // ─── Ganti musik dengan crossfade ─────────────────────────────

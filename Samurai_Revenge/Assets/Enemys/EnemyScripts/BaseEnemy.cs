@@ -46,7 +46,6 @@ public class BaseEnemy : MonoBehaviour
         currentHealth -= damage;
         if (applyKnockback)
         {
-            AudioManager.PlaySFX(AudioManager.enemyHurt);
             StartCoroutine(Knockback(knockbackDir));
         }
         if (currentHealth <= 0)
