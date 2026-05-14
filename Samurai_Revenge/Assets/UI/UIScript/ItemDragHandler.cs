@@ -134,7 +134,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                     transform.SetParent(originalParent);
                     GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
-                    transform.SetAsFirstSibling();
+                    transform.SetAsLastSibling();
 
                     draggedItemUI.UpdateUI();
                 }
@@ -155,7 +155,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 transform.SetParent(dropSlot.transform);
                 GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
-                transform.SetAsFirstSibling();
+                transform.SetAsLastSibling();
 
                 dropSlot.currentItem = gameObject;
 
@@ -174,7 +174,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 transform.SetParent(dropSlot.transform);
                 GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
-                transform.SetAsFirstSibling();
+                transform.SetAsLastSibling();
 
                 dropSlot.currentItem = gameObject;
 
@@ -190,7 +190,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             transform.SetParent(originalParent);
             GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
-            transform.SetAsFirstSibling();
+            transform.SetAsLastSibling();
         }
     }
 }

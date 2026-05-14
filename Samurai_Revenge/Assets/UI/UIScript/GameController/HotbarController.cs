@@ -190,25 +190,18 @@ public class HotbarController : MonoBehaviour
     void SpawnItem(HotbarSlot slot, ItemData data, int count)
     {
         GameObject item = Instantiate(itemPrefab, slot.transform);
-
         item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-
-        // Item jadi child pertama
-        item.transform.SetAsFirstSibling();
-
         ItemUI itemUI = item.GetComponent<ItemUI>();
-
         itemUI.itemData = data;
         itemUI.stackCount = count;
-
         itemUI.UpdateUI();
-
-        // Hotbar = raycast mati
         itemUI.SetRaycast(false);
-
         slot.currentItem = item;
 
-        Debug.Log($"[Hotbar] SpawnItem selesai: slot={slot.name}, currentItem={slot.currentItem?.name ?? "NULL"}, itemData={data.itemName}");
+        // ── Paksa highlight tetap di bawah item yang baru di-spawn ──
+        if (slot.highlightImage != null)
+            slot.highlightImage.transform.SetAsFirstSibling();
+        // ────────────────────────────────────────────────────────────
     }
 
     public HotbarSlot GetSelectedSlot()

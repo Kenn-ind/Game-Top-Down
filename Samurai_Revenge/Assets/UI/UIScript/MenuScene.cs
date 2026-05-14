@@ -3,73 +3,143 @@ using UnityEngine.SceneManagement;
 
 public class MenuScene : MonoBehaviour
 {
-    [Header("=== Scene Names ===")]
-    [Tooltip("Nama scene untuk lanjut game (Load Save)")]
-    public string continueSceneName = "GameScene";
+    [Header("=== Mode Scenes ===")]
+    [Tooltip("Nama scene untuk Story Mode")]
+    public string storyModeSceneName = "GameScene";
+    [Tooltip("Nama scene untuk Normal Mode")]
+    public string normalModeSceneName = "GameScene";
 
-    [Tooltip("Nama scene untuk new game")]
-    public string newGameSceneName = "GameScene";
+    [Header("=== Panels ===")]
+    //public GameObject settingsPanel;
+    public GameObject modeSelectorPanel;
+    public GameObject mainMenuPanel;
+    public GameObject rightBar;
+    public GameObject comingSoonPopup;
 
-    [Header("=== Panel Settings ===")]
-    [Tooltip("Drag Panel Settings kamu ke sini")]
-    public GameObject settingsPanel;
+    private bool _isNewGame = false;
 
-    // ──────────────────────────────────────────────────────────
-    // PLAY — Lanjutkan game (bisa dimodifikasi untuk load save)
-    // ──────────────────────────────────────────────────────────
+    // ============================================================
+    //  PLAY
+    // ============================================================
     public void OnClickPlay()
     {
-        Debug.Log("[Menu] PLAY diklik");
-
-        if (MenuExitTrigger.Instance != null)
-            MenuExitTrigger.Instance.TriggerExit(continueSceneName);
-        else
-            SceneManager.LoadScene(continueSceneName);
+        _isNewGame = false;
+        ShowModeSelector();
     }
 
-    // ──────────────────────────────────────────────────────────
-    // NEW GAME — Reset progress lalu mulai dari awal
-    // ──────────────────────────────────────────────────────────
+    // ============================================================
+    //  NEW GAME
+    // ============================================================
     public void OnClickNewGame()
     {
-        Debug.Log("[Menu] NEW GAME diklik");
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
-
-        if (MenuExitTrigger.Instance != null)
-            MenuExitTrigger.Instance.TriggerExit(newGameSceneName);
-        else
-            SceneManager.LoadScene(newGameSceneName); // Fallback
+        _isNewGame = true;
+        ShowModeSelector();
     }
 
-    // ──────────────────────────────────────────────────────────
-    // SETTINGS — Toggle panel Settings (SetActive true/false)
-    // ──────────────────────────────────────────────────────────
-    public void OnClickSettings()
+    // ============================================================
+    //  MODE SELECTOR
+    // ============================================================
+    void ShowModeSelector()
     {
-        if (settingsPanel == null)
+        if (modeSelectorPanel != null)
         {
-            Debug.LogWarning("[Menu] settingsPanel belum di-assign di Inspector!");
-            return;
+            mainMenuPanel?.SetActive(false);
+            modeSelectorPanel.SetActive(true);
+            SetRightBarVisible(false);
+        }
+        else
+        {
+            Debug.LogWarning("[Menu] modeSelectorPanel belum di-assign!");
+            StartGame(GameModeType.Normal);
+        }
+    }
+
+    public void OnClickNormalMode()
+    {
+        StartGame(GameModeType.Normal);
+    }
+
+    public void OnClickStoryMode()
+    {
+        if (comingSoonPopup != null)
+        {
+            comingSoonPopup.SetActive(true);
+            modeSelectorPanel?.SetActive(false);
+        }
+        else
+            StartGame(GameModeType.Story);
+    }
+
+    public void OnClickBackFromModeSelector()
+    {
+        modeSelectorPanel?.SetActive(false);
+        mainMenuPanel?.SetActive(true);
+        SetRightBarVisible(true);
+    }
+
+    public void OnClickCloseComingSoon()
+    {
+        if (comingSoonPopup != null)
+            comingSoonPopup.SetActive(false);
+
+        modeSelectorPanel?.SetActive(true);
+    }
+
+    // ============================================================
+    //  START GAME
+    // ============================================================
+    void StartGame(GameModeType mode)
+    {
+        GameMode.Current = mode;
+        PlayerPrefs.SetInt("GameMode", (int)mode);
+
+        if (_isNewGame)
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.SetInt("GameMode", (int)mode);
         }
 
-        bool isActive = settingsPanel.activeSelf;
-        settingsPanel.SetActive(!isActive);
+        PlayerPrefs.Save();
 
-        Debug.Log("[Menu] SETTINGS panel → " + (!isActive ? "DIBUKA" : "DITUTUP"));
+        modeSelectorPanel?.SetActive(false);
+        mainMenuPanel?.SetActive(false);
+        SetRightBarVisible(false);
+
+        string sceneName = mode == GameModeType.Story ? storyModeSceneName : normalModeSceneName;
+
+        if (MenuExitTrigger.Instance != null)
+            MenuExitTrigger.Instance.TriggerExit(sceneName);
+        else
+            SceneManager.LoadScene(sceneName);
     }
 
-    // ──────────────────────────────────────────────────────────
-    // EXIT — Keluar dari game
-    // ──────────────────────────────────────────────────────────
+    // ============================================================
+    //  SETTINGS
+    // ============================================================
+    //public void OnClickSettings()
+    //{
+    //    if (settingsPanel == null) return;
+    //    settingsPanel.SetActive(!settingsPanel.activeSelf);
+    //}
+
+    // ============================================================
+    //  EXIT
+    // ============================================================
     public void OnClickExit()
     {
-        Debug.Log("[Menu] EXIT diklik → menutup game.");
-
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();
 #endif
+    }
+
+    // ============================================================
+    //  HELPER
+    // ============================================================
+    public void SetRightBarVisible(bool visible)
+    {
+        if (rightBar != null)
+            rightBar.SetActive(visible);
     }
 }
