@@ -24,6 +24,7 @@ public class BossAttack : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+
         if (swordHitbox != null)
             swordHitbox.SetActive(false);
     }
@@ -45,6 +46,7 @@ public class BossAttack : MonoBehaviour
         isAttacking = true;
 
         Vector2 direction = (player.position - transform.position).normalized;
+
         TriggerMeleeAnim(direction);
         PositionSwordHitbox(direction);
 
@@ -53,18 +55,30 @@ public class BossAttack : MonoBehaviour
             swordHitbox.SetActive(true);
 
             Collider2D[] hits = Physics2D.OverlapCircleAll(
-                swordHitbox.transform.position, 0.5f);
+                swordHitbox.transform.position,
+                0.5f
+            );
+
             foreach (Collider2D hit in hits)
             {
                 PlayerHealth ph = hit.GetComponent<PlayerHealth>();
-                if (ph != null) ph.TakeDamage(meleeDamage);
+
+                if (ph != null)
+                {
+                    Vector2 knockback =
+                        (ph.transform.position - transform.position).normalized;
+
+                    ph.TakeDamage(meleeDamage, knockback);
+                }
             }
 
             yield return new WaitForSeconds(0.2f);
+
             swordHitbox.SetActive(false);
         }
 
         yield return new WaitForSeconds(attackCooldown);
+
         isAttacking = false;
     }
 
@@ -73,24 +87,34 @@ public class BossAttack : MonoBehaviour
         isAttacking = true;
 
         Vector2 direction = (player.position - transform.position).normalized;
+
         TriggerRangeAnim(direction);
 
         if (shurikenPrefab != null)
         {
             GameObject shuriken = Instantiate(
-                shurikenPrefab, transform.position, Quaternion.identity);
+                shurikenPrefab,
+                transform.position,
+                Quaternion.identity
+            );
 
             BossProjectile bp = shuriken.GetComponent<BossProjectile>();
-            if (bp == null) bp = shuriken.AddComponent<BossProjectile>();
+
+            if (bp == null)
+                bp = shuriken.AddComponent<BossProjectile>();
+
             bp.damage = rangeDamage;
 
             Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
-            if (rb != null) rb.velocity = direction * shurikenSpeed;
+
+            if (rb != null)
+                rb.velocity = direction * shurikenSpeed;
 
             Destroy(shuriken, 3f);
         }
 
         yield return new WaitForSeconds(attackCooldown);
+
         isAttacking = false;
     }
 
@@ -104,7 +128,8 @@ public class BossAttack : MonoBehaviour
         else
             attackDir = direction.y > 0 ? Vector2.up : Vector2.down;
 
-        swordHitbox.transform.position = (Vector2)transform.position + attackDir * offset;
+        swordHitbox.transform.position =
+            (Vector2)transform.position + attackDir * offset;
     }
 
     void TriggerMeleeAnim(Vector2 direction)
@@ -115,9 +140,13 @@ public class BossAttack : MonoBehaviour
         animator?.ResetTrigger("MeleeRight");
 
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-            animator?.SetTrigger(direction.x > 0 ? "MeleeRight" : "MeleeLeft");
+            animator?.SetTrigger(
+                direction.x > 0 ? "MeleeRight" : "MeleeLeft"
+            );
         else
-            animator?.SetTrigger(direction.y > 0 ? "MeleeUp" : "MeleeDown");
+            animator?.SetTrigger(
+                direction.y > 0 ? "MeleeUp" : "MeleeDown"
+            );
     }
 
     void TriggerRangeAnim(Vector2 direction)
@@ -128,15 +157,21 @@ public class BossAttack : MonoBehaviour
         animator?.ResetTrigger("ShuRight");
 
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-            animator?.SetTrigger(direction.x > 0 ? "ShuRight" : "ShuLeft");
+            animator?.SetTrigger(
+                direction.x > 0 ? "ShuRight" : "ShuLeft"
+            );
         else
-            animator?.SetTrigger(direction.y > 0 ? "ShuUp" : "ShuDown");
+            animator?.SetTrigger(
+                direction.y > 0 ? "ShuUp" : "ShuDown"
+            );
     }
 
     public void ResetState()
     {
         StopAllCoroutines();
+
         isAttacking = false;
+
         if (swordHitbox != null)
             swordHitbox.SetActive(false);
     }

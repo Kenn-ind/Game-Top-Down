@@ -7,12 +7,18 @@ public class BossProjectile : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         // Jangan damage boss sendiri
-        if (other.GetComponent<BossHealth>() != null) return;
+        if (other.GetComponent<BossHealth>() != null)
+            return;
 
         PlayerHealth ph = other.GetComponent<PlayerHealth>();
+
         if (ph != null)
         {
-            ph.TakeDamage(damage);
+            Vector2 knockback =
+                (ph.transform.position - transform.position).normalized;
+
+            ph.TakeDamage(damage, knockback);
+
             Destroy(gameObject);
             return;
         }
