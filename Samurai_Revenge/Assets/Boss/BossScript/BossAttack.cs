@@ -87,34 +87,28 @@ public class BossAttack : MonoBehaviour
         isAttacking = true;
 
         Vector2 direction = (player.position - transform.position).normalized;
-
         TriggerRangeAnim(direction);
 
         if (shurikenPrefab != null)
         {
             GameObject shuriken = Instantiate(
-                shurikenPrefab,
-                transform.position,
-                Quaternion.identity
-            );
+                shurikenPrefab, transform.position, Quaternion.identity);
 
             BossProjectile bp = shuriken.GetComponent<BossProjectile>();
-
-            if (bp == null)
-                bp = shuriken.AddComponent<BossProjectile>();
-
+            if (bp == null) bp = shuriken.AddComponent<BossProjectile>();
             bp.damage = rangeDamage;
 
-            Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
+            // Pass collider boss agar shuriken tidak langsung hit boss sendiri
+            Collider2D bossCol = GetComponent<Collider2D>();
+            bp.Init(bossCol);
 
-            if (rb != null)
-                rb.velocity = direction * shurikenSpeed;
+            Rigidbody2D rb = shuriken.GetComponent<Rigidbody2D>();
+            if (rb != null) rb.velocity = direction * shurikenSpeed;
 
             Destroy(shuriken, 3f);
         }
 
         yield return new WaitForSeconds(attackCooldown);
-
         isAttacking = false;
     }
 

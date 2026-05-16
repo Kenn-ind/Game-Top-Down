@@ -3,22 +3,29 @@ using UnityEngine;
 public class BossProjectile : MonoBehaviour
 {
     public int damage = 10;
+    private Collider2D bossCollider;
+
+    public void Init(Collider2D spawnerCollider)
+    {
+        bossCollider = spawnerCollider;
+        if (bossCollider != null)
+        {
+            Collider2D myCollider = GetComponent<Collider2D>();
+            if (myCollider != null)
+                Physics2D.IgnoreCollision(myCollider, bossCollider);
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Jangan damage boss sendiri
-        if (other.GetComponent<BossHealth>() != null)
-            return;
+        if (bossCollider != null && other == bossCollider) return;
+        if (other.GetComponent<BossHealth>() != null) return;
+        if (other.GetComponent<BossProjectile>() != null) return;
 
         PlayerHealth ph = other.GetComponent<PlayerHealth>();
-
         if (ph != null)
         {
-            Vector2 knockback =
-                (ph.transform.position - transform.position).normalized;
-
-            ph.TakeDamage(damage, knockback);
-
+            ph.TakeDamage(damage, Vector2.zero);
             Destroy(gameObject);
             return;
         }

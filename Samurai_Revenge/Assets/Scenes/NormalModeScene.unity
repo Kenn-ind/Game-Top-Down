@@ -17613,7 +17613,7 @@ GameObject:
   m_Component:
   - component: {fileID: 582220242}
   - component: {fileID: 582220243}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: PlayerLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22139,6 +22139,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 546278038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &673124588
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 673124589}
+  - component: {fileID: 673124590}
+  m_Layer: 0
+  m_Name: BossFightManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &673124589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673124588}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1829524997}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &673124590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673124588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4838f8405a96e4689280c7b7478acf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossObject: {fileID: 1236139810}
 --- !u!1 &680613551
 GameObject:
   m_ObjectHideFlags: 0
@@ -32268,7 +32313,7 @@ GameObject:
   - component: {fileID: 1175743955}
   - component: {fileID: 1175743954}
   - component: {fileID: 1175743953}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SwordHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33069,9 +33114,12 @@ GameObject:
   - component: {fileID: 1236139813}
   - component: {fileID: 1236139812}
   - component: {fileID: 1236139811}
-  m_Layer: 3
+  - component: {fileID: 1236139824}
+  - component: {fileID: 1236139825}
+  - component: {fileID: 1236139826}
+  m_Layer: 8
   m_Name: Boss
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33088,7 +33136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30bbafefb3dbc9e4286afe9b0041acb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shurikenPrefab: {fileID: 0}
+  shurikenPrefab: {fileID: 1775667784230767006, guid: 7491c8021254e1f44b0c3b34df74453d, type: 3}
   shurikenAmount: 6
   orbitRadius: 1.5
   rotateSpeed: 200
@@ -33152,7 +33200,7 @@ MonoBehaviour:
   swordHitbox: {fileID: 1175743952}
   meleeRadius: 2
   meleeDamage: 15
-  shurikenPrefab: {fileID: 0}
+  shurikenPrefab: {fileID: 1775667784230767006, guid: 7491c8021254e1f44b0c3b34df74453d, type: 3}
   shurikenSpeed: 8
   rangeRadius: 5
   rangeDamage: 10
@@ -33169,7 +33217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7680322dc21f3a64dbb7667c9dd43e16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
+  maxHealth: 5
   currentHealth: 0
   healthBar: {fileID: 0}
 --- !u!114 &1236139817
@@ -33237,7 +33285,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.0017350614, y: -0.18624547}
@@ -33371,6 +33419,59 @@ Transform:
   - {fileID: 1946826303}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1236139824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236139810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be9b1fde42cfef049a90a5f969c67af2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossDialogue: {fileID: 11400000, guid: 998f8bf5148a3464e902ad08867a8853, type: 2}
+  fightTriggerDialogueIndex: 0
+  interactRadius: 2
+--- !u!114 &1236139825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236139810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aae07fd59aeae245a28f26707e72cec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popupPrefab: {fileID: 1071214570684572750, guid: fd0ae88c4babea54d8c534b29aac2056, type: 3}
+  popupOffset: {x: 0, y: 1, z: 0}
+  detectRadius: 2
+  bobSpeed: 2
+  bobHeight: 0.08
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &1236139826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236139810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8663db823f5073e489b96c5ed9423a95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  enemyID: 
+  knockbackForce: 10
+  knockbackTime: 0.15
+  xpReward: 30
+  deathDelay: 0.5
 --- !u!1 &1244690123
 GameObject:
   m_ObjectHideFlags: 0
@@ -39285,7 +39386,7 @@ GameObject:
   - component: {fileID: 1535735460}
   m_Layer: 11
   m_Name: Collision
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -234972,8 +235073,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseXPRequired: 10
   xpMultiplier: 1.5
-  debugAddXP: 1000
-  maxLevel: 50
+  debugAddXP: 1000000
+  maxLevel: 1000
   statUpgradeUI: {fileID: 1839944388}
 --- !u!114 &1750446676
 MonoBehaviour:
@@ -236504,6 +236605,7 @@ Transform:
   - {fileID: 1398574222}
   - {fileID: 414886154}
   - {fileID: 1653151134}
+  - {fileID: 673124589}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1839944386
@@ -239465,7 +239567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1946826303}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: DustEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

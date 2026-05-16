@@ -175,6 +175,7 @@ public class PlayerAttack : MonoBehaviour
     GameObject FindNearestEnemyInRadius(float radius)
     {
         BaseEnemy[] enemies = FindObjectsOfType<BaseEnemy>();
+
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
 
