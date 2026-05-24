@@ -15,6 +15,7 @@ public class MenuScene : MonoBehaviour
     public GameObject mainMenuPanel;
     public GameObject rightBar;
     public GameObject comingSoonPopup;
+    public GameObject settingsPanel;
 
     private bool _isNewGame = false;
 
@@ -116,11 +117,11 @@ public class MenuScene : MonoBehaviour
     // ============================================================
     //  SETTINGS
     // ============================================================
-    //public void OnClickSettings()
-    //{
-    //    if (settingsPanel == null) return;
-    //    settingsPanel.SetActive(!settingsPanel.activeSelf);
-    //}
+    public void OnClickSettings()
+    {
+        if (settingsPanel == null) return;
+        settingsPanel.SetActive(!settingsPanel.activeSelf);
+    }
 
     // ============================================================
     //  EXIT
