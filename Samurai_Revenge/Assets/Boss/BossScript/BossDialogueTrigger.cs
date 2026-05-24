@@ -64,6 +64,7 @@ public class BossDialogueTrigger : MonoBehaviour, IInteractable
         DialogueController.Instance.ShowDialogueUI(true);
         DialogueController.Instance.SetNPCInfo(dialogue.npcName, dialogue.npcPortrait);
         ShowCurrentLine();
+        DialogueController.Instance.SetCurrentInteractable(this);
     }
 
     void ShowCurrentLine()
@@ -157,6 +158,7 @@ public class BossDialogueTrigger : MonoBehaviour, IInteractable
         QuestGiver qg = GetComponent<QuestGiver>();
         if (qg != null)
             QuestManager.Instance?.ReportTalk(qg.npcID);
+        DialogueController.Instance.SetCurrentInteractable(null);
     }
 
     void EndDialogueAndFight()

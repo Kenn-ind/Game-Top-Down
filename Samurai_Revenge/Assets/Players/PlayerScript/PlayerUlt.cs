@@ -12,7 +12,7 @@ public class PlayerUlt : MonoBehaviour
     private int _currentFrame = 0;
 
     [Header("Mobile")]
-    public Button ultMobileButton; // drag BtnUlt dari Inspector
+    public Button ultMobileButton;
 
     public KeyCode ultKey = KeyCode.R;
     public float chargeTime = 3f;
@@ -20,13 +20,13 @@ public class PlayerUlt : MonoBehaviour
     public int slashDamage = 3;
     public int slashCount = 3;
     public float slashDelay = 0.2f;
-
     public float refundPercent = 1f;
 
     private bool _isReady = false;
     private bool _isCharging = false;
     private bool _isCasting = false;
     private float _chargeTimer = 0f;
+
     public float ultDashSpeed = 20f;
     public float ultDashDuration = 0.15f;
     public float fadeDuration = 0.2f;
@@ -44,17 +44,30 @@ public class PlayerUlt : MonoBehaviour
         _movement = GetComponent<movement>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
-
         UpdateBar();
     }
+
+    // ─── Tutorial Block Check ─────────────────────────────────────────────────
+
+    bool IsTutorialBlocked()
+    {
+        if (TutorialManager.Instance == null) return false;
+        if (!TutorialManager.Instance.IsTutorialActive) return false;
+        return TutorialManager.Instance.CurrentRequiredAction < TutorialActionType.Ult;
+    }
+
+    // ─── Update ───────────────────────────────────────────────────────────────
 
     void Update()
     {
         if (_isCasting) return;
+        if (IsTutorialBlocked()) return;
 
         if (Input.GetKeyDown(ultKey) && _isReady && !_isCharging)
             StartCoroutine(ChargeUlt());
     }
+
+    // ─── Kill Counter ─────────────────────────────────────────────────────────
 
     public void OnEnemyKilled()
     {
@@ -65,11 +78,14 @@ public class PlayerUlt : MonoBehaviour
 
         if (currentKills >= killsRequired)
             _isReady = true;
-            UpdateBar();
+
+        UpdateBar();
 
         if (_isReady)
             Debug.Log("ULT SIAP!");
     }
+
+    // ─── Charge ───────────────────────────────────────────────────────────────
 
     IEnumerator ChargeUlt()
     {
@@ -121,10 +137,16 @@ public class PlayerUlt : MonoBehaviour
         UpdateBar();
     }
 
+    // ─── Execute ──────────────────────────────────────────────────────────────
+
     IEnumerator ExecuteUlt()
     {
         _isCasting = true;
         _isReady = false;
+
+        // Report tutorial
+        TutorialManager.Instance?.ReportAction(TutorialActionType.Ult);
+
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         yield return StartCoroutine(UltDash());
@@ -186,6 +208,8 @@ public class PlayerUlt : MonoBehaviour
         }
     }
 
+    // ─── Bar ──────────────────────────────────────────────────────────────────
+
     void UpdateBar()
     {
         if (ultFrames.Length == 0 || ultBarImage == null) return;
@@ -197,18 +221,15 @@ public class PlayerUlt : MonoBehaviour
         _currentFrame = target;
         ultBarImage.sprite = ultFrames[_currentFrame];
 
-        // ── TAMBAH LOG INI ───────────────────────────────────────
-        Debug.Log($"UpdateBar: isReady={_isReady}, ultMobileButton={ultMobileButton}, interactable={_isReady}");
-        // ────────────────────────────────────────────────────────
-
         if (ultMobileButton != null)
             ultMobileButton.interactable = _isReady;
     }
 
-    // ── MOBILE ───────────────────────────────────────────────
+    // ─── Mobile ───────────────────────────────────────────────────────────────
+
     public void MobileUlt()
     {
-        Debug.Log($"MobileUlt dipanggil! isReady: {_isReady}, isCharging: {_isCharging}, isCasting: {_isCasting}");
+        if (IsTutorialBlocked()) return;
         if (_isReady && !_isCharging && !_isCasting)
             StartCoroutine(ChargeUlt());
     }

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92ec350d3bf98054285c56dcd720a641, type: 3}
+  m_Name: Basic Attack Melee
+  m_EditorClassIdentifier: 
+  title: Serangan Dasar - Melee
+  description: 'Saat musuh berada dekat, kamu akan otomatis menyerang dengan pedang!
+
+    Coba
+    serang musuh terdekat 2 kali.
+
+
+    PC: Tekan [SPACE]
+
+    Mobile: Tekan tombol
+    Attack'
+  requiredAction: 0
+  requiredCount: 2

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92ec350d3bf98054285c56dcd720a641, type: 3}
+  m_Name: Skill 3 Ring
+  m_EditorClassIdentifier: 
+  title: Skill 3 - Ring Shuriken
+  description: 'Skill 3 memiliki dua mode berbeda tergantung cara menggunakannya!
+
+    Tap
+    cepat untuk mengaktifkan cincin shuriken yang berputar di sekitar kamu
+
+    dan
+    akan otomatis melukai musuh yang mendekat!
+
+
+    PC: Tap [C Tap]
+
+    Mobile:
+    Tap cepat tombol Skill 3'
+  requiredAction: 6
+  requiredCount: 1

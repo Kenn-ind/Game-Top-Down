@@ -26,11 +26,9 @@ public class Skill3SO : SkillSO
 
     private float _nextSkillTime;
 
-    // ── Keyboard hold ────────────────────────────────────────
     private float _holdTimer;
     private bool _isHolding;
 
-    // ── Mobile hold ──────────────────────────────────────────
     private float _mobileHoldTimer = 0f;
     private bool _mobileIsHolding = false;
 
@@ -56,11 +54,21 @@ public class Skill3SO : SkillSO
         _shurikens = new List<GameObject>();
     }
 
-    // ============================================================
-    //  KEYBOARD INPUT
-    // ============================================================
+    // ─── Tutorial Block Check ─────────────────────────────────────────────────
+
+    bool IsTutorialBlocked()
+    {
+        if (TutorialManager.Instance == null) return false;
+        if (!TutorialManager.Instance.IsTutorialActive) return false;
+        return TutorialManager.Instance.CurrentRequiredAction < TutorialActionType.Skill3Range;
+    }
+
+    // ─── Keyboard Input ───────────────────────────────────────────────────────
+
     public override void OnUpdate()
     {
+        if (IsTutorialBlocked()) return;
+
         if (Input.GetKeyDown(keyBind)) { _holdTimer = 0f; _isHolding = true; }
         if (_isHolding && Input.GetKey(keyBind)) _holdTimer += Time.deltaTime;
 
@@ -82,18 +90,15 @@ public class Skill3SO : SkillSO
         }
     }
 
-    // ============================================================
-    //  MOBILE INPUT
-    // ============================================================
+    // ─── Mobile Input ─────────────────────────────────────────────────────────
 
-    // ── Dipanggil saat jari mulai menyentuh tombol ───────────
     public void MobileHoldStart()
     {
+        if (IsTutorialBlocked()) return;
         _mobileHoldTimer = 0f;
         _mobileIsHolding = true;
     }
 
-    // ── Dipanggil setiap frame dari MobileInput.Update() ─────
     public void MobileHoldUpdate()
     {
         if (_mobileIsHolding)
@@ -105,6 +110,7 @@ public class Skill3SO : SkillSO
         if (!_mobileIsHolding) return;
         _mobileIsHolding = false;
 
+        if (IsTutorialBlocked()) return;
         if (Time.time < _nextSkillTime) return;
         if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
         if (_skillState.isUsingSkill) return;
@@ -118,9 +124,10 @@ public class Skill3SO : SkillSO
 
         _nextSkillTime = Time.time + cooldown;
     }
-    
+
     public void MobileTriggerTap()
     {
+        if (IsTutorialBlocked()) return;
         if (Time.time < _nextSkillTime) return;
         if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
         if (_skillState.isUsingSkill) return;
@@ -130,6 +137,8 @@ public class Skill3SO : SkillSO
         _nextSkillTime = Time.time + cooldown;
     }
 
+    // ─── Skill Logic ──────────────────────────────────────────────────────────
+
     IEnumerator ActivateRing()
     {
         _skillState.isUsingSkill = true;
@@ -138,7 +147,10 @@ public class Skill3SO : SkillSO
         {
             float angle = i * Mathf.PI * 2 / shurikenAmount;
             Vector2 pos = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * orbitRadius;
-            GameObject s = Object.Instantiate(shurikenPrefab, _player.transform.position + (Vector3)pos, Quaternion.identity);
+            GameObject s = Object.Instantiate(
+                shurikenPrefab,
+                _player.transform.position + (Vector3)pos,
+                Quaternion.identity);
             _shurikens.Add(s);
         }
 
@@ -149,15 +161,21 @@ public class Skill3SO : SkillSO
             for (int i = 0; i < _shurikens.Count; i++)
             {
                 if (_shurikens[i] == null) continue;
-                float angle = (Time.time * rotateSpeed + i * 360f / shurikenAmount) * Mathf.Deg2Rad;
+                float angle = (Time.time * rotateSpeed + i * 360f / shurikenAmount)
+                              * Mathf.Deg2Rad;
                 Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * orbitRadius;
-                _shurikens[i].transform.position = _player.transform.position + (Vector3)offset;
+                _shurikens[i].transform.position =
+                    _player.transform.position + (Vector3)offset;
             }
             yield return null;
         }
 
-        foreach (GameObject s in _shurikens) if (s != null) Object.Destroy(s);
+        foreach (GameObject s in _shurikens)
+            if (s != null) Object.Destroy(s);
         _shurikens.Clear();
+
+        // Report tutorial ring
+        TutorialManager.Instance?.ReportAction(TutorialActionType.Skill3Range);
 
         _skillState.isUsingSkill = false;
     }
@@ -172,10 +190,16 @@ public class Skill3SO : SkillSO
     {
         _berserkerActive = true;
         _player.GetComponent<SpriteRenderer>().color = Color.red;
+
+        // Report tutorial berserker
+        TutorialManager.Instance?.ReportAction(TutorialActionType.Skill3Melee);
+
         yield return new WaitForSeconds(berserkerDuration);
         _berserkerActive = false;
         _player.GetComponent<SpriteRenderer>().color = Color.white;
     }
+
+    // ─── Reset ────────────────────────────────────────────────────────────────
 
     public void ResetSkillState()
     {

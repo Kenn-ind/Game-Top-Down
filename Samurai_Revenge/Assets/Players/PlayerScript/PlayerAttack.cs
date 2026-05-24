@@ -131,6 +131,9 @@ public class PlayerAttack : MonoBehaviour
                 }
             }
 
+            // Report tutorial
+            TutorialManager.Instance?.ReportAction(TutorialActionType.MeleeAttack);
+
             yield return new WaitForSeconds(0.2f);
             swordHitbox.SetActive(false);
         }
@@ -162,6 +165,9 @@ public class PlayerAttack : MonoBehaviour
             GameObject oldest = shurikenQueue.Dequeue();
             if (oldest != null) Destroy(oldest);
         }
+
+        // Report tutorial
+        TutorialManager.Instance?.ReportAction(TutorialActionType.RangeAttack);
 
         StartCoroutine(RangeRoutine());
     }

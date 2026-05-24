@@ -236606,6 +236606,7 @@ Transform:
   - {fileID: 414886154}
   - {fileID: 1653151134}
   - {fileID: 673124589}
+  - {fileID: 2147270880}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1839944386
@@ -242812,6 +242813,69 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 25}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &2147270879
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2147270880}
+  - component: {fileID: 2147270881}
+  m_Layer: 0
+  m_Name: TutorialManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2147270880
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147270879}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1829524997}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2147270881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147270879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936f179813ce4994e9de90b00aab986d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  steps:
+  - {fileID: 11400000, guid: a0e3fc7fdd0b59c478e7b448d1eef1b1, type: 2}
+  - {fileID: 11400000, guid: 89009d91d907d1e4baaeee62c26181b3, type: 2}
+  - {fileID: 11400000, guid: 4ce06c461f22d0147bc6ece728d89314, type: 2}
+  - {fileID: 11400000, guid: 688933befee6f8643954945de4087c53, type: 2}
+  - {fileID: 11400000, guid: 06c62319a5763cc4db9fb963522c33ae, type: 2}
+  - {fileID: 11400000, guid: c81fba31779f1f44da203969f612659d, type: 2}
+  - {fileID: 11400000, guid: eaddeabae1c44834cb519ad616dae7f6, type: 2}
+  - {fileID: 11400000, guid: 88c0f98ecd7f1c245a143191c0f38d18, type: 2}
+  - {fileID: 11400000, guid: ea1c8850076dff844bee15d70adeb5f1, type: 2}
+  tutorialPanel: {fileID: 0}
+  titleText: {fileID: 0}
+  descriptionText: {fileID: 0}
+  progressText: {fileID: 0}
+  mobileNextButton: {fileID: 0}
+  skillUI1: {fileID: 230037337}
+  skillUI2: {fileID: 120181306}
+  skillUI3: {fileID: 1380992627}
+  ultUI: {fileID: 836613761}
 --- !u!1001 &701417344839212693
 PrefabInstance:
   m_ObjectHideFlags: 0

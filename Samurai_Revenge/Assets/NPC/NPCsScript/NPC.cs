@@ -72,7 +72,7 @@ public class NPC : MonoBehaviour, IInteractable
         {
             dialogueIndex = 0;
         }
-
+        DialogueController.Instance.SetCurrentInteractable(this);
         Debug.Log($"[NPC] StartDialogue → dialogueIndex: {dialogueIndex}");
         DisplayCurrentLine();
     }
@@ -238,5 +238,6 @@ public class NPC : MonoBehaviour, IInteractable
         GetPlayer()?.SetMovementLocked(false);
         GetComponent<NPCScript>()?.StopInteraction();
         PauseController.SetPause(false);
+        DialogueController.Instance.SetCurrentInteractable(null);
     }
 }
