@@ -60,6 +60,11 @@ public class MenuScene : MonoBehaviour
         StartGame(GameModeType.Normal);
     }
 
+    public void OnClickCloseCredit()
+    {
+        settingsPanel.SetActive(false);
+    }
+
     public void OnClickStoryMode()
     {
         if (comingSoonPopup != null)
