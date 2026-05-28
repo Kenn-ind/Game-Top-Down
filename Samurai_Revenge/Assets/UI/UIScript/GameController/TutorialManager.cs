@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -11,10 +13,9 @@ public class TutorialManager : MonoBehaviour
 
     [Header("References")]
     public GameObject tutorialPanel;
-    public TMPro.TMP_Text titleText;
-    public TMPro.TMP_Text descriptionText;
-    public TMPro.TMP_Text progressText;
-    public GameObject mobileNextButton;
+    public TMP_Text titleText;
+    public TMP_Text progressText;
+    public Button descButton;
 
     [Header("UI Skill References")]
     public GameObject skillUI1;
@@ -42,11 +43,18 @@ public class TutorialManager : MonoBehaviour
     {
         tutorialPanel?.SetActive(false);
 
-        // Sembunyikan semua skill UI di awal
         SetSkillUIVisible(skillUI1, false);
         SetSkillUIVisible(skillUI2, false);
         SetSkillUIVisible(skillUI3, false);
         SetSkillUIVisible(ultUI, false);
+
+        // Tombol desc untuk buka ulang panel deskripsi
+        if (descButton != null)
+            descButton.onClick.AddListener(() =>
+            {
+                Debug.Log("[Tutorial] DescButton diklik!");
+                TutorialDescPanel.Instance?.ReopenPanel();
+            });
     }
 
     // ─── Start Tutorial ───────────────────────────────────────────────────────
@@ -74,11 +82,19 @@ public class TutorialManager : MonoBehaviour
 
         tutorialPanel?.SetActive(true);
         if (titleText != null) titleText.text = step.title;
-        if (descriptionText != null) descriptionText.text = step.description;
         UpdateProgressText();
-
-        // Update skill UI visibility sesuai step
         UpdateSkillVisibility();
+
+        // Jika step Ult, langsung force ready
+        if (step.requiredAction == TutorialActionType.Ult)
+        {
+            PlayerUlt playerUlt = FindObjectOfType<PlayerUlt>();
+            playerUlt?.ForceUltReady();
+        }
+
+        // Tampilkan desc panel otomatis saat step baru
+        if (step.descPages != null && step.descPages.Count > 0)
+            TutorialDescPanel.Instance?.ShowPages(step.descPages);
 
         Debug.Log($"[Tutorial] Step {currentStepIndex + 1}/{steps.Length}: {step.title}");
     }
@@ -90,25 +106,16 @@ public class TutorialManager : MonoBehaviour
         progressText.text = $"{currentActionCount}/{step.requiredCount}";
     }
 
-    // ─── Visibility Skill UI ──────────────────────────────────────────────────
+    // ─── Skill Visibility ─────────────────────────────────────────────────────
 
     void UpdateSkillVisibility()
     {
         TutorialActionType action = steps[currentStepIndex].requiredAction;
 
-        // Skill 1 muncul mulai step Skill1Range
-        bool showSkill1 = action >= TutorialActionType.Skill1Range;
-        // Skill 2 muncul mulai step Skill2Range
-        bool showSkill2 = action >= TutorialActionType.Skill2Range;
-        // Skill 3 muncul mulai step Skill3Range
-        bool showSkill3 = action >= TutorialActionType.Skill3Range;
-        // Ult muncul mulai step Ult
-        bool showUlt = action >= TutorialActionType.Ult;
-
-        SetSkillUIVisible(skillUI1, showSkill1);
-        SetSkillUIVisible(skillUI2, showSkill2);
-        SetSkillUIVisible(skillUI3, showSkill3);
-        SetSkillUIVisible(ultUI, showUlt);
+        SetSkillUIVisible(skillUI1, action >= TutorialActionType.Skill1Range);
+        SetSkillUIVisible(skillUI2, action >= TutorialActionType.Skill2Range);
+        SetSkillUIVisible(skillUI3, action >= TutorialActionType.Skill3Melee); // ← ubah dari Skill3Range
+        SetSkillUIVisible(ultUI, action >= TutorialActionType.Ult);
     }
 
     void SetSkillUIVisible(GameObject ui, bool visible)
@@ -124,12 +131,13 @@ public class TutorialManager : MonoBehaviour
         if (currentStepIndex >= steps.Length) return;
 
         TutorialStep step = steps[currentStepIndex];
+
+        Debug.Log($"[Tutorial] ReportAction: {actionType}, required: {step.requiredAction}, count: {currentActionCount}/{step.requiredCount}");
+
         if (step.requiredAction != actionType) return;
 
         currentActionCount++;
         UpdateProgressText();
-
-        Debug.Log($"[Tutorial] Action {actionType}: {currentActionCount}/{step.requiredCount}");
 
         if (currentActionCount >= step.requiredCount)
             StartCoroutine(AdvanceStep());
@@ -137,7 +145,6 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator AdvanceStep()
     {
-        // Delay kecil sebelum lanjut step
         yield return new WaitForSeconds(0.5f);
 
         currentStepIndex++;
@@ -155,16 +162,14 @@ public class TutorialManager : MonoBehaviour
     {
         isTutorialActive = false;
         tutorialPanel?.SetActive(false);
+        TutorialDescPanel.Instance?.ClosePanel();
 
-        // Tampilkan semua skill UI
         SetSkillUIVisible(skillUI1, true);
         SetSkillUIVisible(skillUI2, true);
         SetSkillUIVisible(skillUI3, true);
         SetSkillUIVisible(ultUI, true);
 
-        Debug.Log("[Tutorial] Tutorial selesai!");
-
-        // Report quest jika ada
         QuestManager.Instance?.ReportTalk("tutorial_complete");
+        Debug.Log("[Tutorial] Tutorial selesai!");
     }
 }

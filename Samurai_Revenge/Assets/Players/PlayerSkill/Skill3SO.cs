@@ -60,7 +60,7 @@ public class Skill3SO : SkillSO
     {
         if (TutorialManager.Instance == null) return false;
         if (!TutorialManager.Instance.IsTutorialActive) return false;
-        return TutorialManager.Instance.CurrentRequiredAction < TutorialActionType.Skill3Range;
+        return TutorialManager.Instance.CurrentRequiredAction < TutorialActionType.Skill3Melee; // ← ubah dari Skill3Range
     }
 
     // ─── Keyboard Input ───────────────────────────────────────────────────────
@@ -112,7 +112,7 @@ public class Skill3SO : SkillSO
 
         if (IsTutorialBlocked()) return;
         if (Time.time < _nextSkillTime) return;
-        if (!_stamina.HasEnough(staminaCost)) { Debug.Log("Stamina tidak cukup!"); return; }
+        if (!_stamina.HasEnough(staminaCost)) return;
         if (_skillState.isUsingSkill) return;
 
         _stamina.UseStamina(staminaCost);
@@ -120,7 +120,21 @@ public class Skill3SO : SkillSO
         if (_mobileHoldTimer < holdThreshold)
             _runner.StartCoroutine(ActivateRing());
         else
-            TriggerBerserker();
+        {
+            // Blok berserker jika tutorial masih di step Skill3Range
+            if (TutorialManager.Instance != null
+                && TutorialManager.Instance.IsTutorialActive
+                && TutorialManager.Instance.CurrentRequiredAction == TutorialActionType.Skill3Range)
+            {
+                Debug.Log("[Skill3] Selesaikan Ring Shuriken dulu!");
+                // Aktifkan ring saja
+                _runner.StartCoroutine(ActivateRing());
+            }
+            else
+            {
+                TriggerBerserker();
+            }
+        }
 
         _nextSkillTime = Time.time + cooldown;
     }
@@ -154,6 +168,11 @@ public class Skill3SO : SkillSO
             _shurikens.Add(s);
         }
 
+        // Debug sebelum report
+        Debug.Log($"[Skill3] ActivateRing, TutorialManager={TutorialManager.Instance != null}, IsTutorialActive={TutorialManager.Instance?.IsTutorialActive}, CurrentAction={TutorialManager.Instance?.CurrentRequiredAction}");
+
+        TutorialManager.Instance?.ReportAction(TutorialActionType.Skill3Range);
+
         float timer = 0;
         while (timer < ringDuration)
         {
@@ -163,7 +182,8 @@ public class Skill3SO : SkillSO
                 if (_shurikens[i] == null) continue;
                 float angle = (Time.time * rotateSpeed + i * 360f / shurikenAmount)
                               * Mathf.Deg2Rad;
-                Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * orbitRadius;
+                Vector2 offset = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle))
+                                 * orbitRadius;
                 _shurikens[i].transform.position =
                     _player.transform.position + (Vector3)offset;
             }
@@ -173,9 +193,6 @@ public class Skill3SO : SkillSO
         foreach (GameObject s in _shurikens)
             if (s != null) Object.Destroy(s);
         _shurikens.Clear();
-
-        // Report tutorial ring
-        TutorialManager.Instance?.ReportAction(TutorialActionType.Skill3Range);
 
         _skillState.isUsingSkill = false;
     }
@@ -191,7 +208,8 @@ public class Skill3SO : SkillSO
         _berserkerActive = true;
         _player.GetComponent<SpriteRenderer>().color = Color.red;
 
-        // Report tutorial berserker
+        Debug.Log($"[Skill3] BerserkerMode aktif, TutorialManager={TutorialManager.Instance != null}, IsTutorialActive={TutorialManager.Instance?.IsTutorialActive}, CurrentAction={TutorialManager.Instance?.CurrentRequiredAction}");
+
         TutorialManager.Instance?.ReportAction(TutorialActionType.Skill3Melee);
 
         yield return new WaitForSeconds(berserkerDuration);

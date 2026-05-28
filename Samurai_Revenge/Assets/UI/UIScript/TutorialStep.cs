@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum TutorialActionType
@@ -8,8 +9,8 @@ public enum TutorialActionType
     Skill1Melee,
     Skill2Range,
     Skill2Melee,
-    Skill3Range,
     Skill3Melee,
+    Skill3Range,
     Ult
 }
 
@@ -17,7 +18,9 @@ public enum TutorialActionType
 public class TutorialStep : ScriptableObject
 {
     public string title;
-    [TextArea] public string description;
     public TutorialActionType requiredAction;
     public int requiredCount = 1;
+
+    [Header("Desc Panel Pages")]
+    public List<TutorialDescPage> descPages;
 }

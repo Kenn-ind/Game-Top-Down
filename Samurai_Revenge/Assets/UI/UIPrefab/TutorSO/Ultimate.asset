@@ -12,19 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ec350d3bf98054285c56dcd720a641, type: 3}
   m_Name: Ultimate
   m_EditorClassIdentifier: 
-  title: Ultimate
-  description: 'Kumpulkan kill untuk mengisi bar Ultimate!
-
-    Saat penuh, tahan
-    tombol Ult untuk charge lalu lepas untuk melancarkan
-
-    serangan dahsyat yang
-    melukai semua musuh di sekitar kamu!
-
-
-    PC: Tahan [R]
-
-    Mobile: Tahan tombol
-    Ult'
+  title: Ultimate - Finisher
   requiredAction: 8
   requiredCount: 1
+  descPages:
+  - title: Ultimate - Finisher
+    description: "Ultimate adalah serangan paling kuat \nyang bisa kamu gunakan!\nKumpulkan
+      kill untuk mengisi bar Ultimate \ndi pojok layar.\n"
+  - title: Cara Mengisi Ultimate
+    description: "Kalahkan musuh untuk mengisi bar Ultimate.\nSemakin banyak musuh
+      yang dikalahkan, \nsemakin cepat Ultimate terisi penuh!"
+  - title: Cara Menggunakan
+    description: "Tahan tombol Ult saat bar sudah penuh \nuntuk charge, lalu lepas
+      untuk menyerang!\n             \nPC    : Tahan [R]\nMobile: Tahan tombol Ult\n            
+      \nSemua musuh di sekitarmu akan terkena \nserangan"

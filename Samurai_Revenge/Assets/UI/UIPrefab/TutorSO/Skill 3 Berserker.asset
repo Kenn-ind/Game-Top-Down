@@ -13,9 +13,16 @@ MonoBehaviour:
   m_Name: Skill 3 Berserker
   m_EditorClassIdentifier: 
   title: Skill 3 - Mode Berserker
-  description: "Tahan tombol Skill 3 untuk masuk ke Mode Berserker!\nDalam mode ini
-    kamu akan berwarna merah, damage meningkat 2x,\nkecepatan serangan meningkat,
-    dan setiap serangan memulihkan HP!\n             \nPC: Tahan [C]\nMobile: Tahan
-    tombol Skill 3"
   requiredAction: 6
   requiredCount: 1
+  descPages:
+  - title: Skill 3 - Mode Berserker
+    description: "Tahan tombol Skill 3 untuk masuk ke \nMode Berserker yang dahsyat!\nKamu
+      akan berwarna merah sebagai tanda \nmode ini aktif."
+  - title: Efek Berserker
+    description: "Selama Mode Berserker aktif:\n- Damage meningkat 2x lipat\n- Kecepatan
+      serangan meningkat\n- Setiap serangan memulihkan HP\n             \nGunakan
+      saat kondisi kritis!"
+  - title: Cara Menggunakan
+    description: "ahan tombol Skill 3 hingga mode aktif.\n             \nPC    :
+      Tahan [C]\nMobile: Tahan tombol Skill 3"

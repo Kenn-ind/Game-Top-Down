@@ -13,15 +13,13 @@ MonoBehaviour:
   m_Name: Basic Attack Range
   m_EditorClassIdentifier: 
   title: Serangan Dasar - Range
-  description: 'Saat musuh berada jauh, kamu akan melempar shuriken secara otomatis!
-
-    Coba
-    serang musuh dari jarak jauh 2 kali.
-
-
-    PC: Tekan [SPACE]
-
-    Mobile: Tekan
-    tombol Attack'
   requiredAction: 1
   requiredCount: 2
+  descPages:
+  - title: Serangan Dasar - Range
+    description: "Serangan range adalah serangan jarak jauh \nmenggunakan shuriken.\nShuriken
+      akan otomatis terlempar saat musuh \nberada di luar jangkauan pedangmu.\n\nTekan
+      [Space]\natau\nTekan [Tombol Basic Attack]"
+  - title: Cara Menggunakan
+    description: "jauhi musuh hingga keluar jangkauan pedang.\n             \nPC   
+      : Tekan [SPACE]\nMobile: Tekan tombol Attack"

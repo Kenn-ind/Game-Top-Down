@@ -13,15 +13,17 @@ MonoBehaviour:
   m_Name: Basic Attack Melee
   m_EditorClassIdentifier: 
   title: Serangan Dasar - Melee
-  description: 'Saat musuh berada dekat, kamu akan otomatis menyerang dengan pedang!
-
-    Coba
-    serang musuh terdekat 2 kali.
-
-
-    PC: Tekan [SPACE]
-
-    Mobile: Tekan tombol
-    Attack'
   requiredAction: 0
   requiredCount: 2
+  descPages:
+  - title: Serangan Dasar - Melee
+    description: "Serangan melee adalah serangan jarak dekat \nmenggunakan pedang.\nSerangan
+      ini otomatis aktif saat musuh \nberada dalam jangkauan dekatmu."
+  - title: Cara Menggunakan
+    description: 'Dekati musuh hingga dalam jangkauan pedang.
+
+
+      PC    : Tekan
+      [SPACE]
+
+      Mobile: Tekan tombol Attack'

@@ -13,18 +13,15 @@ MonoBehaviour:
   m_Name: Skill 3 Ring
   m_EditorClassIdentifier: 
   title: Skill 3 - Ring Shuriken
-  description: 'Skill 3 memiliki dua mode berbeda tergantung cara menggunakannya!
-
-    Tap
-    cepat untuk mengaktifkan cincin shuriken yang berputar di sekitar kamu
-
-    dan
-    akan otomatis melukai musuh yang mendekat!
-
-
-    PC: Tap [C Tap]
-
-    Mobile:
-    Tap cepat tombol Skill 3'
   requiredAction: 6
   requiredCount: 1
+  descPages:
+  - title: Skill 3 - Ring Shuriken
+    description: "Skill 3 memiliki dua mode yang dipilih \nberdasarkan cara penggunaannya.\nTap
+      cepat untuk mengaktifkan cincin \nshuriken yang berputar mengelilingimu!"
+  - title: Efek Ring Shuriken
+    description: "Cincin shuriken akan otomatis melukai \nmusuh yang menyentuhnya.\nEfektif
+      untuk melindungi diri dari \nserangan musuh yang mendekat!"
+  - title: Cara Menggunakan
+    description: "Tap cepat tombol Skill 3.\n             \nPC    : Tap [C]\nMobile:
+      Tap cepat tombol Skill 3"

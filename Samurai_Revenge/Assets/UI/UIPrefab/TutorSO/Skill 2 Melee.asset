@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Skill 2 Melee
   m_EditorClassIdentifier: 
   title: Skill 2 - Melee
-  description: "Saat musuh berada dekat, Skill 2 berubah menjadi serangan melee!\nCoba
-    gunakan Skill 2 saat musuh berada dekat.\n \nPC: Tekan [Q]\nMobile: Tekan tombol
-    Skill 2"
   requiredAction: 5
   requiredCount: 1
+  descPages:
+  - title: Skill 2 - Melee
+    description: "Dari jarak dekat, Skill 2 berubah menjadi \nserangan melee dengan
+      efek yang berbeda."
+  - title: Cara Menggunakan
+    description: "Dekati musuh hingga dalam jangkauan dekat.\n             \nPC   
+      : Tekan [Q]\nMobile: Tekan tombol Skill 2"
