@@ -26,8 +26,10 @@ public class TutorialManager : MonoBehaviour
     private int currentStepIndex = -1;
     private int currentActionCount = 0;
     private bool isTutorialActive = false;
+    private bool isTutorialCompleted = false;
 
     public bool IsTutorialActive => isTutorialActive;
+    public bool IsTutorialCompleted => isTutorialCompleted;
     public TutorialActionType CurrentRequiredAction =>
         currentStepIndex >= 0 && currentStepIndex < steps.Length
         ? steps[currentStepIndex].requiredAction
@@ -48,7 +50,6 @@ public class TutorialManager : MonoBehaviour
         SetSkillUIVisible(skillUI3, false);
         SetSkillUIVisible(ultUI, false);
 
-        // Tombol desc untuk buka ulang panel deskripsi
         if (descButton != null)
             descButton.onClick.AddListener(() =>
             {
@@ -63,9 +64,36 @@ public class TutorialManager : MonoBehaviour
     {
         if (isTutorialActive) return;
         isTutorialActive = true;
+        isTutorialCompleted = false;
         currentStepIndex = 0;
         currentActionCount = 0;
         ShowCurrentStep();
+    }
+
+    // ─── Set Tutorial Completed (dipanggil SaveManager saat Load) ────────────
+
+    public void SetTutorialCompleted(bool completed)
+    {
+        isTutorialCompleted = completed;
+
+        if (completed)
+        {
+            isTutorialActive = false;
+            tutorialPanel?.SetActive(false);
+            TutorialDescPanel.Instance?.ClosePanel();
+
+            SetSkillUIVisible(skillUI1, true);
+            SetSkillUIVisible(skillUI2, true);
+            SetSkillUIVisible(skillUI3, true);
+            SetSkillUIVisible(ultUI, true);
+        }
+        else
+        {
+            SetSkillUIVisible(skillUI1, false);
+            SetSkillUIVisible(skillUI2, false);
+            SetSkillUIVisible(skillUI3, false);
+            SetSkillUIVisible(ultUI, false);
+        }
     }
 
     // ─── Show Step ────────────────────────────────────────────────────────────
@@ -85,14 +113,12 @@ public class TutorialManager : MonoBehaviour
         UpdateProgressText();
         UpdateSkillVisibility();
 
-        // Jika step Ult, langsung force ready
         if (step.requiredAction == TutorialActionType.Ult)
         {
             PlayerUlt playerUlt = FindObjectOfType<PlayerUlt>();
             playerUlt?.ForceUltReady();
         }
 
-        // Tampilkan desc panel otomatis saat step baru
         if (step.descPages != null && step.descPages.Count > 0)
             TutorialDescPanel.Instance?.ShowPages(step.descPages);
 
@@ -114,7 +140,7 @@ public class TutorialManager : MonoBehaviour
 
         SetSkillUIVisible(skillUI1, action >= TutorialActionType.Skill1Range);
         SetSkillUIVisible(skillUI2, action >= TutorialActionType.Skill2Range);
-        SetSkillUIVisible(skillUI3, action >= TutorialActionType.Skill3Melee); // ← ubah dari Skill3Range
+        SetSkillUIVisible(skillUI3, action >= TutorialActionType.Skill3Melee);
         SetSkillUIVisible(ultUI, action >= TutorialActionType.Ult);
     }
 
@@ -161,6 +187,7 @@ public class TutorialManager : MonoBehaviour
     void EndTutorial()
     {
         isTutorialActive = false;
+        isTutorialCompleted = true;
         tutorialPanel?.SetActive(false);
         TutorialDescPanel.Instance?.ClosePanel();
 

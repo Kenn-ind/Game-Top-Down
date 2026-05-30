@@ -22,17 +22,30 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left) return;
-        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)) return;
-
-        // ── Guard: jika item sedang di hotbar, abaikan shift+click ──────
-        HotbarSlot hotbarSlot = transform.parent.GetComponent<HotbarSlot>();
-        if (hotbarSlot != null) return;
 
         Slot thisSlot = transform.parent.GetComponent<Slot>();
+        Debug.Log($"[Click] thisSlot={thisSlot?.name ?? "NULL"}, chestOpen={ChestController.CurrentOpenChest != null}, isChestSlot={thisSlot?.CompareTag("ChestSlot")}");
+
         if (thisSlot == null) return;
 
         bool chestIsOpen = ChestController.CurrentOpenChest != null;
         bool isChestSlot = thisSlot.CompareTag("ChestSlot");
+
+        if (chestIsOpen && isChestSlot
+            && !Input.GetKey(KeyCode.LeftShift)
+            && !Input.GetKey(KeyCode.RightShift))
+        {
+            Debug.Log($"[Click] Show popup, ChestItemPopup.Instance={ChestItemPopup.Instance != null}");
+            ChestItemPopup.Instance?.Show(thisSlot, ChestController.CurrentOpenChest,
+                transform.position);
+            return;
+        }
+
+        // ── Shift + Click ────────────────────────────────────────
+        if (!Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift)) return;
+
+        HotbarSlot hotbarSlot = transform.parent.GetComponent<HotbarSlot>();
+        if (hotbarSlot != null) return;
 
         if (chestIsOpen)
         {
@@ -51,11 +64,9 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             if (itemUI == null || itemUI.itemData == null) return;
 
             bool added = HotbarController.Instance.AddItem(itemUI.itemData, itemUI.stackCount);
-
             if (added)
             {
                 Slot slot = transform.parent.GetComponent<Slot>();
-
                 if (slot != null)
                 {
                     Destroy(slot.currentItem);

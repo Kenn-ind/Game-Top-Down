@@ -6,17 +6,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// ============================================================
-//  SaveManager.cs
-//  Core sistem save / load JSON dengan multiple slot.
-//
-//  CARA PAKAI:
-//    - Attach ke GameObject kosong bernama "SaveManager"
-//    - Pastikan GameObject ini DontDestroyOnLoad
-//    - Panggil SaveManager.Instance.Save(slotIndex) untuk save
-//    - Panggil SaveManager.Instance.Load(slotIndex) untuk load
-// ============================================================
-
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance;
@@ -38,7 +27,6 @@ public class SaveManager : MonoBehaviour
     [Header("Settings")]
     public int maxSlots = 5;
 
-    // Chest di-find otomatis saat runtime
     private ChestController[] allChests;
 
     private string SaveFolder => Path.Combine(Application.persistentDataPath, "Saves");
@@ -56,7 +44,6 @@ public class SaveManager : MonoBehaviour
 
     void Start()
     {
-        // Auto-find semua chest di scene
         allChests = FindObjectsOfType<ChestController>();
         Debug.Log($"[SaveManager] Ditemukan {allChests.Length} chest di scene.");
     }
@@ -171,15 +158,19 @@ public class SaveManager : MonoBehaviour
                 data.openedChestIDs.Add(chest.gameObject.name);
 
         // ── Camera Boundary ─────────────────────────────────
-        // ⚠️ HARUS sebelum WriteToFile agar tersimpan ke JSON!
         data.activeBoundaryName = MapTransisi.ActiveBoundary != null
             ? MapTransisi.ActiveBoundary.gameObject.name
             : "";
+
+        // ── Tutorial ─────────────────────────────────────────
+        data.tutorialCompleted = TutorialManager.Instance != null
+            && TutorialManager.Instance.IsTutorialCompleted;
 
         // ── Tulis ke file ───────────────────────────────────
         WriteToFile(slotIndex, data);
         Debug.Log($"[SaveManager] Saved ke slot {slotIndex}: {GetFilePath(slotIndex)}");
         Debug.Log($"[SaveManager] Boundary tersimpan: '{data.activeBoundaryName}'");
+        Debug.Log($"[SaveManager] Tutorial completed: {data.tutorialCompleted}");
     }
 
     // ============================================================
@@ -267,6 +258,7 @@ public class SaveManager : MonoBehaviour
         soData.skill3CooldownCount = su.skill3CooldownCount;
         soData.skill3StaminaCount = su.skill3StaminaCount;
 
+        // ── Chest ───────────────────────────────────────────
         foreach (ChestController chest in allChests)
         {
             if (chest == null) continue;
@@ -274,11 +266,16 @@ public class SaveManager : MonoBehaviour
             chest.SetOpenedState(wasOpened);
         }
 
+        // ── Tutorial ─────────────────────────────────────────
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.SetTutorialCompleted(data.tutorialCompleted);
+
         skillUpgradeManager.ReApplyUpgrades();
         StartCoroutine(RefreshSkillUINextFrame());
-
         StartCoroutine(LoadCameraBoundary(data));
+
         Debug.Log($"[SaveManager] Load dari slot {slotIndex} berhasil!");
+        Debug.Log($"[SaveManager] Tutorial completed: {data.tutorialCompleted}");
     }
 
     IEnumerator LoadCameraBoundary(SaveData data)
@@ -302,10 +299,8 @@ public class SaveManager : MonoBehaviour
                 CinemachineVirtualCamera vcam = FindObjectOfType<CinemachineVirtualCamera>();
                 CinemachineBrain brain = Camera.main?.GetComponent<CinemachineBrain>();
 
-                // 1. Matikan brain sementara
                 if (brain != null) brain.enabled = false;
 
-                // 2. Set boundary baru
                 if (confiner != null)
                 {
                     confiner.m_Damping = 0f;
@@ -313,7 +308,6 @@ public class SaveManager : MonoBehaviour
                     confiner.InvalidatePathCache();
                 }
 
-                // 3. Snap posisi kamera & vcam ke player
                 Vector3 targetPos = new Vector3(data.playerX, data.playerY,
                     Camera.main != null ? Camera.main.transform.position.z : -10f);
 
@@ -329,10 +323,8 @@ public class SaveManager : MonoBehaviour
                 yield return null;
                 yield return null;
 
-                // 4. Nyalakan brain lagi
                 if (brain != null) brain.enabled = true;
 
-                // 5. Kembalikan damping
                 if (confiner != null)
                     confiner.m_Damping = 0.5f;
 
@@ -346,14 +338,14 @@ public class SaveManager : MonoBehaviour
 
     IEnumerator RefreshSkillUINextFrame()
     {
-        yield return null; // tunggu 1 frame
+        yield return null;
 
-        SkillUpgradeUI skillUpgradeUI = FindObjectOfType<SkillUpgradeUI>(true); // true = cari yang inactive juga
+        SkillUpgradeUI skillUpgradeUI = FindObjectOfType<SkillUpgradeUI>(true);
         if (skillUpgradeUI != null)
         {
-            skillUpgradeUI.gameObject.SetActive(true); // aktifkan sementara
+            skillUpgradeUI.gameObject.SetActive(true);
             skillUpgradeUI.ForceRefresh();
-            skillUpgradeUI.gameObject.SetActive(false); // matikan lagi
+            skillUpgradeUI.gameObject.SetActive(false);
             Debug.Log("[SaveManager] SkillUpgradeUI refreshed!");
         }
         else

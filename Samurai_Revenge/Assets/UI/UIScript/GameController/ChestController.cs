@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public class ChestController : MonoBehaviour
+public class ChestController : MonoBehaviour, IInteractable
 {
     public ChestData chestData;
     public float interactRange = 1.5f;
@@ -20,7 +20,6 @@ public class ChestController : MonoBehaviour
     private movement playerMovement;
     private List<ChestData.ChestItem> runtimeItems;
 
-    // ── Track item yang sudah diambil (by index) ─────────────
     private HashSet<int> _removedItemIndices = new HashSet<int>();
 
     public List<ChestData.ChestItem> GetRuntimeItems() => runtimeItems;
@@ -30,7 +29,6 @@ public class ChestController : MonoBehaviour
     private bool _permanentlyOpened = false;
     public bool IsOpened => _permanentlyOpened;
 
-    // ── Expose removed indices untuk save system ─────────────
     public List<int> GetRemovedIndices() => new List<int>(_removedItemIndices);
     public void LoadRemovedIndices(List<int> indices)
     {
@@ -51,7 +49,6 @@ public class ChestController : MonoBehaviour
         RebuildRuntimeItems();
     }
 
-    // ── Rebuild runtimeItems berdasarkan item yang belum diambil
     void RebuildRuntimeItems()
     {
         runtimeItems = new List<ChestData.ChestItem>();
@@ -71,11 +68,31 @@ public class ChestController : MonoBehaviour
         if (interactPrompt != null)
             interactPrompt.SetActive(playerInRange && !isOpen);
 
+        // Keyboard tetap jalan
         if (playerInRange && !isOpen && Input.GetKeyDown(KeyCode.F))
             OpenChest();
         else if (isOpen && Input.GetKeyDown(KeyCode.F))
             CloseUI();
     }
+
+    // ─── IInteractable ────────────────────────────────────────────────────────
+
+    public bool CanInteract()
+    {
+        // Bisa interact jika belum terbuka dan player dalam jangkauan
+        return !isOpen && !_permanentlyOpened == false
+               || (!isOpen && playerInRange);
+    }
+
+    public void Interact()
+    {
+        if (!isOpen)
+            OpenChest();
+        else
+            CloseUI();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
 
     void OpenChest()
     {
@@ -103,7 +120,6 @@ public class ChestController : MonoBehaviour
     {
         if (slot.currentItem == null) return;
 
-        // ── Cari index original item ini di chestData ────────
         ItemUI itemUI = slot.currentItem.GetComponent<ItemUI>();
         if (itemUI != null && itemUI.itemData != null)
         {

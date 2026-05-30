@@ -13,7 +13,7 @@ public class Skill3SO : SkillSO
     public float ringDuration = 5f;
 
     [Header("Berserker")]
-    public float holdThreshold = 0.4f;
+    public float holdThreshold = 0.2f;
     public float berserkerDuration = 5f;
     public float damageMultiplier = 2f;
     public float attackSpeedMultiplier = 2f;
@@ -110,6 +110,8 @@ public class Skill3SO : SkillSO
         if (!_mobileIsHolding) return;
         _mobileIsHolding = false;
 
+        Debug.Log($"[Skill3] MobileHoldEnd, holdTimer={_mobileHoldTimer}, threshold={holdThreshold}");
+
         if (IsTutorialBlocked()) return;
         if (Time.time < _nextSkillTime) return;
         if (!_stamina.HasEnough(staminaCost)) return;
@@ -120,21 +122,7 @@ public class Skill3SO : SkillSO
         if (_mobileHoldTimer < holdThreshold)
             _runner.StartCoroutine(ActivateRing());
         else
-        {
-            // Blok berserker jika tutorial masih di step Skill3Range
-            if (TutorialManager.Instance != null
-                && TutorialManager.Instance.IsTutorialActive
-                && TutorialManager.Instance.CurrentRequiredAction == TutorialActionType.Skill3Range)
-            {
-                Debug.Log("[Skill3] Selesaikan Ring Shuriken dulu!");
-                // Aktifkan ring saja
-                _runner.StartCoroutine(ActivateRing());
-            }
-            else
-            {
-                TriggerBerserker();
-            }
-        }
+            TriggerBerserker();
 
         _nextSkillTime = Time.time + cooldown;
     }

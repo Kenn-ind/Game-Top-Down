@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ChestUI : MonoBehaviour
 {
     public GameObject panel;
-
     public TabController tabController;
     public GameObject inventoryPages;
     public GameObject chestSlotContainer;
-
     public GameObject slotPrefab;
     public GameObject itemPrefab;
-
     public int slotCount = 20;
+
+    [Header("References")]
+    public GameObject hotbarPanel; // ← drag HotbarPanel dari Inspector
 
     private Slot[] slots;
     private InventoryController playerInventory;
@@ -24,10 +25,42 @@ public class ChestUI : MonoBehaviour
         panel.SetActive(false);
     }
 
+    void Update()
+    {
+        // Cek click di luar chest panel saat chest terbuka
+        if (!panel.activeSelf) return;
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        // Jika pointer tidak di atas chest panel dan tidak di atas hotbar
+        if (!IsPointerOverPanel(panel) && !IsPointerOverPanel(hotbarPanel))
+        {
+            ChestItemPopup.Instance?.Hide();
+            currentChest?.CloseUI();
+        }
+    }
+
+    bool IsPointerOverPanel(GameObject targetPanel)
+    {
+        if (targetPanel == null) return false;
+
+        PointerEventData ped = new PointerEventData(EventSystem.current);
+        ped.position = Input.mousePosition;
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(ped, results);
+
+        foreach (var r in results)
+        {
+            if (r.gameObject.transform.IsChildOf(targetPanel.transform))
+                return true;
+        }
+        return false;
+    }
+
+    // ─── sisa method tetap sama ───────────────────────────────────────────────
+
     public void Open(List<ChestData.ChestItem> runtimeItems, ChestController chest)
     {
         currentChest = chest;
-
         chestSlotContainer.SetActive(true);
         inventoryPages.SetActive(true);
 
@@ -91,7 +124,6 @@ public class ChestUI : MonoBehaviour
                     break;
                 }
             }
-
             Destroy(chestSlot.currentItem);
             chestSlot.currentItem = null;
         }
@@ -107,7 +139,6 @@ public class ChestUI : MonoBehaviour
         ItemUI itemUI = inventorySlot.currentItem.GetComponent<ItemUI>();
         if (itemUI == null) return;
 
-        // Coba stack dulu
         foreach (Slot slot in slots)
         {
             if (slot.currentItem == null) continue;
@@ -136,19 +167,13 @@ public class ChestUI : MonoBehaviour
         Slot emptySlot = null;
         foreach (Slot slot in slots)
         {
-            if (slot.currentItem == null)
-            {
-                emptySlot = slot;
-                break;
-            }
+            if (slot.currentItem == null) { emptySlot = slot; break; }
         }
 
         if (emptySlot != null)
         {
             SpawnItem(emptySlot, itemUI.itemData, itemUI.stackCount);
-
             AddToRuntimeItems(itemUI.itemData, itemUI.stackCount);
-
             Destroy(inventorySlot.currentItem);
             inventorySlot.currentItem = null;
         }
@@ -161,7 +186,6 @@ public class ChestUI : MonoBehaviour
     void AddToRuntimeItems(ItemData data, int count)
     {
         var runtimeItems = currentChest.GetRuntimeItems();
-
         for (int i = 0; i < runtimeItems.Count; i++)
         {
             if (runtimeItems[i].itemData == data)
@@ -174,13 +198,9 @@ public class ChestUI : MonoBehaviour
                 return;
             }
         }
-
-        runtimeItems.Add(new ChestData.ChestItem
-        {
-            itemData = data,
-            count = count
-        });
+        runtimeItems.Add(new ChestData.ChestItem { itemData = data, count = count });
     }
+
     void UpdateRuntimeItems(ItemData data, int newCount)
     {
         var runtimeItems = currentChest.GetRuntimeItems();
@@ -188,16 +208,11 @@ public class ChestUI : MonoBehaviour
         {
             if (runtimeItems[i].itemData == data)
             {
-                runtimeItems[i] = new ChestData.ChestItem
-                {
-                    itemData = data,
-                    count = newCount
-                };
+                runtimeItems[i] = new ChestData.ChestItem { itemData = data, count = newCount };
                 return;
             }
         }
     }
-
 
     public Slot[] GetSlots() => slots;
 }
