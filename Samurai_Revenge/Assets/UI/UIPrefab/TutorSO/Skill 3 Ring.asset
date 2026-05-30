@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill 3 Ring
   m_EditorClassIdentifier: 
   title: Skill 3 - Ring Shuriken
-  requiredAction: 6
+  requiredAction: 7
   requiredCount: 1
   descPages:
   - title: Skill 3 - Ring Shuriken
